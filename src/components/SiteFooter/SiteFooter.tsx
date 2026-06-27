@@ -1,0 +1,95 @@
+import logoSrc from '@/assets/decor/icons/logo.svg';
+import mailjoySrc from '@/assets/decor/icons/malijoy.svg';
+import layoutStudySrc from '@/assets/decor/icons/layout-study.svg';
+import arrowTopSrc from '@/assets/decor/icons/arrow-top-footer.svg';
+import footerDecorSrc from '@/assets/decor/footer.svg';
+import './SiteFooter.scss';
+
+const productLinks = [
+  { label: 'Аудитория', href: '/#audience' },
+  { label: 'Как это работает', href: '/#steps' },
+  { label: 'Преимущества', href: '/#benefits' },
+  { label: 'Premium', href: '/#pricing' },
+  { label: 'FAQ', href: '/#faq' },
+];
+
+const legalLinks = [
+  { label: 'Пользовательское соглашение', href: '/privacy' },
+  { label: 'Политика конфиденциальности', href: '/privacy' },
+  { label: 'Условия оплаты', href: '/privacy' },
+  { label: 'Политика возврата', href: '/privacy' },
+  { label: 'Правила общения', href: '/rules' },
+];
+
+const telegramLinks = [
+  { label: 'Бот — @chatus', href: 'https://t.me/chatusbot' },
+  { label: 'Канал — @chatusme', href: 'https://t.me/chatusteam' },
+];
+
+export function SiteFooter() {
+  return (
+    <footer className="site-footer">
+      <img className="site-footer__decor" src={footerDecorSrc} alt="" aria-hidden="true" />
+
+      <div className="site-footer__container">
+        <div className="site-footer__brand">
+          <a className="site-footer__logo" href="/" aria-label="Chatus">
+            <img src={logoSrc} alt="Chatus" width="130" height="38" />
+          </a>
+
+          <p className="site-footer__powered">
+            powered by
+            <img src={mailjoySrc} alt="mailjoy" />
+          </p>
+
+          <p className="site-footer__copyright">©2026 Chatus. Все права защищены.</p>
+
+          <div className="site-footer__actions">
+            <div className="site-footer__langs" aria-label="Выбор языка">
+              <button type="button">Id</button>
+              <button type="button">En</button>
+              <button type="button" aria-current="true">Ru</button>
+            </div>
+
+            <a className="site-footer__rules" href="/rules">
+              Правила сервиса
+            </a>
+          </div>
+        </div>
+
+        <nav className="site-footer__column" aria-label="Продукт">
+          <span>Продукт</span>
+          {productLinks.map((link) => (
+            <a href={link.href} key={link.label}>
+              {link.label}
+            </a>
+          ))}
+        </nav>
+
+        <nav className="site-footer__column" aria-label="Legal">
+          <span>Legal</span>
+          {legalLinks.map((link) => (
+            <a href={link.href} key={link.label}>
+              {link.label}
+            </a>
+          ))}
+        </nav>
+
+        <nav className="site-footer__column" aria-label="Telegram">
+          <span>Telegram</span>
+          {telegramLinks.map((link) => (
+            <a className="site-footer__external" href={link.href} key={link.label} target="_blank" rel="noreferrer">
+              {link.label}
+              <img src={arrowTopSrc} alt="" aria-hidden="true" />
+            </a>
+          ))}
+        </nav>
+      </div>
+
+      <p className="site-footer__made">
+        Сделано с любовью в
+        <img src={layoutStudySrc} alt="Layout" />
+      </p>
+    </footer>
+  );
+}

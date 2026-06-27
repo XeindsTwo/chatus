@@ -1,0 +1,44 @@
+@use '../../styles/abstracts/mixins' as *;
+@use '../../styles/abstracts/variables' as *;
+
+.legal-document {
+  min-height: 100svh;
+  padding: 170px 0 122px;
+  background: $color-sun;
+  color: $color-ink;
+}
+
+.legal-document__container {
+  width: min(100% - 32px, 820px);
+  margin-inline: auto;
+}
+
+.legal-document__section {
+  display: grid;
+  gap: 26px;
+
+  & + & {
+    margin-top: clamp(58px, 7vw, 92px);
+  }
+
+  h1,
+  h2 {
+    @include section-title-small;
+
+    max-width: 780px;
+  }
+
+  p {
+    max-width: 760px;
+    color: rgb(32 23 15 / 86%);
+    font-size: clamp(16px, 1.28vw, 19px);
+    font-weight: 900;
+    line-height: 1.42;
+  }
+}
+
+@media (width <= 760px) {
+  .legal-document {
+    padding-top: 132px;
+  }
+}

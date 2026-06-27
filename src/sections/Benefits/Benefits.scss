@@ -1,0 +1,121 @@
+@use '../../styles/abstracts/mixins' as *;
+@use '../../styles/abstracts/variables' as *;
+
+.benefits {
+  overflow: hidden;
+  padding-top: 0;
+  background: $color-sun;
+  color: $color-ink;
+}
+
+.benefits__container {
+  @include container;
+}
+
+.benefits__title {
+  max-width: 520px;
+  margin-bottom: 58px;
+}
+
+.benefits__cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+  align-items: stretch;
+}
+
+.benefits__card {
+  position: relative;
+  display: flex;
+  min-height: 479px;
+  flex-direction: column;
+  justify-content: flex-end;
+  border: 2px solid $color-white;
+  border-radius: 32px;
+  overflow: hidden;
+  background: linear-gradient(133deg, #fff 0%, rgb(255 255 255 / 80%) 100%);
+}
+
+.benefits__card--decor-only {
+  border-color: transparent;
+  background: transparent;
+}
+
+.benefits__card-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
+.benefits__decor {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.benefits__card--fast .benefits__decor {
+  left: 50%;
+  top: 26px;
+  width: min(72%, 282px);
+  transform: translateX(-50%);
+}
+
+.benefits__card--flirt .benefits__decor {
+  left: 50%;
+  top: 104px;
+  width: min(88%, 275px);
+  transform: translateX(-50%);
+}
+
+.benefits__card--anon .benefits__decor {
+  left: 50%;
+  top: 74px;
+  width: min(62%, 182px);
+  transform: translateX(-50%);
+}
+
+.benefits__card--telegram .benefits__decor {
+  left: 50%;
+  top: 0;
+  width: min(100%, 331px);
+  transform: translateX(-50%);
+}
+
+.benefits__content {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  padding: 0 30px 26px;
+  text-align: center;
+}
+
+.benefits__card-title {
+  max-width: 250px;
+  margin-bottom: 16px;
+}
+
+.benefits__content p {
+  max-width: 240px;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+@include r(1100) {
+  .benefits__cards {
+    grid-template-columns: repeat(2, minmax(280px, 1fr));
+  }
+}
+
+@include r(680) {
+  .benefits__cards {
+    grid-template-columns: 1fr;
+  }
+
+  .benefits__card {
+    min-height: 420px;
+  }
+}

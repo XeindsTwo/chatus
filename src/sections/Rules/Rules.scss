@@ -1,0 +1,259 @@
+@use '../../styles/abstracts/mixins' as *;
+@use '../../styles/abstracts/variables' as *;
+
+.rules-page {
+  position: relative;
+  overflow: hidden;
+  padding: 154px 0 clamp(78px, 9vw, 126px);
+  background:
+    radial-gradient(circle at 50% 4%, rgb(255 241 162 / 68%) 0 104px, transparent 105px),
+    radial-gradient(circle at 9% 18%, rgb(255 232 112 / 42%) 0 170px, transparent 172px),
+    radial-gradient(circle at 92% 18%, rgb(255 232 112 / 36%) 0 188px, transparent 190px),
+    linear-gradient(180deg, #ffb51d 0%, #ffab16 48%, #ffa214 100%);
+  color: $color-ink;
+}
+
+.rules-page__glow {
+  position: absolute;
+  width: min(46vw, 620px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgb(255 238 137 / 26%);
+  filter: blur(32px);
+  pointer-events: none;
+}
+
+.rules-page__glow--left {
+  left: -18%;
+  top: 7%;
+}
+
+.rules-page__glow--right {
+  right: -20%;
+  top: 14%;
+}
+
+.rules-page__container {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 32px, 1040px);
+  margin-inline: auto;
+}
+
+.rules-hero {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+
+  h1 {
+    @include section-title-small;
+  }
+}
+
+.rules-age-card {
+  display: grid;
+  width: min(100%, 455px);
+  justify-items: center;
+  gap: 16px;
+  margin-top: 28px;
+  border-radius: 28px;
+  padding: 22px 42px 32px;
+  background: rgb(255 250 239 / 96%);
+  box-shadow: 0 24px 60px rgb(106 66 0 / 14%);
+
+  strong {
+    @include display-title;
+
+    font-size: clamp(42px, 5vw, 62px);
+  }
+
+  p {
+    max-width: 310px;
+    color: rgb(32 23 15 / 78%);
+    font-size: 17px;
+    font-weight: 900;
+    line-height: 1.28;
+  }
+}
+
+.rules-hero__copy {
+  display: grid;
+  max-width: 560px;
+  gap: 22px;
+  margin-top: 32px;
+
+  p {
+    font-size: clamp(17px, 1.55vw, 21px);
+    font-weight: 950;
+    line-height: 1.33;
+  }
+}
+
+.rules-principles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: clamp(74px, 9vw, 128px);
+}
+
+.rules-principle-card {
+  display: grid;
+  min-height: 420px;
+  align-content: space-between;
+  justify-items: center;
+  border-radius: 26px;
+  padding: 34px 28px 28px;
+  background: rgb(255 250 239 / 94%);
+  box-shadow: 0 22px 55px rgb(106 66 0 / 12%);
+  text-align: center;
+  transition:
+    box-shadow 180ms ease,
+    transform 180ms ease;
+
+  h2 {
+    @include card-title;
+
+    max-width: 230px;
+  }
+
+  img {
+    width: min(46%, 118px);
+    max-height: 112px;
+    opacity: 0.52;
+    transition:
+      opacity 180ms ease,
+      transform 180ms ease;
+  }
+
+  p {
+    color: rgb(32 23 15 / 72%);
+    font-size: 13px;
+    font-weight: 900;
+    line-height: 1.24;
+  }
+}
+
+.rules-principle-card:hover {
+  box-shadow:
+    inset 0 0 12px 4px rgb(255 186 49 / 20%),
+    0 28px 66px rgb(106 66 0 / 18%);
+  transform: translateY(-5px);
+
+  img {
+    opacity: 0.72;
+    transform: scale(1.04) rotate(-2deg);
+  }
+}
+
+.rules-ban {
+  margin-top: clamp(94px, 12vw, 158px);
+}
+
+.rules-ban__intro {
+  display: grid;
+  max-width: 560px;
+  gap: 28px;
+
+  h2 {
+    @include section-title-small;
+  }
+
+  p {
+    color: rgb(32 23 15 / 84%);
+    font-size: clamp(16px, 1.35vw, 20px);
+    font-weight: 950;
+    line-height: 1.34;
+  }
+}
+
+.rules-ban__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 42px;
+}
+
+.rules-ban-card {
+  display: grid;
+  min-height: 182px;
+  align-content: start;
+  border-radius: 20px;
+  padding: 18px 22px 22px;
+  background: rgb(255 250 239 / 94%);
+  box-shadow: 0 14px 34px rgb(106 66 0 / 10%);
+  transition:
+    box-shadow 180ms ease,
+    transform 180ms ease;
+
+  img {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 18px;
+  }
+
+  h3 {
+    @include card-title;
+
+    max-width: 250px;
+  }
+
+  p {
+    margin-top: 12px;
+    color: rgb(32 23 15 / 72%);
+    font-size: 12px;
+    font-weight: 900;
+    line-height: 1.24;
+  }
+}
+
+.rules-ban-card:hover {
+  box-shadow:
+    inset 0 0 12px 4px rgb(255 186 49 / 20%),
+    0 22px 48px rgb(106 66 0 / 16%);
+  transform: translateY(-4px);
+}
+
+.rules-penalty {
+  display: grid;
+  max-width: 790px;
+  gap: 30px;
+  margin-top: clamp(84px, 10vw, 132px);
+
+  h2 {
+    @include section-title-small;
+  }
+
+  p {
+    max-width: 700px;
+    color: rgb(32 23 15 / 86%);
+    font-size: clamp(16px, 1.35vw, 20px);
+    font-weight: 950;
+    line-height: 1.36;
+  }
+}
+
+@include r(900) {
+  .rules-principles,
+  .rules-ban__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rules-principle-card,
+  .rules-ban-card {
+    min-height: auto;
+  }
+
+  .rules-principle-card {
+    gap: 28px;
+  }
+}
+
+@include r(620) {
+  .rules-page {
+    padding-top: 124px;
+  }
+
+  .rules-age-card {
+    padding-inline: 26px;
+  }
+}

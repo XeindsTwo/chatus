@@ -1,0 +1,129 @@
+@use '../../styles/abstracts/mixins' as *;
+@use '../../styles/abstracts/variables' as *;
+
+.audience {
+  position: relative;
+  display: grid;
+  min-height: 100svh;
+  place-items: center;
+  background: transparent;
+}
+
+.audience__panel {
+  position: relative;
+  display: grid;
+  width: min(832px, calc(100vw - 32px));
+  height: min(560px, calc(100svh - 96px));
+  align-content: start;
+  justify-items: center;
+  overflow: clip;
+  padding: 96px 24px 0;
+  box-shadow: 0 32px 90px rgb(67 47 18 / 10%);
+  will-change: width, height, border-radius;
+}
+
+.audience__panel--expanded {
+  overflow: visible;
+}
+
+.audience__title {
+  @include section-title;
+
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  text-align: center;
+  will-change: transform;
+}
+
+.audience__cards {
+  position: relative;
+  z-index: 2;
+  width: 612px;
+  max-width: calc(100vw - 32px);
+  height: 378px;
+  margin-top: clamp(86px, 13vh, 154px);
+}
+
+.audience__card {
+  position: absolute;
+  top: 128px;
+  left: 0;
+  display: grid;
+  width: 220px;
+  min-height: 250px;
+  align-content: space-between;
+  border: 2px solid $color-white;
+  border-radius: 32px;
+  padding: 24px;
+  background: $color-white;
+  box-shadow: -8px 12px 32px 0 rgb(191 196 202 / 6%);
+  will-change: transform;
+
+  p {
+    max-width: 174px;
+    margin-bottom: 46px;
+    color: $color-ink;
+    font-size: 14px;
+    font-weight: 900;
+    line-height: 1.35;
+  }
+
+  strong {
+    @include card-title;
+
+    display: block;
+    margin-top: 20px;
+  }
+}
+
+.audience__card--users {
+  left: 196px;
+  z-index: 2;
+  top: 64px;
+}
+
+.audience__card--dialogs {
+  left: 392px;
+  z-index: 3;
+  top: 0;
+}
+
+.audience__plus {
+  display: block;
+  width: 50px;
+  height: 50px;
+  justify-self: center;
+  opacity: 0.74;
+}
+
+@media (width <= 760px) {
+  .audience__panel {
+    width: 100vw !important;
+    height: auto !important;
+    padding: 70px 24px;
+  }
+
+  .audience__title {
+    font-size: clamp(42px, 11vw, 62px);
+  }
+
+  .audience__cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    height: auto;
+    width: min(100%, 280px);
+    gap: 22px;
+    margin-top: 58px;
+  }
+
+  .audience__card,
+  .audience__card--users,
+  .audience__card--dialogs {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    min-height: auto;
+    transform: none;
+  }
+}

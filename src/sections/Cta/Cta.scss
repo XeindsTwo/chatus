@@ -1,0 +1,140 @@
+@use '../../styles/abstracts/mixins' as *;
+@use '../../styles/abstracts/variables' as *;
+
+.cta {
+  position: relative;
+  overflow: hidden;
+  min-height: 100svh;
+  padding: clamp(52px, 7vh, 86px) 0 38px;
+  background:
+    radial-gradient(circle at 15% 74%, rgb(255 255 255 / 74%) 0 126px, transparent 127px),
+    radial-gradient(circle at 83% 72%, rgb(255 255 255 / 74%) 0 132px, transparent 133px),
+    linear-gradient(180deg, #f4f5f8 0%, #eef0f4 100%);
+}
+
+.cta::before,
+.cta::after {
+  @include pseudo;
+
+  bottom: 23%;
+  width: clamp(180px, 18vw, 315px);
+  height: clamp(360px, 42vw, 620px);
+  border-radius: 999px 999px 0 0;
+  background: linear-gradient(180deg, rgb(255 255 255 / 78%), rgb(255 255 255 / 0));
+}
+
+.cta::before {
+  left: 12%;
+  rotate: 32deg;
+}
+
+.cta::after {
+  right: 12%;
+  rotate: -32deg;
+}
+
+.cta__container {
+  @include container;
+
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+.cta__title {
+  position: relative;
+  z-index: 3;
+  max-width: 860px;
+  color: $color-ink;
+}
+
+.cta__animation {
+  position: relative;
+  z-index: 2;
+  width: 100vw;
+  height: 510px;
+  margin-inline: calc(50% - 50vw);
+  margin-top: clamp(-46px, -3.4vw, -20px);
+  pointer-events: none;
+}
+
+.cta__animation::after {
+  @include pseudo;
+
+  inset: auto -8% 0;
+  height: 34%;
+  background: linear-gradient(180deg, rgb(239 241 245 / 0), #eef0f4 72%);
+}
+
+.cta__lottie {
+  width: 100%;
+  height: 100%;
+}
+
+.cta__text {
+  position: relative;
+  z-index: 3;
+  margin-top: clamp(-18px, -1.5vw, -8px);
+  color: $color-ink;
+  font-size: clamp(16px, 1.35vw, 21px);
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.cta__button {
+  @include flex-center;
+
+  position: relative;
+  z-index: 3;
+  min-height: 58px;
+  gap: 12px;
+  margin-top: 28px;
+  border: 2px solid #a87313;
+  border-radius: 999px;
+  padding: 0 28px 0 22px;
+  background: #2a1b00;
+  color: $color-white;
+  box-shadow: 0 14px 36px rgb(68 43 0 / 16%);
+  font-size: 17px;
+  font-weight: 900;
+  transition:
+    border-color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.cta__button:hover {
+  transform: translateY(-2px);
+  border-color: #fdab1b;
+  box-shadow:
+    inset 0 0 12px 4px rgb(255 186 49 / 32%),
+    0 18px 42px rgb(68 43 0 / 22%);
+}
+
+.cta__button-icon {
+  @include flex-center;
+
+  width: 22px;
+  height: 22px;
+}
+
+@include r(760) {
+  .cta {
+    min-height: auto;
+    padding-top: 58px;
+  }
+
+  .cta__animation {
+    width: 100vw;
+    height: 510px;
+    margin-top: -22px;
+  }
+
+  .cta__text {
+    br {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,74 @@
+@use '../../styles/abstracts/mixins' as *;
+@use '../../styles/abstracts/variables' as *;
+
+.footer {
+  position: relative;
+  padding: 110px 0 80px;
+  background: $color-paper;
+  overflow: hidden;
+}
+
+.footer::after {
+  @include pseudo;
+
+  inset: auto -5% -120px;
+  height: 240px;
+  background:
+    radial-gradient(circle at 17% 64%, rgb(255 255 255 / 72%) 0 74px, transparent 75px),
+    radial-gradient(circle at 39% 72%, rgb(255 255 255 / 86%) 0 90px, transparent 91px),
+    radial-gradient(circle at 72% 55%, rgb(255 255 255 / 72%) 0 96px, transparent 97px);
+}
+
+.footer__container {
+  @include container;
+
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+.footer__stage {
+  @include flex-center;
+
+  gap: clamp(18px, 5vw, 70px);
+  width: min(100%, 760px);
+  margin-bottom: 28px;
+}
+
+.footer__face {
+  display: block;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 38%, #2f221c 0 12%, transparent 13%),
+    radial-gradient(circle at 50% 57%, #ffc48e 0 41%, transparent 42%),
+    #fff5df;
+  box-shadow: 0 20px 55px rgb(41 39 36 / 10%);
+}
+
+.footer__face--small {
+  width: clamp(74px, 11vw, 130px);
+  opacity: 0.45;
+}
+
+.footer__face--main {
+  width: clamp(150px, 22vw, 250px);
+  border: 5px solid $color-sun;
+}
+
+.footer h2 {
+  @include display-title;
+
+  max-width: 780px;
+  font-size: clamp(42px, 6vw, 82px);
+}
+
+.footer p {
+  max-width: 380px;
+  margin: 22px 0 24px;
+  color: $color-muted;
+  font-weight: 800;
+  line-height: 1.45;
+}

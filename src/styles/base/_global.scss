@@ -1,0 +1,76 @@
+@use '../abstracts/variables' as *;
+
+:root {
+  --font-display: 'Arial Black';
+  --font-body: Arial;
+}
+
+body {
+  min-width: 320px;
+  background: $color-sun;
+  color: $color-ink;
+  font-family: $font-body;
+  font-size: 14px;
+  line-height: 1.35;
+  text-rendering: geometricPrecision;
+}
+
+img {
+  user-select: none;
+}
+
+main {
+  overflow: clip;
+}
+
+.audience-steps {
+  background: $color-sun;
+}
+
+.audience-steps__surface {
+  background:
+    url('../../assets/audience-steps-bg.svg') center top / cover no-repeat,
+    $color-paper;
+}
+
+::selection {
+  background: $color-ink;
+  color: $color-sun;
+}
+
+.section-title {
+  font-family: var(--font-display), Arial Black, Impact, sans-serif;
+  font-size: 62px;
+  font-style: italic;
+  font-weight: 950;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.section-title--small {
+  font-size: 56px;
+}
+
+.card-title {
+  font-family: var(--font-display), Arial Black, Impact, sans-serif;
+  font-size: 28px;
+  font-style: italic;
+  font-weight: 950;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.body-copy {
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.indent {
+  margin-bottom: 160px;
+}
+
+@media (width <= 760px) {
+  .indent {
+    margin-bottom: 96px;
+  }
+}

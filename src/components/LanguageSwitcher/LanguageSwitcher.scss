@@ -1,0 +1,43 @@
+@use '../../styles/abstracts/mixins' as *;
+
+.language-switcher {
+  @include flex-align-center;
+
+  border-radius: 999px;
+  background: transparent;
+  padding: 0;
+
+  button {
+    position: relative;
+    min-width: 32px;
+    height: 34px;
+    border-radius: 999px;
+    background: transparent;
+    color: rgb(42 27 0 / 40%);
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 900;
+    transition:
+      color 140ms ease,
+      background-color 140ms ease;
+  }
+
+  button + button::before {
+    position: absolute;
+    left: -1px;
+    top: 50%;
+    width: 1px;
+    height: 14px;
+    content: '';
+    background: rgb(42 27 0 / 16%);
+    transform: translateY(-50%);
+  }
+
+  button:hover {
+    color: #2a1b00;
+  }
+
+  button[aria-pressed='true'] {
+    color: #2a1b00;
+  }
+}
