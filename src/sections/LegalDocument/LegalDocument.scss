@@ -3,37 +3,34 @@
 
 .legal-document {
   min-height: 100svh;
-  padding: 170px 0 122px;
+  padding: 160px 0;
   background: $color-sun;
   color: $color-ink;
 }
 
 .legal-document__container {
-  width: min(100% - 32px, 820px);
+  width: min(100% - 32px, 864px);
   margin-inline: auto;
 }
 
 .legal-document__section {
   display: grid;
-  gap: 26px;
+  gap: 40px;
 
   & + & {
-    margin-top: clamp(58px, 7vw, 92px);
+    margin-top: 64px;
   }
 
   h1,
   h2 {
     @include section-title-small;
-
-    max-width: 780px;
   }
 
   p {
-    max-width: 760px;
-    color: rgb(32 23 15 / 86%);
-    font-size: clamp(16px, 1.28vw, 19px);
-    font-weight: 900;
-    line-height: 1.42;
+    font-size: 20px;
+    line-height: 1.5;
+    color: $primary1000;
+    letter-spacing: -0.02em;
   }
 }
 

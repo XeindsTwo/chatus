@@ -18,11 +18,12 @@
 
 .faq__list {
   display: grid;
-  max-width: 720px;
+  max-width: 700px;
+  width: 100%;
 }
 
 .faq__item {
-  border-bottom: 2px solid rgb(32 23 15 / 72%);
+  border-bottom: 1px solid #DA9316;
   opacity: 1;
   transition: opacity 260ms ease;
 }
@@ -133,7 +134,7 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
-  margin-top: clamp(64px, 8vw, 112px);
+  margin-top: 80px;
 }
 
 .faq__contact {

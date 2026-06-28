@@ -17,24 +17,25 @@
 }
 
 .tariffs__title {
-  max-width: 520px;
   text-align: center;
+  margin-bottom: 56px;
 }
 
 .tariffs__cards {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(280px, 360px));
+  display: flex;
+  max-width: 824px;
   gap: 24px;
   align-items: start;
-  margin-top: 42px;
 }
 
 .tariffs__card {
   position: relative;
   display: grid;
   min-height: 468px;
+  max-width: 400px;
+  width: 400px;
   border-radius: 32px;
-  padding: 54px 30px 28px;
+  padding: 62px 24px 28px 32px;
 }
 
 .tariffs__card--free {
@@ -85,30 +86,29 @@
 }
 
 .tariffs__name {
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .tariffs__description,
-.tariffs__price span,
-.tariffs__divider span {
+.tariffs__price span {
   color: rgb(42 27 0 / 70%);
-  font-size: 14px;
-  font-weight: 800;
-  line-height: 1.35;
+  font-size: 16px;
 }
 
 .tariffs__description {
   max-width: 150px;
+  margin-bottom: 28px;
 }
 
 .tariffs__price {
   @include flex-align-center(12);
-
-  margin-top: 32px;
+  align-items: flex-end;
+  margin-bottom: 38px;
 }
 
 .tariffs__price strong {
   @include section-title;
+  letter-spacing: -0.04em;
 }
 
 .tariffs__divider {
@@ -116,7 +116,12 @@
   grid-template-columns: auto 1fr;
   gap: 20px;
   align-items: center;
-  margin-top: 28px;
+  margin-bottom: 40px;
+  padding-right: 10px;
+
+  span {
+    color: rgba($color-ink, .4);
+  }
 }
 
 .tariffs__divider::after {
@@ -129,34 +134,29 @@
 .tariffs__features {
   display: grid;
   gap: 16px;
-  margin: 34px 0 38px;
   padding: 0;
+  margin: 0;
   list-style: none;
 }
 
 .tariffs__features li {
   @include flex-align-center(12);
-
-  color: $color-ink;
+  color: rgba($color-ink, .7);
   font-size: 16px;
-  font-weight: 800;
-  line-height: 1.35;
 }
 
 .tariffs__features img {
-  width: 14px;
-  height: 14px;
-  flex: 0 0 14px;
+  width: 12px;
+  height: 10px;
 }
 
 .tariffs__button {
+  @include gradient-pill-border(#2a1b00);
   @include flex-center;
-
+  margin-top: 38px;
   width: fit-content;
   min-height: 42px;
   gap: 9px;
-  @include gradient-pill-border(#2a1b00);
-
   border-radius: 999px;
   padding: 0 20px 0 16px;
   color: $color-white;
