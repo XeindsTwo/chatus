@@ -88,7 +88,9 @@ export function SiteFooter() {
 
       <p className="site-footer__made">
         Сделано с любовью в
-        <img src={layoutStudySrc} alt="Layout" />
+        <a href="https://layout.com" target="_blank" rel="noreferrer" aria-label="Layout">
+          <img src={layoutStudySrc} alt="Layout" />
+        </a>
       </p>
     </footer>
   );

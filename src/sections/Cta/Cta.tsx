@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef } from 'react';
-import { DotLottieReact, type DotLottie } from '@lottiefiles/dotlottie-react';
+import { DotLottieReact, type DotLottie } from '@lottiefiles/dotlottie-react/webgl';
 import peepsCarousel from '@/peeps_carousel.lottie';
 import './Cta.scss';
 
@@ -69,8 +69,11 @@ export function Cta() {
                 playOnce();
               }
             }}
+            layout={{ fit: 'contain', align: [0.5, 0.5] }}
             loop={false}
+            renderConfig={{ devicePixelRatio: 1 }}
             src={peepsCarousel}
+            useFrameInterpolation={false}
           />
         </div>
 

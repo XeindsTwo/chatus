@@ -2,6 +2,7 @@ import iconPolite from '@/assets/decor/rules/1.svg';
 import iconPrivacy from '@/assets/decor/rules/2.svg';
 import iconInterest from '@/assets/decor/rules/3.svg';
 import iconCross from '@/assets/decor/rules/cross.svg';
+import svetSrc from '@/assets/decor/svet.png';
 import './Rules.scss';
 
 const principles = [
@@ -64,8 +65,7 @@ const bans = [
 export function Rules() {
   return (
     <section className="rules-page">
-      <div className="rules-page__glow rules-page__glow--left" aria-hidden="true" />
-      <div className="rules-page__glow rules-page__glow--right" aria-hidden="true" />
+      <img className="rules-page__rays" src={svetSrc.src} alt="" aria-hidden="true" />
 
       <div className="rules-page__container">
         <section className="rules-hero" aria-labelledby="rules-title">

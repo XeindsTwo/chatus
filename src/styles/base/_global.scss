@@ -1,18 +1,24 @@
 @use '../abstracts/variables' as *;
 
 :root {
-  --font-display: 'Arial Black';
-  --font-body: Arial;
+  --font-display: 'HagridTrial';
+  --font-body: 'Mont';
+  --body-letter-spacing: -0.04em;
+  --anchor-offset: 88px;
 }
 
 body {
+  position: relative;
   min-width: 320px;
   background: $color-sun;
   color: $color-ink;
   font-family: $font-body;
   font-size: 14px;
+  font-weight: 600;
+  letter-spacing: var(--body-letter-spacing);
   line-height: 1.35;
   text-rendering: geometricPrecision;
+  isolation: isolate;
 }
 
 img {
@@ -20,6 +26,8 @@ img {
 }
 
 main {
+  position: relative;
+  z-index: 1;
   overflow: clip;
 }
 
@@ -33,18 +41,27 @@ main {
     $color-paper;
 }
 
+:where([id]) {
+  scroll-margin-top: var(--anchor-offset);
+}
+
 ::selection {
   background: $color-ink;
   color: $color-sun;
 }
 
 .section-title {
-  font-family: var(--font-display), Arial Black, Impact, sans-serif;
+  font-family: var(--font-display), sans-serif;
   font-size: 62px;
   font-style: italic;
-  font-weight: 950;
+  font-weight: 800;
+  letter-spacing: 0;
   line-height: 0.95;
   text-transform: uppercase;
+
+  span {
+    color: rgba($color-ink, .7);
+  }
 }
 
 .section-title--small {
@@ -52,16 +69,18 @@ main {
 }
 
 .card-title {
-  font-family: var(--font-display), Arial Black, Impact, sans-serif;
+  font-family: var(--font-display), sans-serif;
   font-size: 28px;
   font-style: italic;
-  font-weight: 950;
+  font-weight: 800;
+  letter-spacing: 0;
   line-height: 1.05;
   text-transform: uppercase;
 }
 
 .body-copy {
   font-size: 14px;
+  letter-spacing: var(--body-letter-spacing);
   line-height: 1.35;
 }
 
@@ -70,6 +89,10 @@ main {
 }
 
 @media (width <= 760px) {
+  :root {
+    --anchor-offset: 96px;
+  }
+
   .indent {
     margin-bottom: 96px;
   }

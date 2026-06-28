@@ -9,22 +9,23 @@
   font-size: 14px;
   font-weight: 800;
   transition:
-    border-color 180ms ease,
+    border-width 180ms ease,
     transform 180ms ease,
     box-shadow 180ms ease;
 
   &:hover {
+    --button-border-width: 2px;
+
     transform: translateY(-2px);
   }
 
   &--dark {
-    border: 2px solid #a87313;
-    background: #20170f;
+    @include gradient-pill-border(#20170f);
+
     color: #fff5df;
     box-shadow: 0 12px 30px rgb(32 23 15 / 14%);
 
     &:hover {
-      border-color: #fdab1b;
       box-shadow:
         inset 0 0 12px 4px rgb(255 186 49 / 32%),
         0 16px 34px rgb(32 23 15 / 18%);
@@ -32,12 +33,11 @@
   }
 
   &--light {
-    border: 2px solid rgb(32 23 15 / 12%);
-    background: #fff5df;
+    @include gradient-pill-border(#fff5df);
+
     color: #20170f;
 
     &:hover {
-      border-color: rgb(32 23 15 / 24%);
       box-shadow: inset 0 0 12px 4px rgb(255 186 49 / 18%);
     }
   }

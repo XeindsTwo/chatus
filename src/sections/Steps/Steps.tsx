@@ -71,11 +71,8 @@ export function Steps() {
           scrollTrigger: {
             trigger: sectionRef.current,
             start: 'top top',
-            end: '+=2600',
+            end: 'bottom bottom',
             scrub: 1.7,
-            pin: stickyRef.current,
-            pinSpacing: true,
-            anticipatePin: 1.4,
             fastScrollEnd: false,
             invalidateOnRefresh: true,
           },

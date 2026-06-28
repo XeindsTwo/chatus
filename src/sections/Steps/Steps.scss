@@ -3,14 +3,16 @@
 
 .steps {
   --steps-start-gap: 160px;
+  --steps-scroll-distance: 2600px;
 
   position: relative;
-  min-height: 100svh;
+  min-height: calc(100svh + var(--steps-scroll-distance));
   background: transparent;
 }
 
 .steps__sticky {
-  position: relative;
+  position: sticky;
+  top: 0;
   display: grid;
   min-height: 100svh;
   align-items: stretch;
@@ -23,9 +25,9 @@
 
   position: relative;
   z-index: 1;
-  display: flex;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
   min-height: calc(100svh - var(--steps-start-gap));
-  flex-direction: column;
   text-align: center;
 }
 
@@ -41,7 +43,9 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(28px, 5vw, 96px);
+  align-self: end;
   align-items: start;
+  margin-bottom: clamp(18px, 4vh, 42px);
 }
 
 .steps__item {
@@ -82,7 +86,6 @@
 .steps__visuals {
   position: relative;
   height: clamp(210px, 24vw, 272px);
-  margin-top: auto;
   margin-bottom: -1px;
 }
 
@@ -119,15 +122,21 @@
 @include r(900) {
   .steps {
     --steps-start-gap: 88px;
+    --steps-scroll-distance: 0px;
+
+    min-height: auto;
   }
 
   .steps__sticky {
+    position: relative;
     min-height: auto;
     padding: var(--steps-start-gap) 0 0;
   }
 
   .steps__container {
+    display: flex;
     min-height: auto;
+    flex-direction: column;
   }
 
   .steps h2 {
@@ -137,6 +146,7 @@
   .steps__grid {
     grid-template-columns: 1fr;
     gap: 54px;
+    margin-bottom: 0;
   }
 
   .steps__item {

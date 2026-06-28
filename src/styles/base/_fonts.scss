@@ -1,0 +1,19 @@
+@font-face {
+  font-family: 'HagridTrial';
+  src:
+    url('../../assets/fonts/Hagrid-ExtraboldItalic.woff2') format('woff2'),
+    url('../../assets/fonts/Hagrid-ExtraboldItalic.woff') format('woff');
+  font-display: swap;
+  font-style: italic;
+  font-weight: 800;
+}
+
+@font-face {
+  font-family: 'Mont';
+  src:
+    url('../../assets/fonts/Mont-SemiBold.woff2') format('woff2'),
+    url('../../assets/fonts/Mont-SemiBold.woff') format('woff');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 600;
+}
