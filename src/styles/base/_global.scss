@@ -50,6 +50,14 @@ main {
   color: $color-sun;
 }
 
+.line {
+  width: 70%;
+  height: 1px;
+  margin: 0 auto;
+  opacity: .4;
+  background-color: #FFF8D8;
+}
+
 .section-title {
   font-family: var(--font-display), sans-serif;
   font-size: 62px;

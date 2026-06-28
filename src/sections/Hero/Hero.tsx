@@ -1,66 +1,124 @@
 'use client';
 
-import './Hero.scss';
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
 import { Button } from '@/components/Button';
 import { Header } from '@/components/Header';
-import { useGsapReveal } from '@/lib/useGsapReveal';
+import faceRowOne from '@/assets/faces/1.png';
+import faceRowTwo from '@/assets/faces/2.png';
+import faceRowThree from '@/assets/faces/3.png';
+import './Hero.scss';
 
-const avatars = [
-  { name: 'Аня', top: '18%', left: '45%', color: '#ff6f91' },
-  { name: 'Макс', top: '10%', left: '61%', color: '#7fd1ff' },
-  { name: 'Лея', top: '20%', left: '78%', color: '#f7d57a' },
-  { name: 'Ира', top: '34%', left: '39%', color: '#71e4b2' },
-  { name: 'Сэм', top: '38%', left: '58%', color: '#ff7a59' },
-  { name: 'Ник', top: '34%', left: '72%', color: '#b4f04d' },
-  { name: 'Олег', top: '57%', left: '34%', color: '#8bd3ff' },
-  { name: 'Миа', top: '63%', left: '50%', color: '#ff9eca' },
-  { name: 'Тим', top: '58%', left: '67%', color: '#cab7ff' },
+const faceRows = [
+  { src: faceRowOne.src, className: 'hero__face-row--one', alt: '' },
+  { src: faceRowTwo.src, className: 'hero__face-row--two', alt: '' },
+  { src: faceRowThree.src, className: 'hero__face-row--three', alt: '' },
 ];
 
 export function Hero() {
-  const ref = useGsapReveal<HTMLElement>();
+  const ref = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!ref.current) {
+      return;
+    }
+
+    const ctx = gsap.context(() => {
+      const media = gsap.matchMedia();
+
+      media.add('(min-width: 901px)', () => {
+        const rows = gsap.utils.toArray<HTMLElement>('.hero__face-row');
+        const revealItems = gsap.utils.toArray<HTMLElement>('[data-hero-reveal]');
+
+        gsap.set(revealItems, { autoAlpha: 0, y: 34 });
+
+        gsap.set(rows, {
+          autoAlpha: 1,
+          yPercent: (index) => [-115, 115, -115][index] ?? -115,
+          xPercent: 0,
+          scale: 1,
+        });
+
+        const timeline = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+        timeline
+          .to(revealItems, {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.72,
+            stagger: 0.1,
+          })
+          .to(
+            rows,
+            {
+              yPercent: 0,
+              duration: 1.35,
+              ease: 'power4.out',
+            },
+            0.12,
+          );
+
+        return () => {
+          timeline.kill();
+        };
+      });
+
+      return () => media.revert();
+    }, ref);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section className="hero" ref={ref}>
       <Header />
+
+      <div className="hero__mask hero__mask--top" aria-hidden="true" />
+      <div className="hero__mask hero__mask--bottom" aria-hidden="true" />
+
       <div className="hero__container">
         <div className="hero__copy">
-          <p className="hero__eyebrow" data-reveal>
-            Анонимные диалоги
-          </p>
-          <h1 data-reveal>
+          <h1 data-hero-reveal>
             Найди
             <br />
             друга
           </h1>
-          <p className="hero__text" data-reveal>
-            Сервис быстрых знакомств и общения, где собеседник находится за
-            пару секунд.
+          <p className="hero__text" data-hero-reveal>
+            Анонимное общение и новые знакомства за несколько секунд — без регистрации, анкет и раскрытия личности
           </p>
-          <div data-reveal>
-            <Button>Найти собеседника</Button>
+          <div className="hero__actions" data-hero-reveal>
+            <Button>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M16.2391 3.09578C16.4481 3.01097 16.6769 2.98172 16.9016 3.01107C17.1263 3.04043 17.3388 3.12731 17.5169 3.26267C17.6949 3.39804 17.8321 3.57694 17.9141 3.78076C17.9961 3.98458 18.02 4.20587 17.9832 4.42158L16.0648 15.6387C15.8788 16.7207 14.6473 17.3412 13.6179 16.8023C12.7568 16.3514 11.478 15.6567 10.3276 14.9318C9.75248 14.5689 7.99063 13.407 8.20716 12.5802C8.39324 11.8733 11.3536 9.21681 13.0453 7.63743C13.7092 7.01693 13.4064 6.65898 12.6224 7.22974C10.6753 8.64686 7.54911 10.8019 6.51551 11.4085C5.60372 11.9434 5.12836 12.0348 4.55997 11.9434C3.52299 11.7771 2.56129 11.5194 1.77637 11.2055C0.715709 10.7815 0.767304 9.37581 1.77552 8.96649L16.2391 3.09578Z"
+                  fill="currentColor"
+                />
+              </svg>
+              Найти собеседника
+            </Button>
           </div>
         </div>
 
-        <div className="hero__orbit" aria-hidden="true">
-          {avatars.map((avatar, index) => (
-            <div
-              className="hero__avatar"
-              key={avatar.name}
-              style={{
-                '--top': avatar.top,
-                '--left': avatar.left,
-                '--avatar-color': avatar.color,
-                '--delay': `${index * 0.16}s`,
-              } as React.CSSProperties}
-            >
-              <span>{avatar.name.slice(0, 1)}</span>
-            </div>
-          ))}
+        <div className="hero__faces" aria-hidden="true">
+          <div className="hero__faces-rotated">
+            {faceRows.map((row) => (
+              <img
+                className={`hero__face-row ${row.className}`}
+                key={row.className}
+                src={row.src}
+                alt={row.alt}
+                draggable={false}
+              />
+            ))}
+          </div>
         </div>
 
-        <strong className="hero__side-title" data-reveal>
-          За пару
+        <strong className="hero__side-title" data-hero-reveal>
+          За
+          <br />
+          пару
           <br />
           секунд
         </strong>

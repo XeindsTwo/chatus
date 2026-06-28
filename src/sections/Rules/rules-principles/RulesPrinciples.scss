@@ -1,0 +1,60 @@
+@use '../../../styles/abstracts/mixins' as *;
+
+.rules {
+  &-principles {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+    margin-top: 80px;
+  }
+
+  &-principle-card {
+    display: grid;
+    min-height: 420px;
+    align-content: space-between;
+    justify-items: center;
+    padding: 24px 38px;
+    border-radius: 26px;
+    background: rgb(255 250 239 / 94%);
+    box-shadow: 0 22px 55px rgb(106 66 0 / 12%);
+    text-align: center;
+    transition:
+      box-shadow 180ms ease,
+      transform 180ms ease;
+
+    h2 {
+      @include card-title;
+    }
+
+    img {
+      transition:
+        opacity 300ms ease,
+        transform 300ms ease;
+    }
+
+    &:hover {
+      box-shadow:
+        inset 0 0 12px 4px rgb(255 186 49 / 20%),
+        0 28px 66px rgb(106 66 0 / 18%);
+      transform: translateY(-5px);
+
+      img {
+        opacity: 0.9;
+        transform: scale(1.04) rotate(-2deg);
+      }
+    }
+  }
+}
+
+@include r(900) {
+  .rules {
+    &-principles {
+      grid-template-columns: 1fr;
+    }
+
+    &-principle-card {
+      min-height: auto;
+      gap: 28px;
+    }
+  }
+}

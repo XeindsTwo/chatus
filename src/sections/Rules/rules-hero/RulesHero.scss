@@ -1,0 +1,60 @@
+@use '../../../styles/abstracts/mixins' as *;
+@use '../../../styles/abstracts/variables' as *;
+
+.rules {
+  &-hero {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+
+    h1 {
+      @include section-title-small;
+
+      margin-bottom: 32px;
+    }
+
+    &__copy {
+      display: grid;
+      max-width: 560px;
+      gap: 22px;
+
+      p {
+        font-size: clamp(17px, 1.55vw, 21px);
+        font-weight: 950;
+        line-height: 1.33;
+      }
+    }
+  }
+
+  &-age-card {
+    display: grid;
+    width: min(100%, 455px);
+    justify-items: center;
+    gap: 32px;
+    margin-bottom: 42px;
+    padding: 22px 42px 32px;
+    border-radius: 32px;
+    background: rgb(255 250 239 / 96%);
+    box-shadow: 0 24px 60px rgb(106 66 0 / 14%);
+
+    strong {
+      @include display-title;
+
+      font-size: clamp(42px, 5vw, 62px);
+    }
+
+    p {
+      max-width: 350px;
+      color: $primary1000;
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1.28;
+    }
+  }
+}
+
+@include r(620) {
+  .rules-age-card {
+    padding-inline: 26px;
+  }
+}

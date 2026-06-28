@@ -3,11 +3,9 @@
 .intro {
   position: relative;
   display: grid;
-  min-height: 720px;
   place-items: center;
   overflow: hidden;
-  padding: 120px 16px;
-  background: linear-gradient(180deg, #ffa915 0%, #ffad17 100%);
+  margin-top: 120px;
 }
 
 .intro__image {
@@ -15,9 +13,6 @@
   left: 50%;
   top: 50%;
   display: block;
-  width: min(100%, 1219px);
-  height: auto;
-  max-width: none;
   pointer-events: none;
   transform: translate(-50%, -50%);
 }
@@ -28,21 +23,18 @@
   display: grid;
   width: min(100%, 420px);
   justify-items: center;
-  margin-top: 370px;
+  margin-top: 430px;
   text-align: center;
 }
 
 .intro__title {
   color: $color-ink;
+  margin-bottom: 32px;
 }
 
 .intro__content p {
-  max-width: 370px;
-  margin-top: 24px;
+  max-width: 365px;
   color: $color-ink;
-  font-size: 14px;
-  font-weight: 800;
-  line-height: 1.35;
 }
 
 @media (width <= 760px) {

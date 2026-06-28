@@ -2,7 +2,6 @@
 @use '../../styles/abstracts/variables' as *;
 
 .faq {
-  padding: clamp(78px, 9vw, 132px) 0 92px;
   background: $color-sun;
   color: $color-ink;
 }
@@ -24,6 +23,12 @@
 
 .faq__item {
   border-bottom: 2px solid rgb(32 23 15 / 72%);
+  opacity: 1;
+  transition: opacity 260ms ease;
+}
+
+.faq__item:hover {
+  opacity: .75;
 }
 
 .faq__button {
@@ -34,15 +39,24 @@
   align-items: center;
   padding: 8px 0;
   border: 0;
-  outline: 0;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
   background: transparent;
   color: $color-ink;
   cursor: pointer;
   text-align: left;
+  transition: min-height 520ms cubic-bezier(.2, .8, .2, 1),
+  outline-color 360ms ease,
+  outline-offset 360ms ease;
 
   span:last-child {
     line-height: 1.05;
   }
+}
+
+.faq__button:focus-visible {
+  outline-color: #f05a18;
+  outline-offset: 6px;
 }
 
 .faq__icon {
@@ -81,20 +95,26 @@
   display: grid;
   grid-template-rows: 0fr;
   opacity: 0;
-  transform: translateY(-6px);
-  transition: grid-template-rows 380ms cubic-bezier(.22, 1, .36, 1),
-  opacity 260ms ease,
-  transform 380ms cubic-bezier(.22, 1, .36, 1);
+  transform: translateY(-10px);
+  transition: grid-template-rows 620ms cubic-bezier(.2, .8, .2, 1),
+  opacity 360ms ease,
+  transform 620ms cubic-bezier(.2, .8, .2, 1);
 
   > div {
     overflow: hidden;
   }
 
   p {
-    max-width: 365px;
+    max-width: 370px;
     padding: 0 0 34px 0;
     margin-left: 42px;
     color: rgb(42 27 0 / 70%);
+  }
+}
+
+.faq__item--open {
+  &:hover {
+    opacity: 1;
   }
 }
 
@@ -134,7 +154,7 @@
   transition: background-color 220ms ease,
   border-color 220ms ease,
   box-shadow 220ms ease,
-  transform 220ms ease;
+  opacity 220ms ease;
 
   span {
     position: relative;
@@ -151,23 +171,21 @@
   }
 
   svg path {
-    transition: stroke .3s, fill .3s;
+    transition: fill 260ms ease;
   }
 }
 
 .faq__contact:hover {
   border-color: #2a1b00;
-  transform: translateY(-4px);
 }
 
 .faq__contact:focus-visible {
-  outline: 0;
+  outline: transparent;
   border-color: transparent;
   background: white;
 
-  svg path {
-    stroke: #33b0f1;
-    fill: #33b0f1;
+  svg {
+    color: #2AABEE;
   }
 }
 
@@ -181,11 +199,12 @@
   color: #fff;
   pointer-events: none;
   user-select: none;
-  transition: color .3s ease, transform .3s ease;
+  transition: color 260ms ease;
 }
 
 .faq__telegram path {
-  transition: fill .22s ease;
+  fill: currentColor;
+  transition: fill 260ms ease;
 }
 
 .faq__contact:hover .faq__telegram,

@@ -12,6 +12,7 @@ export default function Home() {
   return (
     <main>
       <Hero />
+      <div className="line"></div>
       <Intro />
       <div className="audience-steps indent">
         <Audience />
