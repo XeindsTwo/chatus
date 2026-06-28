@@ -10,9 +10,20 @@ gsap.registerPlugin(ScrollTrigger);
 
 export function SmoothScroll() {
   useEffect(() => {
+    const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
     const getAnchorOffset = () => Number.parseFloat(
       getComputedStyle(document.documentElement).getPropertyValue('--anchor-offset'),
     ) || 0;
+    const getAnchorDuration = (distance: number) => {
+      const viewportScreens = distance / window.innerHeight;
+
+      return clamp(0.95 + viewportScreens * 0.52, 1.05, 4.6);
+    };
+    const anchorEasing = (time: number) => (
+      time < 0.5
+        ? 4 * time * time * time
+        : 1 - ((-2 * time + 2) ** 3) / 2
+    );
 
     const lenis = new Lenis({
       anchors: false,
@@ -49,8 +60,11 @@ export function SmoothScroll() {
 
       event.preventDefault();
       history.pushState(null, '', url.hash);
-      lenis.scrollTo(target.getBoundingClientRect().top + window.scrollY - getAnchorOffset(), {
-        duration: 1.05,
+      const targetTop = target.getBoundingClientRect().top + window.scrollY - getAnchorOffset();
+
+      lenis.scrollTo(targetTop, {
+        duration: getAnchorDuration(Math.abs(targetTop - window.scrollY)),
+        easing: anchorEasing,
       });
     };
 
