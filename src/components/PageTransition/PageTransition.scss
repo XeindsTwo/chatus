@@ -1,0 +1,113 @@
+@use '../../styles/abstracts/mixins' as *;
+
+html.is-page-transitioning,
+body.is-page-transitioning {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.page-transition {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 42%, rgb(255 221 80 / 72%), transparent 0 28%),
+    linear-gradient(180deg, #ffbc20 0%, #fdab1b 100%);
+  color: #2a1b00;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 280ms ease,
+    visibility 280ms ease;
+  visibility: hidden;
+
+  &--visible {
+    opacity: 1;
+    pointer-events: all;
+    visibility: visible;
+  }
+
+  &__inner {
+    display: grid;
+    justify-items: center;
+    gap: 22px;
+  }
+
+  &__spinner {
+    position: relative;
+    display: grid;
+    width: 62px;
+    height: 62px;
+    place-items: center;
+    border-radius: 50%;
+    background:
+      conic-gradient(from 0deg, #2a1b00 0 82deg, rgb(42 27 0 / 16%) 82deg 360deg),
+      radial-gradient(circle, rgb(255 245 223 / 96%) 0 46%, transparent 47%);
+    animation: page-transition-spin 820ms linear infinite;
+
+    &::before {
+      position: absolute;
+      inset: 8px;
+      content: '';
+      border-radius: inherit;
+      background: #fdab1b;
+    }
+
+    &::after {
+      position: absolute;
+      top: 3px;
+      left: 50%;
+      width: 10px;
+      height: 10px;
+      content: '';
+      border-radius: 50%;
+      background: #fff5df;
+      transform: translateX(-50%);
+    }
+  }
+
+  &__spinner-core {
+    position: relative;
+    z-index: 1;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #2a1b00;
+    animation: page-transition-pulse 820ms ease-in-out infinite;
+  }
+
+  &__text {
+    font-size: 13px;
+    font-weight: 950;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+  }
+}
+
+@keyframes page-transition-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes page-transition-pulse {
+  0%,
+  100% {
+    transform: scale(.82);
+  }
+
+  50% {
+    transform: scale(1);
+  }
+}
+
+@include r(620) {
+  .page-transition {
+    &__spinner {
+      width: 52px;
+      height: 52px;
+    }
+  }
+}

@@ -25,7 +25,7 @@
   display: flex;
   max-width: 824px;
   gap: 24px;
-  align-items: start;
+  align-items: flex-start;
 }
 
 .tariffs__card {
@@ -44,21 +44,19 @@
 }
 
 .tariffs__card--premium {
-  background:
-    linear-gradient(315deg, rgb(255 255 255 / 60%) 0%, #fff 54.78%, rgb(255 255 255 / 60%) 100%);
+  background: linear-gradient(315deg, rgb(255 255 255 / 60%) 0%, #fff 54.78%, rgb(255 255 255 / 60%) 100%);
   box-shadow: inset 0 0 60px -11px rgb(255 255 255 / 20%);
 }
 
 .tariffs__card--premium::before,
 .tariffs__card--premium::after {
   @include pseudo;
-
   top: 50%;
   width: 45px;
   height: 45px;
   border-radius: 50%;
   background: $color-sun;
-  transform: translateY(-50%);
+  transform: translateY(-99%);
 }
 
 .tariffs__card--premium::before {
@@ -143,6 +141,18 @@
   @include flex-align-center(12);
   color: rgba($color-ink, .7);
   font-size: 16px;
+
+  img {
+    opacity: .7;
+  }
+}
+
+.tariffs__card--premium .tariffs__features li {
+  color: $primary1000;
+
+  img {
+    opacity: 1;
+  }
 }
 
 .tariffs__features img {
@@ -164,18 +174,16 @@
   font-size: 14px;
   font-weight: 900;
   line-height: 1.35;
-  transition:
-    border-width 180ms ease,
-    transform 180ms ease,
-    box-shadow 180ms ease;
+  transition: border-width 180ms ease,
+  transform 180ms ease,
+  box-shadow 180ms ease;
 }
 
 .tariffs__button:hover {
   --button-border-width: 2px;
 
-  box-shadow:
-    inset 0 0 12px 4px rgb(255 186 49 / 32%),
-    0 16px 34px rgb(32 23 15 / 18%);
+  box-shadow: inset 0 0 12px 4px rgb(255 186 49 / 32%),
+  0 16px 34px rgb(32 23 15 / 18%);
   transform: translateY(-2px);
 }
 

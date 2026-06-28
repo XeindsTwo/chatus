@@ -5,6 +5,11 @@ import { defaultLocale, locales, type Locale } from '@/i18n/config';
 import './LanguageSwitcher.scss';
 
 const storageKey = 'chatus-locale';
+const localeLabels: Record<Locale, string> = {
+  ru: 'Id',
+  en: 'En',
+  es: 'Ru',
+};
 
 export function LanguageSwitcher() {
   const [activeLocale, setActiveLocale] = useState<Locale>(defaultLocale);
@@ -32,7 +37,7 @@ export function LanguageSwitcher() {
           onClick={() => selectLocale(locale)}
           type="button"
         >
-          {locale.toUpperCase()}
+          {localeLabels[locale]}
         </button>
       ))}
     </div>

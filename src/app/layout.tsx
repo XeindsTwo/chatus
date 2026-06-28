@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { SmoothScroll } from '@/components/SmoothScroll';
+import { PageTransition } from '@/components/PageTransition';
 import faviconHref from '@/assets/favicon.svg';
 import '@/styles/main.scss';
 
@@ -23,7 +24,7 @@ export default function RootLayout({
     <html lang="ru">
       <body>
         <SmoothScroll />
-        {children}
+        <PageTransition>{children}</PageTransition>
       </body>
     </html>
   );

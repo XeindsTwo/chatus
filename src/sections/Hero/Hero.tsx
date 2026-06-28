@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { Button } from '@/components/Button';
 import { Header } from '@/components/Header';
+import { onPageTransitionReady } from '@/lib/pageTransition';
 import faceRowOne from '@/assets/faces/1.png';
 import faceRowTwo from '@/assets/faces/2.png';
 import faceRowThree from '@/assets/faces/3.png';
@@ -23,6 +24,10 @@ export function Hero() {
       return;
     }
 
+    let startDelay: gsap.core.Tween | undefined;
+    let fallbackDelay: gsap.core.Tween | undefined;
+    let timeline: gsap.core.Timeline | undefined;
+
     const ctx = gsap.context(() => {
       const media = gsap.matchMedia();
 
@@ -39,7 +44,7 @@ export function Hero() {
           scale: 1,
         });
 
-        const timeline = gsap.timeline({ defaults: { ease: 'power3.out' } });
+        timeline = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
 
         timeline
           .to(revealItems, {
@@ -59,14 +64,34 @@ export function Hero() {
           );
 
         return () => {
-          timeline.kill();
+          timeline?.kill();
+          timeline = undefined;
         };
       });
 
       return () => media.revert();
     }, ref);
 
-    return () => ctx.revert();
+    const playTimeline = () => {
+      if (!timeline || timeline.progress() > 0) {
+        return;
+      }
+
+      timeline.play(0);
+    };
+
+    const cleanupReady = onPageTransitionReady(() => {
+      startDelay = gsap.delayedCall(0.24, playTimeline);
+    });
+
+    fallbackDelay = gsap.delayedCall(1.25, playTimeline);
+
+    return () => {
+      cleanupReady();
+      startDelay?.kill();
+      fallbackDelay?.kill();
+      ctx.revert();
+    };
   }, []);
 
   return (

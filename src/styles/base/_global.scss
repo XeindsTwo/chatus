@@ -4,7 +4,7 @@
   --font-display: 'HagridTrial';
   --font-body: 'Mont';
   --body-letter-spacing: -0.04em;
-  --anchor-offset: 88px;
+  --anchor-offset: 112px;
 }
 
 body {
@@ -98,7 +98,7 @@ main {
 
 @media (width <= 760px) {
   :root {
-    --anchor-offset: 96px;
+    --anchor-offset: 108px;
   }
 
   .indent {
