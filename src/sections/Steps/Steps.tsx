@@ -12,17 +12,17 @@ import './Steps.scss';
 const steps = [
   {
     title: 'Откройте Chatus',
-    text: 'Перейдите в Chatus по ссылке — без регистрации и установки приложения',
+    text: 'Запустите Chatus в Telegram — без регистраций и установки приложения',
     decor: decorOpen,
   },
   {
     title: 'Запустите поиск',
-    text: 'Нажмите кнопку поиска — система подберёт случайного собеседника',
+    text: 'Нажмите кнопку поиска — \nСистема подберёт случайного собеседника',
     decor: decorSearch,
   },
   {
     title: 'Общайтесь в чате',
-    text: 'Общайтесь анонимно и сами решайте, когда перейти к личному контакту',
+    text: 'Общайтесь анонимно \n и сами решайте, когда перейти \n к личному контакту',
     decor: decorChat,
   },
 ];
@@ -57,9 +57,17 @@ export function Steps() {
           return index * (track.offsetWidth + gap);
         };
 
-        const getContentShift = () => Math.max(0, container.scrollHeight - window.innerHeight);
+        const getContentShift = () => {
+          const viewportHeight = window.innerHeight;
+          const overflowShift = Math.max(0, container.scrollHeight - viewportHeight);
+          const shortViewportShift = viewportHeight < 820
+            ? Math.min(150, 820 - viewportHeight + 52)
+            : 0;
 
-        gsap.set(container, { y: 0 });
+          return Math.max(overflowShift, shortViewportShift);
+        };
+
+        gsap.set(container, { y: () => -getContentShift() });
         gsap.set(cards, { opacity: 0.4, color: '#8a847d' });
         gsap.set(cards[0], { opacity: 1, color: '#20170f' });
         gsap.set(decors, { opacity: 0, scale: 0.88, y: 18 });
@@ -112,9 +120,7 @@ export function Steps() {
           <h2 className="section-title">
             Начните общаться
             <br />
-            за несколько
-            <br />
-            секунд
+            за секунды
           </h2>
 
           <div className="steps__grid">

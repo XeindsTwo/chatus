@@ -51,9 +51,11 @@ export function LegalDocument() {
         {sections.map((section, index) => (
           <article className="legal-document__section" key={section.title}>
             {index === 0 ? <h1>{section.title}</h1> : <h2>{section.title}</h2>}
-            {section.paragraphs.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
+            <div className="legal-document__paragraphs">
+              {section.paragraphs.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
           </article>
         ))}
       </div>

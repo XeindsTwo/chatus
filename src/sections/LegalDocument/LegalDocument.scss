@@ -25,6 +25,11 @@
   h2 {
     @include section-title-small;
   }
+}
+
+.legal-document__paragraphs {
+  display: grid;
+  gap: 20px;
 
   p {
     font-size: 20px;
