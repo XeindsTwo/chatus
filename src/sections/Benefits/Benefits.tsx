@@ -4,6 +4,7 @@ import benefitFlirtBg from '@/assets/decor/benefits/2-bg.svg';
 import benefitAnon from '@/assets/decor/benefits/3.svg';
 import benefitAnonBg from '@/assets/decor/benefits/3-bg.svg';
 import benefitTelegram from '@/assets/decor/benefits/4.svg';
+import benefitTelegramCard from '@/assets/decor/benefits/card-4-desktop.svg';
 import './Benefits.scss';
 
 const benefits = [
@@ -33,6 +34,7 @@ const benefits = [
     title: 'Всё внутри Telegram',
     text: 'Не нужно устанавливать новое приложение — общение начинается в привычном мессенджере',
     image: benefitTelegram,
+    fullCardImage: benefitTelegramCard,
     variant: 'telegram',
     decorOnly: true,
   },
@@ -51,16 +53,40 @@ export function Benefits() {
         <div className="benefits__cards">
           {benefits.map((benefit) => (
             <article
-              className={`benefits__card benefits__card--${benefit.variant}${benefit.decorOnly ? ' benefits__card--decor-only' : ''}`}
+              className={`benefits__card benefits__card--${benefit.variant}${
+                benefit.decorOnly ? ' benefits__card--decor-only' : ''
+              }`}
               key={benefit.title}
             >
               {benefit.background ? (
-                <img className="benefits__card-bg" src={benefit.background} alt="" aria-hidden="true" />
+                <img
+                  className="benefits__card-bg"
+                  src={benefit.background}
+                  alt=""
+                  aria-hidden="true"
+                />
               ) : null}
-              <img className="benefits__decor" src={benefit.image} alt="" aria-hidden="true" />
+
+              {benefit.fullCardImage ? (
+                <img
+                  className="benefits__full-card"
+                  src={benefit.fullCardImage}
+                  alt=""
+                  aria-hidden="true"
+                />
+              ) : null}
+
+              <img
+                className="benefits__decor"
+                src={benefit.image}
+                alt=""
+                aria-hidden="true"
+              />
 
               <div className="benefits__content">
-                <h3 className="benefits__card-title card-title">{benefit.title}</h3>
+                <h3 className="benefits__card-title card-title">
+                  {benefit.title}
+                </h3>
                 <p>{benefit.text}</p>
               </div>
             </article>
