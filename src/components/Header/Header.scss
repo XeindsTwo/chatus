@@ -79,10 +79,4 @@
 
 .header__actions {
   @include flex-align-center;
-
-  .button {
-    min-height: 46px;
-    padding-inline: 26px;
-    font-size: 15px;
-  }
 }
