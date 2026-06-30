@@ -82,8 +82,9 @@ main {
   font-style: italic;
   font-weight: 800;
   letter-spacing: 0;
-  line-height: 1.05;
+  line-height: 0.95;
   text-transform: uppercase;
+  white-space: pre-line;
 }
 
 .body-copy {
@@ -101,7 +102,31 @@ main {
     --anchor-offset: 108px;
   }
 
+  .section-title {
+    font-size: 48px;
+    line-height: 0.95;
+  }
+
+  .section-title--small {
+    font-size: 40px;
+    line-height: 0.95;
+  }
+
   .indent {
     margin-bottom: 96px;
+  }
+}
+
+@media (width < 390px) {
+  .section-title {
+    font-size: 46px;
+  }
+
+  .section-title--small {
+    font-size: 38px;
+  }
+
+  .card-title {
+    font-size: 26px;
   }
 }

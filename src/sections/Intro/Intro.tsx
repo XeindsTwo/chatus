@@ -4,7 +4,10 @@ import './Intro.scss';
 export function Intro() {
   return (
     <section className="intro">
-      <img className="intro__image" src={whatThisSrc.src} alt="" aria-hidden="true"/>
+      <div className="faq__container">
+        <img className="intro__image" src={whatThisSrc.src} alt="" aria-hidden="true"/>
+      </div>
+
 
       <div className="intro__content">
         <h2 className="intro__title section-title">

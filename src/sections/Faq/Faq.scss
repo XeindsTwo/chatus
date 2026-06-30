@@ -51,7 +51,7 @@
   outline-offset 360ms ease;
 
   span:last-child {
-    line-height: 1.05;
+    line-height: .95;
   }
 }
 
@@ -168,7 +168,7 @@
   strong {
     position: relative;
     z-index: 1;
-    line-height: 1.05;
+    line-height: .95;
   }
 
   svg path {
@@ -177,7 +177,7 @@
 }
 
 .faq__contact:hover {
-  border-color: #2a1b00;
+  border-color: #af781b;
 }
 
 .faq__contact:focus-visible {
@@ -200,17 +200,10 @@
   color: #fff;
   pointer-events: none;
   user-select: none;
-  transition: color 260ms ease;
 }
 
 .faq__telegram path {
   fill: currentColor;
-  transition: fill 260ms ease;
-}
-
-.faq__contact:hover .faq__telegram,
-.faq__contact:focus-visible .faq__telegram {
-  color: #2AABEE;
 }
 
 @include r(920) {
@@ -232,6 +225,13 @@
 }
 
 @include r(620) {
+  .faq {
+    .card-title {
+      font-size: 24px;
+      line-height: .95;
+    }
+  }
+
   .faq__button {
     min-height: 86px;
     grid-template-columns: 30px 1fr;
@@ -249,5 +249,13 @@
   .faq__telegram {
     top: -28px;
     width: 78px;
+  }
+}
+
+@media (width < 390px) {
+  .faq {
+    .card-title {
+      font-size: 22px;
+    }
   }
 }

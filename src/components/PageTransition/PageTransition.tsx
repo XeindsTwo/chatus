@@ -98,10 +98,7 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
       {children}
       <div className={`page-transition ${visible ? 'page-transition--visible' : ''}`} aria-hidden={!visible}>
         <div className="page-transition__inner">
-          <span className="page-transition__spinner" aria-hidden="true">
-            <span className="page-transition__spinner-core" />
-          </span>
-          <span className="page-transition__text">Chatus</span>
+          <span className="page-transition__spinner" aria-hidden="true" />
         </div>
       </div>
     </>

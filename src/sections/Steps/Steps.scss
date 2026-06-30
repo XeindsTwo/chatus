@@ -2,157 +2,117 @@
 @use '../../styles/abstracts/variables' as *;
 
 .steps {
-  --steps-start-gap: 160px;
-  --steps-scroll-distance: 2600px;
-
   position: relative;
-  min-height: calc(100svh + var(--steps-scroll-distance));
-  background: transparent;
-}
-
-.steps__sticky {
-  position: sticky;
-  top: 0;
-  display: grid;
-  min-height: 100svh;
-  align-items: stretch;
   overflow: hidden;
-  padding: var(--steps-start-gap) 0 0;
-}
+  padding: 0 0 65px;
 
-.steps__container {
-  @include container;
+  &__container {
+    @include container;
 
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  min-height: calc(100svh - var(--steps-start-gap));
-  text-align: center;
-}
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
 
-.steps h2 {
-  @include section-title;
+  h2 {
+    @include section-title;
 
-  max-width: 690px;
-  margin: 0 auto clamp(30px, 4vh, 48px);
-  color: $color-ink;
-}
+    max-width: 690px;
+    margin: 0 auto clamp(58px, 7vw, 86px);
+    color: $color-ink;
+  }
 
-.steps__grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(28px, 5vw, 96px);
-  align-self: end;
-  align-items: start;
-  margin-bottom: clamp(18px, 4vh, 42px);
-}
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(28px, 5vw, 96px);
+    align-items: end;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
 
-.steps__item {
-  display: grid;
-  justify-items: center;
-  gap: 16px;
-  color: $color-ink;
-  will-change: opacity, color;
+  &__item {
+    display: grid;
+    gap: 40px;
+    height: 100%;
+    align-content: space-between;
+    justify-items: center;
+    color: $color-ink;
+  }
+
+  &__content {
+    display: grid;
+    justify-items: center;
+    gap: 16px;
+  }
+
+  &__number {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border: 1px solid rgb(32 23 15 / 18%);
+    border-radius: 50%;
+    background: rgb(255 255 255 / 36%);
+    color: currentColor;
+  }
 
   h3 {
     @include card-title;
-
     max-width: 260px;
   }
 
   p {
-    white-space: pre-line;
     max-width: 255px;
+    white-space: pre-line;
   }
-}
 
-.steps__number {
-  display: grid;
-  width: 34px;
-  height: 34px;
-  place-items: center;
-  border: 1px solid rgb(32 23 15 / 18%);
-  border-radius: 50%;
-  background: rgb(255 255 255 / 36%);
-  color: currentColor;
-  font-size: 15px;
-  font-weight: 800;
-  line-height: 1.35;
-}
+  &__decor {
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    user-select: none;
+    pointer-events: none;
 
-.steps__visuals {
-  position: relative;
-  height: clamp(210px, 24vw, 272px);
-  margin-bottom: -1px;
-}
+    &--1 {
+      width: 231px;
+      height: 181px;
+    }
 
-.steps__visual-track {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  display: grid;
-  width: calc((100% - clamp(28px, 5vw, 96px) * 2) / 3);
-  height: 100%;
-  justify-items: center;
-  transform-origin: 50% 100%;
-  will-change: transform;
-}
+    &--2 {
+      width: 171px;
+      height: 201px;
+    }
 
-.steps__mountains {
-  position: absolute;
-  bottom: -1px;
-  width: min(66vw, 758px);
-  max-width: none;
-  opacity: 0.72;
-  filter: drop-shadow(0 20px 38px rgb(32 23 15 / 6%));
-}
-
-.steps__decor {
-  position: absolute;
-  bottom: clamp(22px, 4vh, 44px);
-  width: min(54%, 192px);
-  object-fit: contain;
-  filter: drop-shadow(0 22px 28px rgb(32 23 15 / 10%));
-  will-change: opacity, transform;
+    &--3 {
+      width: 240px;
+      height: 209px;
+    }
+  }
 }
 
 @include r(900) {
   .steps {
-    --steps-start-gap: 88px;
-    --steps-scroll-distance: 0px;
+    padding: 88px 0 65px;
 
-    min-height: auto;
-  }
+    h2 {
+      margin-bottom: 52px;
+    }
 
-  .steps__sticky {
-    position: relative;
-    min-height: auto;
-    padding: var(--steps-start-gap) 0 0;
-  }
+    &__grid {
+      grid-template-columns: 1fr;
+      gap: 54px;
+    }
 
-  .steps__container {
-    display: flex;
-    min-height: auto;
-    flex-direction: column;
-  }
+    &__item {
+      min-height: auto;
+      gap: 32px;
+    }
 
-  .steps h2 {
-    margin-bottom: 52px;
-  }
-
-  .steps__grid {
-    grid-template-columns: 1fr;
-    gap: 54px;
-    margin-bottom: 0;
-  }
-
-  .steps__item {
-    opacity: 1 !important;
-    color: $color-ink !important;
-  }
-
-  .steps__visuals {
-    display: none;
+    &__decor {
+      width: auto;
+      max-width: min(64vw, 240px);
+      height: auto;
+    }
   }
 }

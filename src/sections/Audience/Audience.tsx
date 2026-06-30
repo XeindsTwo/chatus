@@ -8,12 +8,12 @@ import './Audience.scss';
 
 const stats = [
   {
-    label: 'Время поиска нового диалога',
+    label: 'Среднее время поиска собеседника',
     value: '0,56 сек',
     className: 'audience__card--time',
   },
   {
-    label: 'Активных пользователей в месяц',
+    label: 'Активных пользователей ежемесячно',
     value: '1 000 000+',
     className: 'audience__card--users',
   },

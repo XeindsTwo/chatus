@@ -17,19 +17,39 @@
 
   font-size: 62px;
   line-height: 0.95;
+
+  @media (width <= 760px) {
+    font-size: 48px;
+  }
+
+  @media (width < 390px) {
+    font-size: 46px;
+  }
 }
 
 @mixin section-title-small {
   @include section-title;
 
   font-size: 56px;
+
+  @media (width <= 760px) {
+    font-size: 40px;
+  }
+
+  @media (width < 390px) {
+    font-size: 38px;
+  }
 }
 
 @mixin card-title {
   @include display-title;
 
   font-size: 28px;
-  line-height: 1.05;
+  line-height: 0.95;
+
+  @media (width < 390px) {
+    font-size: 26px;
+  }
 }
 
 @mixin body-copy {

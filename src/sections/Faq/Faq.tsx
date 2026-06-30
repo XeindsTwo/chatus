@@ -37,6 +37,7 @@ const contacts = [
     title: 't.me/chatusteam',
     href: 'https://t.me/chatusteam',
     accent: true,
+    isExternal: true,
   },
   {
     label: 'Вопросы о персональных данных',

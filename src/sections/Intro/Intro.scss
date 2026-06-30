@@ -12,6 +12,8 @@
   position: absolute;
   left: 50%;
   top: 50%;
+  width: min(100% - 34px, 1390px);
+  margin-inline: auto;
   display: block;
   pointer-events: none;
   transform: translate(-50%, -50%);
