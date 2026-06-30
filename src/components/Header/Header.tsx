@@ -2,6 +2,7 @@ import './Header.scss';
 import logoSrc from '@/assets/decor/icons/logo.svg';
 import { Button } from '@/components/Button';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { MobileMenu } from '@/components/MobileMenu/MobileMenu';
 
 const navItems = [
   { label: 'Аудитория', href: '/#audience' },
@@ -11,6 +12,8 @@ const navItems = [
   { label: 'FAQ', href: '/#faq' },
   { label: 'Правила сервиса', href: '/rules' },
 ];
+
+const mobileNavItems = navItems.filter((item) => item.href !== '/rules');
 
 export function Header() {
   return (
@@ -32,6 +35,8 @@ export function Header() {
           <Button>Начать общение</Button>
         </div>
       </div>
+
+      <MobileMenu items={mobileNavItems} />
     </header>
   );
 }

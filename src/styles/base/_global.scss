@@ -41,6 +41,16 @@ main {
     $color-paper;
 }
 
+@media (width <= 992px) {
+  .audience-steps {
+    background: $color-paper;
+  }
+
+  .audience-steps__surface {
+    background: $color-paper;
+  }
+}
+
 :where([id]) {
   scroll-margin-top: var(--anchor-offset);
 }
@@ -97,7 +107,31 @@ main {
   margin-bottom: clamp(96px, 11.111vw, 160px);
 }
 
-@media (width <= 760px) {
+@media (width <= 1200px) {
+  .section-title {
+    font-size: 58px;
+  }
+
+  .section-title--small {
+    font-size: 52px;
+  }
+}
+
+@media (width <= 992px) {
+  .section-title {
+    font-size: 52px;
+  }
+
+  .section-title--small {
+    font-size: 48px;
+  }
+
+  .card-title {
+    font-size: 26px;
+  }
+}
+
+@media (width <= 768px) {
   :root {
     --anchor-offset: 108px;
   }
@@ -108,7 +142,7 @@ main {
   }
 
   .section-title--small {
-    font-size: 40px;
+    font-size: 44px;
     line-height: 0.95;
   }
 
@@ -117,9 +151,23 @@ main {
   }
 }
 
+@media (width <= 610px) {
+  .section-title {
+    font-size: 44px;
+  }
+
+  .section-title--small {
+    font-size: 42px;
+  }
+
+  .card-title {
+    font-size: 24px;
+  }
+}
+
 @media (width < 390px) {
   .section-title {
-    font-size: 46px;
+    font-size: 40px;
   }
 
   .section-title--small {
@@ -127,6 +175,6 @@ main {
   }
 
   .card-title {
-    font-size: 26px;
+    font-size: 24px;
   }
 }

@@ -7,6 +7,7 @@ import './PageTransition.scss';
 
 const loaderDuration = 720;
 const revealDelay = 120;
+const mobileScrollQuery = '(max-width: 992px)';
 
 function scrollToCurrentHash() {
   if (!window.location.hash) {
@@ -26,7 +27,7 @@ function scrollToCurrentHash() {
 
     window.scrollTo({
       top: target.getBoundingClientRect().top + window.scrollY - anchorOffset,
-      behavior: 'smooth',
+      behavior: window.matchMedia(mobileScrollQuery).matches ? 'auto' : 'smooth',
     });
   } catch {
     // Hashes from regular section ids are valid selectors; ignore malformed external hashes.

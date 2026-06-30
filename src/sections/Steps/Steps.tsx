@@ -34,13 +34,10 @@ export function Steps() {
         <div className="steps__grid">
           {steps.map((step, index) => (
             <article className="steps__item" key={step.title}>
-              <div className="steps__content">
-                <span className="steps__number">{String(index + 1).padStart(2, '0')}</span>
-                <h3 className="card-title">{step.title}</h3>
-                <p>{step.text}</p>
-              </div>
-
+              <span className="steps__number">{String(index + 1).padStart(2, '0')}</span>
+              <h3 className="card-title">{step.title}</h3>
               <img className={`steps__decor steps__decor--${index + 1}`} src={step.decor} alt="" aria-hidden="true" />
+              <p>{step.text}</p>
             </article>
           ))}
         </div>

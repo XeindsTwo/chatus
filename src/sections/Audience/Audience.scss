@@ -92,24 +92,54 @@
   height: 50px;
 }
 
-@media (width <= 760px) {
-  .audience__panel {
-    width: 100vw !important;
-    height: auto !important;
-    padding: 70px 24px;
+@media (width <= 992px) {
+  .audience {
+    min-height: auto;
+    padding: 96px 0 0;
+    place-items: start center;
+    background: $color-paper;
   }
 
-  .audience__title {
-    font-size: 48px;
+  .audience__panel {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+    padding: 0 24px;
+    background: transparent;
+    box-shadow: none;
   }
 
   .audience__cards {
-    display: grid;
-    grid-template-columns: 1fr;
+    justify-content: center;
+    display: flex;
+    width: 100vw;
+    max-width: none;
     height: auto;
-    width: min(100%, 280px);
-    gap: 22px;
-    margin-top: 58px;
+    gap: 12px;
+    overflow-x: auto;
+    margin-top: 72px;
+    margin-inline: calc((100vw - 100%) / -2);
+    padding-inline: max(24px, calc((100vw - 1040px) / 2));
+    scroll-padding-inline: max(24px, calc((100vw - 1040px) / 2));
+    -webkit-overflow-scrolling: touch;
+    cursor: grab;
+    overscroll-behavior-x: contain;
+    touch-action: none;
+    user-select: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    * {
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+  }
+
+  .audience__cards--dragging {
+    cursor: grabbing;
   }
 
   .audience__card,
@@ -117,14 +147,48 @@
   .audience__card--dialogs {
     position: relative;
     inset: auto;
-    width: 100%;
-    min-height: auto;
+    top: auto;
+    left: auto;
+    flex: 0 0 240px;
+    width: 240px;
+    min-width: 240px;
+    min-height: 250px;
     transform: none;
+  }
+
+  .audience__desktop-dash {
+    display: none;
+  }
+}
+
+@media (width <= 768px) {
+  .audience__panel {
+    width: 100%;
+    padding: 0 24px 0;
+  }
+
+  .audience__title {
+    font-size: 40px;
+  }
+
+  .audience__cards {
+    justify-content: flex-start;
+    margin-top: 58px;
+    padding-inline: 24px;
+    scroll-padding-inline: 24px;
+  }
+
+  .audience__card,
+  .audience__card--users,
+  .audience__card--dialogs {
+    flex-basis: 220px;
+    width: 220px;
+    min-width: 220px;
   }
 }
 
 @media (width < 390px) {
   .audience__title {
-    font-size: 46px;
+    font-size: 40px;
   }
 }

@@ -5,7 +5,7 @@
   position: relative;
   overflow: hidden;
   min-height: 100svh;
-  padding: 106px 0 160px;
+  padding: 96px 0 160px;
   background:
     linear-gradient(180deg, #f4f5f8 0%, #F2F4F7 100%);
 
@@ -35,6 +35,23 @@
     pointer-events: none;
     margin-top: -10px;
     margin-bottom: 30px;
+    @media (max-width: 1300px) {
+      height: auto;
+      margin-top: -120px;
+      margin-bottom: -70px;
+    }
+    @include r(992) {
+      margin-top: -100px;
+      margin-bottom: -60px;
+    }
+    @include r(880) {
+      margin-top: -90px;
+      margin-bottom: -50px;
+    }
+    @include r(768) {
+      width: 110vw;
+    margin-top: -80px;
+  }
   }
 
   &__lottie {
@@ -48,6 +65,9 @@
     margin-top: clamp(-18px, -1.5vw, -8px);
     color: $color-ink;
     font-size: clamp(16px, 1.35vw, 21px);
+    @include r(768) {
+      max-width: 340px;
+    }
   }
 
   &__button {
@@ -82,16 +102,59 @@
     min-height: auto;
     padding-top: 58px;
 
-    &__animation {
-      width: 100vw;
-      height: 510px;
-      margin-top: -22px;
-    }
-
     &__text {
       br {
         display: none;
       }
+    }
+  }
+
+  @include r(610) {
+    padding: 58px 0 112px;
+
+    &__animation {
+      width: 120vw;
+      height: auto;
+      aspect-ratio: 1.42;
+      margin-top: -18px;
+      margin-bottom: 18px;
+      margin-inline: -10vw;
+    }
+
+    &__text {
+      max-width: 300px;
+      margin-top: 0;
+      font-size: 14px;
+      line-height: 1.35;
+    }
+  }
+
+  @include r(468) {
+    padding-top: 0;
+
+    &__title {
+      max-width: min(100%, 430px);
+      font-size: 40px;
+      line-height: 0.95;
+    }
+
+    &__animation {
+      margin-top: -14px;
+      margin-bottom: 12px;
+    }
+
+    &__button {
+      min-height: 52px;
+      margin-top: 30px;
+      padding: 0 24px 0 20px;
+      font-size: 16px;
+    }
+  }
+
+  @include r(390) {
+    &__animation {
+      width: 124vw;
+      margin-inline: -12vw;
     }
   }
 }

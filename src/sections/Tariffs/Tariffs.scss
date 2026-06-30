@@ -36,6 +36,10 @@
   width: 400px;
   border-radius: 32px;
   padding: 62px 24px 28px 32px;
+  @media (max-width: 530px) {
+    max-width: 100%;
+    width: 100%;
+  }
 }
 
 .tariffs__card--free {
@@ -56,7 +60,7 @@
   height: 45px;
   border-radius: 50%;
   background: $color-sun;
-  transform: translateY(-99%);
+  transform: translateY(-106%);
 }
 
 .tariffs__card--premium::before {
@@ -107,6 +111,7 @@
 .tariffs__price strong {
   @include section-title;
   letter-spacing: -0.04em;
+  font-size: 62px;
 }
 
 .tariffs__divider {
@@ -165,8 +170,32 @@
   width: fit-content;
 }
 
-@include r(760) {
+@include r(880) {
   .tariffs__cards {
-    grid-template-columns: 1fr;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tariffs__decor {
+    width: 53px;
+    height: auto;
+  }
+
+  .tariffs__card--premium .tariffs__decor {
+    width: 67px;
+    height: auto;
+    top: -14px;
+  }
+}
+
+@include r(468) {
+  .tariffs__decor {
+    width: 49px;
+    top: -24px;
+  }
+
+  .tariffs__decor--premium .tariffs__decor {
+    width: 63px;
   }
 }

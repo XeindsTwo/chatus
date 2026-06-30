@@ -6,6 +6,8 @@ import { Button } from '@/components/Button';
 import peepsCarousel from '@/peeps_carousel.lottie';
 import './Cta.scss';
 
+const desktopAnimationQuery = '(min-width: 993px)';
+
 export function Cta() {
   const animationRef = useRef<HTMLDivElement | null>(null);
   const dotLottieRef = useRef<DotLottie | null>(null);
@@ -30,22 +32,44 @@ export function Cta() {
       return;
     }
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) {
-          return;
-        }
+    const media = window.matchMedia(desktopAnimationQuery);
+    let observer: IntersectionObserver | undefined;
 
-        shouldPlayRef.current = true;
-        playOnce();
-        observer.disconnect();
-      },
-      { threshold: 0.42 },
-    );
+    const cleanupObserver = () => {
+      observer?.disconnect();
+      observer = undefined;
+    };
 
-    observer.observe(animation);
+    const setupObserver = () => {
+      cleanupObserver();
 
-    return () => observer.disconnect();
+      if (!media.matches) {
+        return;
+      }
+
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting) {
+            return;
+          }
+
+          shouldPlayRef.current = true;
+          playOnce();
+          observer?.disconnect();
+        },
+        { threshold: 0.42 },
+      );
+
+      observer.observe(animation);
+    };
+
+    setupObserver();
+    media.addEventListener('change', setupObserver);
+
+    return () => {
+      media.removeEventListener('change', setupObserver);
+      cleanupObserver();
+    };
   }, [playOnce]);
 
   return (
@@ -79,9 +103,7 @@ export function Cta() {
         </div>
 
         <p className="cta__text">
-          Откройте Chatus и начните анонимное
-          <br />
-          общение за несколько секунд
+          Откройте Chatus и начните анонимное <br /> общение за несколько секунд
         </p>
 
         <Button className="cta__button" href="https://t.me/chatusbot" target="_blank" rel="noreferrer">

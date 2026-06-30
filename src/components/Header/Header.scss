@@ -80,3 +80,64 @@
 .header__actions {
   @include flex-align-center;
 }
+
+@include r(1330) {
+  .header {
+    gap: 22px;
+  }
+
+  .header__glass {
+    gap: 20px;
+  }
+
+  .header__nav a {
+    padding-inline: 12px;
+  }
+}
+
+@include r(1240) {
+  .header__glass {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 18px;
+    padding-right: 18px;
+  }
+
+  .header__nav {
+    justify-content: flex-end;
+  }
+
+  .header__actions {
+    display: none;
+  }
+}
+
+@include r(1080) {
+  .header {
+    width: 100%;
+    box-sizing: border-box;
+    grid-template-columns: 160px 1fr;
+    inset: 0 0 auto;
+    margin-inline: 0;
+    padding: 16px;
+  }
+
+  .header__brand {
+    width: 160px;
+    height: auto;
+
+    img {
+      width: 160px;
+      height: auto;
+    }
+  }
+
+  .header__glass {
+    display: none;
+  }
+}
+
+@include r(390) {
+  .header {
+    inset: 0 0 auto;
+  }
+}

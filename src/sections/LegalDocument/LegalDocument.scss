@@ -16,6 +16,9 @@
 .legal-document__section {
   display: grid;
   gap: 40px;
+  @include r(1100) {
+    gap: 30px;
+  }
 
   & + & {
     margin-top: 64px;
@@ -24,6 +27,9 @@
   h1,
   h2 {
     @include section-title-small;
+    @include r(768) {
+      word-break: break-word;
+    }
   }
 }
 
@@ -36,6 +42,9 @@
     line-height: 1.5;
     color: $primary1000;
     letter-spacing: -0.02em;
+    @include r(1100) {
+      font-size: 18px;
+    }
   }
 }
 

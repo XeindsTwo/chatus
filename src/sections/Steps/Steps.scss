@@ -33,21 +33,16 @@
 
   &__item {
     display: grid;
-    gap: 40px;
     height: 100%;
     align-content: space-between;
     justify-items: center;
+    grid-template-rows: auto auto 1fr auto;
     color: $color-ink;
-  }
-
-  &__content {
-    display: grid;
-    justify-items: center;
-    gap: 16px;
   }
 
   &__number {
     display: grid;
+    order: 1;
     width: 34px;
     height: 34px;
     place-items: center;
@@ -59,15 +54,21 @@
 
   h3 {
     @include card-title;
+    order: 2;
     max-width: 260px;
+    margin-top: 16px;
+    margin-bottom: 16px;
   }
 
   p {
+    order: 3;
     max-width: 255px;
+    margin-bottom: 40px;
     white-space: pre-line;
   }
 
   &__decor {
+    order: 4;
     width: auto;
     max-width: 100%;
     object-fit: contain;
@@ -91,12 +92,16 @@
   }
 }
 
-@include r(900) {
+@include r(992) {
   .steps {
     padding: 88px 0 65px;
 
     h2 {
       margin-bottom: 52px;
+    }
+
+    h3 {
+      max-width: 220px;
     }
 
     &__grid {
@@ -106,13 +111,23 @@
 
     &__item {
       min-height: auto;
-      gap: 32px;
+      grid-template-rows: auto;
+      align-content: start;
     }
 
     &__decor {
+      order: 3;
       width: auto;
       max-width: min(64vw, 240px);
       height: auto;
+    }
+
+    p {
+      order: 4;
+      max-width: 300px;
+      margin: 22px 0 0;
+      font-size: 14px;
+      line-height: 1.35;
     }
   }
 }

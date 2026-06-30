@@ -28,6 +28,10 @@
   transition: opacity 260ms ease;
 }
 
+.faq__item:last-child {
+  border-bottom: 0;
+}
+
 .faq__item:hover {
   opacity: .75;
 }
@@ -212,12 +216,17 @@
   }
 
   .faq__inner {
-    display: grid;
+    display: flex;
+    flex-direction: column;
   }
 
   .faq__title {
     position: static;
     text-align: center;
+  }
+
+  .faq__list {
+    margin: 0 auto;
   }
 
   .faq__contacts {
