@@ -211,8 +211,13 @@
     grid-template-columns: 1fr;
   }
 
+  .faq__inner {
+    display: grid;
+  }
+
   .faq__title {
     position: static;
+    text-align: center;
   }
 
   .faq__contacts {
@@ -232,18 +237,45 @@
     }
   }
 
+  .faq__list {
+    margin-bottom: 48px;
+  }
+
   .faq__button {
-    min-height: 86px;
-    grid-template-columns: 30px 1fr;
+    min-height: 0;
+    grid-template-columns: 22px 1fr;
+    column-gap: 20px;
+    align-items: start;
+    padding: 32px 32px 32px 0;
   }
 
   .faq__item--open .faq__button {
-    min-height: 68px;
+    min-height: 0;
+    padding-bottom: 24px;
+  }
+
+  .faq__icon {
+    width: 22px;
+    height: 22px;
+    margin-top: 1px;
   }
 
   .faq__answer p {
     max-width: 370px;
-    padding-left: 30px;
+    padding: 0 32px 32px 42px;
+    margin-left: 0;
+    font-size: 14px;
+  }
+
+  .faq__contacts {
+    gap: 16px;
+    margin-top: 0;
+  }
+
+  .faq__contact {
+    min-height: 116px;
+    gap: 12px;
+    padding: 22px 24px;
   }
 
   .faq__telegram {
@@ -256,6 +288,12 @@
   .faq {
     .card-title {
       font-size: 22px;
+    }
+  }
+
+  .faq__button {
+    .card-title {
+      font-size: 24px;
     }
   }
 }
