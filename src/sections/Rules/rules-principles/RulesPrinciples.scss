@@ -10,7 +10,7 @@
 
   &-principle-card {
     display: grid;
-    min-height: 420px;
+    min-height: 480px;
     align-content: space-between;
     justify-items: center;
     padding: 24px 38px;
@@ -46,15 +46,60 @@
   }
 }
 
-@include r(900) {
+@include r(1100) {
   .rules {
     &-principles {
-      grid-template-columns: 1fr;
+      margin-top: 64px;
+      gap: 12px;
     }
 
     &-principle-card {
-      min-height: auto;
+      padding: 20px 30px;
+    }
+  }
+}
+
+@include r(900) {
+  .rules {
+    &-principles {
+      display: flex;
+      width: 100vw;
+      gap: 12px;
+      overflow-x: auto;
+      margin-inline: calc((100vw - 100%) / -2);
+      padding-inline: max(16px, calc((100vw - 1040px) / 2));
+      scroll-padding-inline: 16px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+
+    &-principle-card {
+      flex: 0 0 min(82vw, 300px);
       gap: 28px;
+      scroll-snap-align: start;
+
+      &:hover {
+        box-shadow: 0 22px 55px rgb(106 66 0 / 12%);
+        transform: none;
+
+        img {
+          opacity: 1;
+          transform: none;
+        }
+      }
+    }
+  }
+}
+
+@include r(620) {
+  .rules {
+    &-principles {
+      margin-top: 58px;
     }
   }
 }

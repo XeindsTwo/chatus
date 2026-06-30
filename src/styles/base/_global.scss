@@ -94,7 +94,7 @@ main {
 }
 
 .indent {
-  margin-bottom: 160px;
+  margin-bottom: clamp(96px, 11.111vw, 160px);
 }
 
 @media (width <= 760px) {

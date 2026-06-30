@@ -53,8 +53,49 @@
   }
 }
 
-@include r(620) {
+@include r(1100) {
   .rules-age-card {
-    padding-inline: 26px;
+    p {
+      font-size: 18px;
+    }
+  }
+}
+
+@include r(620) {
+  .rules {
+    &-hero {
+      &__copy {
+        gap: 18px;
+
+        p {
+          font-size: 16px;
+        }
+      }
+    }
+
+    &-age-card {
+      box-shadow: none;
+      margin-bottom: 30px;
+      padding-inline: 26px;
+
+      strong {
+        font-size: 48px;
+        line-height: .95;
+      }
+
+      p {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+@media (width < 390px) {
+  .rules {
+    &-age-card {
+      strong {
+        font-size: 46px;
+      }
+    }
   }
 }

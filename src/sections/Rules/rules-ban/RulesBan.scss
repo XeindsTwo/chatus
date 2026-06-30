@@ -8,7 +8,7 @@
     &__intro {
       display: grid;
       max-width: 560px;
-      gap: 28px;
+      gap: 32px;
 
       h2 {
         @include section-title-small;
@@ -26,7 +26,7 @@
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 20px 10px;
-      margin-top: 42px;
+      margin-top: 64px;
     }
   }
 
@@ -82,12 +82,62 @@
   .rules {
     &-ban {
       &__grid {
-        grid-template-columns: 1fr;
+        display: flex;
+        width: 100vw;
+        gap: 12px;
+        overflow-x: auto;
+        margin-inline: calc((100vw - 100%) / -2);
+        padding-inline: max(16px, calc((100vw - 1040px) / 2));
+        scroll-padding-inline: 16px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
       }
     }
 
     &-ban-card {
-      min-height: auto;
+      flex: 0 0 min(82vw, 318px);
+      min-height: 340px;
+      scroll-snap-align: start;
+    }
+  }
+}
+
+@include r(620) {
+  .rules {
+    &-ban {
+      margin-top: 96px;
+
+      &__intro {
+        p {
+          font-size: 14px;
+        }
+      }
+
+      &__grid {
+        margin-top: 42px;
+      }
+    }
+
+    &-ban-card {
+      padding: 24px 26px 40px;
+
+      img {
+        margin-bottom: 32px;
+      }
+    }
+
+    &-penalty {
+      margin-top: 64px;
+
+      p {
+        font-size: 14px;
+        max-width: 84%;
+      }
     }
   }
 }
