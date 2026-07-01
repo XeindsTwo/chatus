@@ -1,5 +1,6 @@
 import logoSrc from '@/assets/decor/icons/logo.svg';
 import footerDecorSrc from '@/assets/decor/footer.svg';
+import footerMobileDecorSrc from '@/assets/decor/footer-mobile.svg';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import './SiteFooter.scss';
 
@@ -28,6 +29,7 @@ export function SiteFooter() {
   return (
     <footer className="site-footer">
       <img className="site-footer__decor" src={footerDecorSrc} alt="" aria-hidden="true" />
+      <img className="site-footer__decor-mobile" src={footerMobileDecorSrc} alt="" aria-hidden="true" />
 
       <div className="site-footer__container">
         <div className="site-footer__brand">
