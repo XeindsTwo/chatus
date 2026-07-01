@@ -95,7 +95,7 @@
 
 @include r(992) {
   .steps {
-    padding: 24px 0 65px;
+    padding: 96px 0 65px;
 
     h2 {
       margin-bottom: 48px;
@@ -103,6 +103,7 @@
 
     h3 {
       max-width: 220px;
+      margin-bottom: 24px;
     }
 
     &__grid {

@@ -22,12 +22,12 @@ const getAnchorOffset = () => Number.parseFloat(
 const getMobileAnchorOffset = (hash: string) => {
   const baseOffset = getAnchorOffset();
 
-  if (!window.matchMedia('(max-width: 768px)').matches) {
+  if (!window.matchMedia('(max-width: 992px)').matches) {
     return baseOffset;
   }
 
   if (hash === '#audience' || hash === '#steps') {
-    return Math.max(72, baseOffset - 36);
+    return 8;
   }
 
   return baseOffset;

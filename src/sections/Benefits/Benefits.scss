@@ -115,6 +115,10 @@
     justify-content: center;
     gap: 25px 30px;
   }
+
+  .benefits__title {
+    text-align: center;
+  }
 }
 
 @include r(710) {

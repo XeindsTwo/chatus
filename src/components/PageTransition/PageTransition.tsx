@@ -9,6 +9,18 @@ const loaderDuration = 720;
 const revealDelay = 120;
 const mobileScrollQuery = '(max-width: 992px)';
 
+const getAnchorOffset = (hash: string) => {
+  const baseOffset = Number.parseFloat(
+    getComputedStyle(document.documentElement).getPropertyValue('--anchor-offset'),
+  ) || 0;
+
+  if (window.matchMedia(mobileScrollQuery).matches && (hash === '#audience' || hash === '#steps')) {
+    return 8;
+  }
+
+  return baseOffset;
+};
+
 function scrollToCurrentHash() {
   if (!window.location.hash) {
     return;
@@ -21,12 +33,8 @@ function scrollToCurrentHash() {
       return;
     }
 
-    const anchorOffset = Number.parseFloat(
-      getComputedStyle(document.documentElement).getPropertyValue('--anchor-offset'),
-    ) || 0;
-
     window.scrollTo({
-      top: target.getBoundingClientRect().top + window.scrollY - anchorOffset,
+      top: target.getBoundingClientRect().top + window.scrollY - getAnchorOffset(window.location.hash),
       behavior: window.matchMedia(mobileScrollQuery).matches ? 'auto' : 'smooth',
     });
   } catch {

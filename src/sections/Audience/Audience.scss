@@ -95,7 +95,7 @@
 @media (width <= 992px) {
   .audience {
     min-height: auto;
-    padding: 24px 0 0;
+    padding: 96px 0 0;
     place-items: start center;
     background: $color-paper;
   }
@@ -118,7 +118,7 @@
     height: auto;
     gap: 12px;
     overflow-x: auto;
-    margin-top: 72px;
+    margin-top: 48px;
     margin-inline: calc((100vw - 100%) / -2);
     padding-inline: max(24px, calc((100vw - 1040px) / 2));
     scroll-padding-inline: max(24px, calc((100vw - 1040px) / 2));
