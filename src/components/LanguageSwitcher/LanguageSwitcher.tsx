@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { defaultLocale, locales, type Locale } from '@/i18n/config';
-import ogRu from '@/assets/OG/og-ru.png';
+import ogRu from '@/assets/og/og-ru.png';
 import './LanguageSwitcher.scss';
 
 const storageKey = 'chatus-locale';

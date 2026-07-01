@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { SmoothScroll } from '@/components/SmoothScroll';
 import { PageTransition } from '@/components/PageTransition';
 import faviconHref from '@/assets/favicon.svg';
-import ogRu from '@/assets/OG/og-ru.png';
+import ogRu from '@/assets/og/og-ru.png';
 import '@/styles/main.scss';
 
 export const metadata: Metadata = {
