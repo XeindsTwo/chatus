@@ -51,18 +51,48 @@ const enTelegramLinks = [
   { label: 'Channel - @chatusme', href: 'https://t.me/chatusteam' },
 ];
 
+const idProductLinks = [
+  { label: 'Audiens', href: '/#audience' },
+  { label: 'Cara kerja', href: '/#steps' },
+  { label: 'Keunggulan', href: '/#benefits' },
+  { label: 'Premium', href: '/#pricing' },
+  { label: 'FAQ', href: '/#faq' },
+];
+
+const idLegalLinks = [
+  { label: 'Perjanjian Pengguna', href: '/privacy' },
+  { label: 'Kebijakan Privasi', href: '/privacy' },
+  { label: 'Ketentuan Pembayaran', href: '/privacy' },
+  { label: 'Kebijakan Refund', href: '/privacy' },
+  { label: 'Aturan Chat', href: '/rules' },
+];
+
+const idTelegramLinks = [
+  { label: 'Bot - @chatus', href: 'https://t.me/chatusbot' },
+  { label: 'Channel - @chatusme', href: 'https://t.me/chatusteam' },
+];
+
 export function SiteFooter() {
   const locale = useLocale();
   const isEnglish = locale === 'en';
-  const currentProductLinks = (isEnglish ? enProductLinks : productLinks).map((link) => ({
+  const isIndonesian = locale === 'id';
+  const currentProductLinks = (isEnglish ? enProductLinks : isIndonesian ? idProductLinks : productLinks).map((link) => ({
     ...link,
     href: getLocalizedHref(link.href, locale),
   }));
-  const currentLegalLinks = (isEnglish ? enLegalLinks : legalLinks).map((link) => ({
+  const currentLegalLinks = (isEnglish ? enLegalLinks : isIndonesian ? idLegalLinks : legalLinks).map((link) => ({
     ...link,
-    href: link.href === '/rules' ? getLocalizedHref(link.href, locale) : link.href,
+    href: getLocalizedHref(link.href, locale),
   }));
-  const currentTelegramLinks = isEnglish ? enTelegramLinks : telegramLinks;
+  const currentTelegramLinks = isEnglish ? enTelegramLinks : isIndonesian ? idTelegramLinks : telegramLinks;
+  const productLabel = isEnglish ? 'Product' : isIndonesian ? 'Produk' : 'Продукт';
+  const rulesLabel = isEnglish ? 'Service Rules' : isIndonesian ? 'Aturan Layanan' : 'Правила сервиса';
+  const copyrightText = isEnglish
+    ? '©2026 Chatus. All rights reserved.'
+    : isIndonesian
+      ? '©2026 Chatus. Semua hak dilindungi.'
+      : '©2026 Chatus. Все права защищены.';
+  const madeText = isEnglish ? 'Made with love by' : isIndonesian ? 'Dibuat dengan cinta oleh' : 'Сделано с любовью в';
 
   const handleProductLinkClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
     if (!href.includes('#') || !isMobileAnchorViewport()) {
@@ -80,7 +110,7 @@ export function SiteFooter() {
 
       <div className="site-footer__container">
         <div className="site-footer__brand">
-          <a className="site-footer__logo" href="/" aria-label="Chatus">
+          <a className="site-footer__logo" href={getLocalizedHref('/', locale)} aria-label="Chatus">
             <img src={logoSrc} alt="Chatus" width="130" height="38" />
           </a>
           <p className="site-footer__powered">
@@ -107,19 +137,19 @@ export function SiteFooter() {
             </a>
           </p>
           <p className="site-footer__copyright">
-            {isEnglish ? '©2026 Chatus. All rights reserved.' : '©2026 Chatus. Все права защищены.'}
+            {copyrightText}
           </p>
           <div className="site-footer__actions">
             <LanguageSwitcher className="site-footer__langs" />
             <a className="site-footer__rules" href={getLocalizedHref('/rules', locale)}>
-              {isEnglish ? 'Service Rules' : 'Правила сервиса'}
+              {rulesLabel}
             </a>
           </div>
         </div>
 
         <div className="site-footer__nav">
-          <nav className="site-footer__column" aria-label={isEnglish ? 'Product' : 'Продукт'}>
-            <span>{isEnglish ? 'Product' : 'Продукт'}</span>
+          <nav className="site-footer__column" aria-label={productLabel}>
+            <span>{productLabel}</span>
             {currentProductLinks.map((link) => (
               <a
                 href={link.href}
@@ -155,7 +185,7 @@ export function SiteFooter() {
       </div>
 
       <p className="site-footer__made">
-        {isEnglish ? 'Made with love by' : 'Сделано с любовью в'}
+        {madeText}
 
         <a
           href="https://layout.pics/"

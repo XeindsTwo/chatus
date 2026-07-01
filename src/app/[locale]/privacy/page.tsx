@@ -3,12 +3,11 @@ import { notFound } from 'next/navigation';
 import { Header } from '@/components/Header';
 import { SiteFooter } from '@/components/SiteFooter';
 import { Cta } from '@/sections/Cta';
-import { Faq } from '@/sections/Faq';
-import { Rules } from '@/sections/Rules';
+import { LegalDocument } from '@/sections/LegalDocument';
 import { locales, type Locale } from '@/i18n/config';
 import { buildSeoMetadata } from '@/i18n/seo';
 
-type LocalizedRulesPageProps = {
+type LocalizedPrivacyPageProps = {
   params: Promise<{ locale: Locale }>;
 };
 
@@ -16,17 +15,17 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
 
-export async function generateMetadata({ params }: LocalizedRulesPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: LocalizedPrivacyPageProps): Promise<Metadata> {
   const { locale } = await params;
 
   if (!locales.includes(locale)) {
     notFound();
   }
 
-  return buildSeoMetadata(locale, 'rules');
+  return buildSeoMetadata(locale, 'privacy');
 }
 
-export default async function LocalizedRulesPage({ params }: LocalizedRulesPageProps) {
+export default async function LocalizedPrivacyPage({ params }: LocalizedPrivacyPageProps) {
   const { locale } = await params;
 
   if (!locales.includes(locale)) {
@@ -36,8 +35,7 @@ export default async function LocalizedRulesPage({ params }: LocalizedRulesPageP
   return (
     <main>
       <Header />
-      <Rules />
-      <Faq />
+      <LegalDocument />
       <Cta />
       <SiteFooter />
     </main>

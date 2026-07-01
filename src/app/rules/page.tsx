@@ -4,20 +4,9 @@ import { SiteFooter } from '@/components/SiteFooter';
 import { Cta } from '@/sections/Cta';
 import { Faq } from '@/sections/Faq';
 import { Rules } from '@/sections/Rules';
+import { buildSeoMetadata } from '@/i18n/seo';
 
-export const metadata: Metadata = {
-  title: 'Правила Chatus',
-  description: 'Правила общения и поведения в Chatus.',
-  alternates: {
-    canonical: '/rules',
-    languages: {
-      id: '/id/rules',
-      en: '/en/rules',
-      ru: '/rules',
-      'x-default': '/rules',
-    },
-  },
-};
+export const metadata: Metadata = buildSeoMetadata('ru', 'rules');
 
 export default function RulesPage() {
   return (

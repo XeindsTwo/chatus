@@ -42,12 +42,30 @@ const enPrinciples = [
   },
 ];
 
+const idPrinciples = [
+  {
+    title: 'Bersikap sopan',
+    icon: iconPolite,
+    text: 'Hormati teman chat kamu. Jika tidak cocok, akhiri chat tanpa hinaan.',
+  },
+  {
+    title: 'Jangan rush membuka diri',
+    icon: iconPrivacy,
+    text: 'Kamu memilih apa yang dibagi. Jangan kirim data pribadi ke orang asing.',
+  },
+  {
+    title: 'Buat chat menarik',
+    icon: iconInterest,
+    text: 'Ajukan pertanyaan, bagikan pikiran, dan jaga obrolan. Chat baik butuh dua pihak.',
+  },
+];
+
 export function RulesPrinciples() {
   const locale = useLocale();
-  const items = locale === 'en' ? enPrinciples : principles;
+  const items = locale === 'en' ? enPrinciples : locale === 'id' ? idPrinciples : principles;
 
   return (
-    <section className="rules-principles indent" aria-label={locale === 'en' ? 'Main chat rules' : 'Главные правила общения'}>
+    <section className="rules-principles indent" aria-label={locale === 'en' ? 'Main chat rules' : locale === 'id' ? 'Aturan utama chat' : 'Главные правила общения'}>
       {items.map((item) => (
         <article className="rules-principle-card" key={item.title}>
           <h2>{item.title}</h2>

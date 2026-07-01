@@ -19,7 +19,7 @@ export function Footer() {
           Декоративные изображения можно будет заменить на готовые рендеры или
           иллюстрации без перестройки секций.
         </p>
-        <Button>Найти собеседника</Button>
+        <Button href="https://t.me/chatusbot" target="_blank" rel="noreferrer">Найти собеседника</Button>
       </div>
     </footer>
   );

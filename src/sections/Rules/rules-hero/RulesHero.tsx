@@ -12,28 +12,39 @@ const enCopy = {
   ],
 };
 
+const idCopy = {
+  title: ['Aturan', 'Chatus'],
+  age: 'Chatus hanya untuk 18+. Jika kamu lebih muda, mohon jangan gunakan Chatus.',
+  paragraphs: [
+    'Chatus adalah chat anonim untuk ngobrol dan berkenalan. Di sini dua orang acak bertemu saat sama-sama ingin berbicara. Kamu sendiri yang memutuskan apa yang ingin dibagikan dan bisa mengakhiri chat kapan saja.',
+    'Agar chat tetap nyaman dan aman untuk semua orang, ikuti beberapa aturan sederhana ini.',
+  ],
+};
+
 export function RulesHero() {
   const locale = useLocale();
   const isEnglish = locale === 'en';
+  const isIndonesian = locale === 'id';
+  const copy = isEnglish ? enCopy : isIndonesian ? idCopy : null;
 
   return (
     <section className="rules-hero" aria-labelledby="rules-title">
       <h1 id="rules-title">
-        {isEnglish ? enCopy.title[0] : 'Правила'}
+        {copy ? copy.title[0] : 'Правила'}
         <br />
-        {isEnglish ? enCopy.title[1] : 'Chatus'}
+        {copy ? copy.title[1] : 'Chatus'}
       </h1>
 
       <article className="rules-age-card">
         <strong>18+</strong>
         <p>
-          {isEnglish ? enCopy.age : 'Сервис строго 18+. Если вам меньше — пожалуйста, не используйте Chatus.'}
+          {copy ? copy.age : 'Сервис строго 18+. Если вам меньше — пожалуйста, не используйте Chatus.'}
         </p>
       </article>
 
       <div className="rules-hero__copy">
-        {isEnglish ? (
-          enCopy.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)
+        {copy ? (
+          copy.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)
         ) : (
           <>
             <p>

@@ -25,15 +25,25 @@ const enNavItems = [
   { label: 'Service Rules', href: '/rules' },
 ];
 
+const idNavItems = [
+  { label: 'Audiens', href: '/#audience' },
+  { label: 'Cara kerja', href: '/#steps' },
+  { label: 'Keunggulan', href: '/#benefits' },
+  { label: 'Premium', href: '/#pricing' },
+  { label: 'FAQ', href: '/#faq' },
+  { label: 'Aturan Layanan', href: '/rules' },
+];
+
 export function Header() {
   const locale = useLocale();
-  const items = locale === 'en' ? enNavItems : navItems;
+  const items = locale === 'en' ? enNavItems : locale === 'id' ? idNavItems : navItems;
   const localizedItems = items.map((item) => ({ ...item, href: getLocalizedHref(item.href, locale) }));
   const mobileItems = localizedItems.filter((item) => !item.href.endsWith('/rules'));
+  const startChatText = locale === 'en' ? 'Start chatting' : locale === 'id' ? 'Mulai chat' : 'Начать общение';
 
   return (
     <header className="header">
-      <a className="header__brand" href="/" aria-label="Chatus">
+      <a className="header__brand" href={getLocalizedHref('/', locale)} aria-label="Chatus">
         <img src={logoSrc} alt="Chatus" width="130" height="38" />
       </a>
 
@@ -47,7 +57,7 @@ export function Header() {
           ))}
         </nav>
         <div className="header__actions">
-          <Button>{locale === 'en' ? 'Start chatting' : 'Начать общение'}</Button>
+          <Button>{startChatText}</Button>
         </div>
       </div>
 

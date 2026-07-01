@@ -82,23 +82,65 @@ const enBans = [
   },
 ];
 
+const idBans = [
+  {
+    title: 'Spam \n dan iklan',
+    text: 'Promosi produk, layanan, channel, bot, atau proyek pihak ketiga dilarang.',
+  },
+  {
+    title: 'Kekerasan \n dan hate',
+    text: 'Ancaman, ajakan kekerasan, terorisme, penggalangan dana, atau dukungan dilarang.',
+  },
+  {
+    title: 'Konten dengan \n minor',
+    text: 'Konten yang melibatkan orang di bawah 18 dilarang keras dalam bentuk apa pun.',
+  },
+  {
+    title: 'Konten seksual \n tanpa izin',
+    text: 'Materi intim tanpa izin jelas dilarang. Jangan kirim foto tanpa diminta.',
+  },
+  {
+    title: 'Penipuan \n dan scam',
+    text: 'Donasi palsu, skema uang, pencurian data kartu, atau data pribadi dilarang.',
+  },
+  {
+    title: 'Data pribadi \n orang lain',
+    text: 'Jangan bagikan nama, alamat, nomor telepon, atau foto orang lain tanpa izin.',
+  },
+  {
+    title: 'Barang dan \n jasa ilegal',
+    text: 'Narkoba, senjata, dokumen palsu, atau perdagangan ilegal lain dilarang.',
+  },
+  {
+    title: 'Hinaan \n dan pelecehan',
+    text: 'Hinaan, ancaman, penghinaan, atau pelecehan terhadap teman chat dilarang.',
+  },
+  {
+    title: 'Link t.me \n langsung',
+    text: 'Berbagi @username dan tautan media sosial diperbolehkan. Tautan klik ke channel Telegram tidak diperbolehkan.',
+  },
+];
+
 export function RulesBan() {
   const locale = useLocale();
   const isEnglish = locale === 'en';
-  const items = isEnglish ? enBans : bans;
+  const isIndonesian = locale === 'id';
+  const items = isEnglish ? enBans : isIndonesian ? idBans : bans;
 
   return (
     <>
       <section className="rules-ban" aria-labelledby="rules-ban-title">
         <div className="rules-ban__intro">
           <h2 id="rules-ban-title">
-            {isEnglish ? 'What not to do' : 'Что нельзя'}
+            {isEnglish ? 'What not to do' : isIndonesian ? 'Yang dilarang' : 'Что нельзя'}
             <br />
-            {isEnglish ? 'in Chatus' : 'делать в Chatus'}
+            {isEnglish ? 'in Chatus' : isIndonesian ? 'di Chatus' : 'делать в Chatus'}
           </h2>
           <p>
             {isEnglish
               ? 'These rules apply to everyone. They help keep chats safe and prevent conversations from turning into unpleasant experiences.'
+              : isIndonesian
+                ? 'Aturan ini berlaku untuk semua orang. Tujuannya agar chat tetap aman dan tidak berubah menjadi pengalaman yang tidak menyenangkan.'
               : 'Эти правила работают для всех. Они помогают сделать так, чтобы общение в чате оставалось безопасным и не превращалось во что-то неприятное.'}
           </p>
         </div>
@@ -116,13 +158,15 @@ export function RulesBan() {
 
       <section className="rules-penalty" aria-labelledby="rules-penalty-title">
         <h2 id="rules-penalty-title">
-          {isEnglish ? 'What happens if you' : 'Что будет при'}
+          {isEnglish ? 'What happens if you' : isIndonesian ? 'Jika melanggar' : 'Что будет при'}
           <br />
-          {isEnglish ? 'break the rules' : 'нарушении'}
+          {isEnglish ? 'break the rules' : isIndonesian ? 'aturan' : 'нарушении'}
         </h2>
         <p>
           {isEnglish
             ? 'Breaking these rules may lead to a temporary restriction or a permanent ban from Chatus. Messages may be checked automatically and manually. If you think you were blocked by mistake, contact support and we will review the decision.'
+            : isIndonesian
+              ? 'Pelanggaran aturan dapat menyebabkan pembatasan sementara atau blokir permanen dari Chatus. Pesan dapat diperiksa otomatis dan manual. Jika kamu merasa diblokir karena salah, hubungi dukungan dan kami akan meninjau keputusan tersebut.'
             : 'Нарушение этих правил может привести к временному ограничению или постоянной блокировке доступа к Chatus. Все сообщения проходят автоматическую и ручную проверку. Если вы считаете, что вас заблокировали по ошибке — напишите в поддержку, мы пересмотрим решение.'}
         </p>
       </section>

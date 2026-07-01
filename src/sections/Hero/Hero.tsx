@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { Button } from '@/components/Button';
 import { Header } from '@/components/Header';
+import { getLocalizedHref, useLocale } from '@/i18n/useLocale';
 import { onPageTransitionReady } from '@/lib/pageTransition';
 import faceRowOne from '@/assets/faces/1.png';
 import faceRowTwo from '@/assets/faces/2.png';
@@ -20,6 +21,7 @@ const faceRows = [
 ];
 
 export function Hero() {
+  const locale = useLocale();
   const ref = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -160,7 +162,7 @@ export function Hero() {
             Анонимное общение и новые знакомства за несколько секунд — без регистрации, анкет и раскрытия личности
           </p>
           <div className="hero__actions" data-hero-reveal>
-            <Button>
+            <Button href="https://t.me/chatusbot" target="_blank" rel="noreferrer">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path
                   fillRule="evenodd"
@@ -171,7 +173,7 @@ export function Hero() {
               </svg>
               Найти собеседника
             </Button>
-            <Button className="hero__rules-button" href="/rules" variant="light">
+            <Button className="hero__rules-button" href={getLocalizedHref('/rules', locale)} variant="light">
               Правила сервиса
             </Button>
           </div>

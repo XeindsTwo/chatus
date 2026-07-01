@@ -100,6 +100,54 @@ const enContacts = [
   },
 ];
 
+const idQuestions = [
+  {
+    question: 'Apa itu Chatus?',
+    answer:
+      'Chatus adalah layanan untuk chat anonim, berkenalan, dan menemukan teman chat acak. Di sini kamu bisa mulai chat tanpa registrasi atau formulir.',
+  },
+  {
+    question: 'Bagaimana pembayarannya?',
+    answer:
+      'Premium dibayar di dalam Chatus melalui Telegram Stars. Jika perlu, Stars bisa dibeli di bot partner dengan rubel atau kripto. Fitur Premium aktif otomatis setelah pembayaran.',
+  },
+  {
+    question: 'Chat-nya anonim?',
+    answer:
+      'Ya. Di Chatus kamu bisa chat anonim: tidak perlu membuat profil, mengunggah foto, atau memberikan data pribadi. Data profil Telegram kamu tidak ditampilkan ke lawan chat.',
+  },
+  {
+    question: 'Cara melaporkan?',
+    answer:
+      'Kamu bisa mengakhiri percakapan dan mengirim laporan melalui Chatus. Kami meninjau laporan dan membatasi pengguna yang melanggar aturan layanan.',
+  },
+  {
+    question: 'Perlu daftar?',
+    answer:
+      'Tidak. Chatus bekerja di dalam Telegram: cukup buka bot dan mulai mencari teman chat.',
+  },
+];
+
+const idContacts = [
+  {
+    label: 'Dukungan',
+    title: '@chatus_support_en',
+    href: 'https://t.me/chatusteam',
+    accent: true,
+    isExternal: true,
+  },
+  {
+    label: 'Pertanyaan data pribadi',
+    title: 'privacy@maljoy.io',
+    href: 'mailto:privacy@maljoy.io',
+  },
+  {
+    label: 'Pertanyaan bisnis',
+    title: 'hello@maljoy.io',
+    href: 'mailto:hello@maljoy.io',
+  },
+];
+
 function TelegramIcon({ className }: { className?: string }) {
   return (
     <svg className={className} width="68" height="59" viewBox="0 0 68 59" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -114,8 +162,9 @@ function TelegramIcon({ className }: { className?: string }) {
 export function Faq() {
   const locale = useLocale();
   const isEnglish = locale === 'en';
-  const currentQuestions = isEnglish ? enQuestions : questions;
-  const currentContacts = isEnglish ? enContacts : contacts;
+  const isIndonesian = locale === 'id';
+  const currentQuestions = isEnglish ? enQuestions : isIndonesian ? idQuestions : questions;
+  const currentContacts = isEnglish ? enContacts : isIndonesian ? idContacts : contacts;
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
@@ -123,9 +172,9 @@ export function Faq() {
       <div className="faq__container">
         <div className="faq__inner">
           <h2 className="faq__title section-title">
-            {isEnglish ? 'Questions' : 'Вопросы'}
+            {isEnglish ? 'Questions' : isIndonesian ? 'Tanya' : 'Вопросы'}
             <br />
-            <span>{isEnglish ? 'Answers' : 'ответы'}</span>
+            <span>{isEnglish ? 'Answers' : isIndonesian ? 'Jawab' : 'ответы'}</span>
           </h2>
 
           <div className="faq__list">

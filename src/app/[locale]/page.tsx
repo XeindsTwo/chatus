@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Audience } from '@/sections/Audience';
 import { Benefits } from '@/sections/Benefits';
@@ -9,6 +10,7 @@ import { Intro } from '@/sections/Intro';
 import { Steps } from '@/sections/Steps';
 import { Tariffs } from '@/sections/Tariffs';
 import { locales, type Locale } from '@/i18n/config';
+import { buildSeoMetadata } from '@/i18n/seo';
 
 type LocalizedPageProps = {
   params: Promise<{ locale: Locale }>;
@@ -16,6 +18,16 @@ type LocalizedPageProps = {
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({ params }: LocalizedPageProps): Promise<Metadata> {
+  const { locale } = await params;
+
+  if (!locales.includes(locale)) {
+    notFound();
+  }
+
+  return buildSeoMetadata(locale, 'home');
 }
 
 export default async function LocalizedHome({ params }: LocalizedPageProps) {
