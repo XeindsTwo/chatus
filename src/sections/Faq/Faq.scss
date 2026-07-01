@@ -210,6 +210,18 @@
   fill: currentColor;
 }
 
+@include r(1180) {
+  .faq__contacts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .faq__contact:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    width: calc((100% - 24px) / 2);
+    justify-self: center;
+  }
+}
+
 @include r(920) {
   .faq__container {
     grid-template-columns: 1fr;
@@ -231,6 +243,10 @@
 
   .faq__contacts {
     grid-template-columns: 1fr;
+  }
+
+  .faq__contact:last-child:nth-child(odd) {
+    width: 100%;
   }
 
   .faq__telegram {
