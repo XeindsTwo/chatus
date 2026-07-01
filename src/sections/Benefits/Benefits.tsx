@@ -45,9 +45,9 @@ export function Benefits() {
     <section className="benefits indent" id="benefits">
       <div className="benefits__container">
         <h2 className="benefits__title section-title">
-          Удобен
+          Удобен для
           <br />
-          для общения
+          общения
         </h2>
 
         <div className="benefits__cards">
@@ -83,12 +83,22 @@ export function Benefits() {
                 aria-hidden="true"
               />
 
-              <div className="benefits__content">
-                <h3 className="benefits__card-title card-title">
-                  {benefit.title}
-                </h3>
-                <p>{benefit.text}</p>
-              </div>
+              {benefit.variant !== 'telegram' ? (
+                <div className="benefits__content">
+                  <h3 className="benefits__card-title card-title">
+                    {benefit.variant === 'fast' ? (
+                      <>
+                        Быстрый
+                        <br />
+                        старт
+                      </>
+                    ) : (
+                      benefit.title
+                    )}
+                  </h3>
+                  <p>{benefit.text}</p>
+                </div>
+              ) : null}
             </article>
           ))}
         </div>

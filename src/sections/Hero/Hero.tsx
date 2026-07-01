@@ -8,12 +8,15 @@ import { onPageTransitionReady } from '@/lib/pageTransition';
 import faceRowOne from '@/assets/faces/1.png';
 import faceRowTwo from '@/assets/faces/2.png';
 import faceRowThree from '@/assets/faces/3.png';
+import mobileFaceRowOne from '@/assets/faces/mobile/1.png';
+import mobileFaceRowTwo from '@/assets/faces/mobile/2.png';
+import mobileFaceRowThree from '@/assets/faces/mobile/3.png';
 import './Hero.scss';
 
 const faceRows = [
-  { src: faceRowOne.src, className: 'hero__face-row--one', alt: '' },
-  { src: faceRowTwo.src, className: 'hero__face-row--two', alt: '' },
-  { src: faceRowThree.src, className: 'hero__face-row--three', alt: '' },
+  { src: faceRowOne.src, mobileSrc: mobileFaceRowOne.src, className: 'hero__face-row--one', alt: '' },
+  { src: faceRowTwo.src, mobileSrc: mobileFaceRowTwo.src, className: 'hero__face-row--two', alt: '' },
+  { src: faceRowThree.src, mobileSrc: mobileFaceRowThree.src, className: 'hero__face-row--three', alt: '' },
 ];
 
 export function Hero() {
@@ -69,6 +72,44 @@ export function Hero() {
         };
       });
 
+      media.add('(max-width: 900px)', () => {
+        const rows = gsap.utils.toArray<HTMLElement>('.hero__face-row');
+        const revealItems = gsap.utils.toArray<HTMLElement>('[data-hero-reveal]');
+
+        gsap.set(revealItems, { autoAlpha: 0, y: 28 });
+
+        gsap.set(rows, {
+          autoAlpha: 1,
+          xPercent: (index) => [-115, 115, -115][index] ?? -115,
+          yPercent: 0,
+          scale: 1,
+        });
+
+        timeline = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+        timeline
+          .to(rows, {
+            xPercent: 0,
+            duration: 1.25,
+            ease: 'power4.out',
+          })
+          .to(
+            revealItems,
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.68,
+              stagger: 0.08,
+            },
+            0.12,
+          );
+
+        return () => {
+          timeline?.kill();
+          timeline = undefined;
+        };
+      });
+
       return () => media.revert();
     }, ref);
 
@@ -103,10 +144,17 @@ export function Hero() {
 
       <div className="hero__container">
         <div className="hero__copy">
-          <h1 data-hero-reveal>
+          <h1 className="hero__title hero__title--desktop" data-hero-reveal>
             Найди
             <br />
             друга
+          </h1>
+          <h1 className="hero__title hero__title--mobile" data-hero-reveal>
+            Найди
+            <br />
+            друга за пару
+            <br />
+            секунд
           </h1>
           <p className="hero__text" data-hero-reveal>
             Анонимное общение и новые знакомства за несколько секунд — без регистрации, анкет и раскрытия личности
@@ -123,19 +171,23 @@ export function Hero() {
               </svg>
               Найти собеседника
             </Button>
+            <Button className="hero__rules-button" href="/rules" variant="light">
+              Правила сервиса
+            </Button>
           </div>
         </div>
 
         <div className="hero__faces" aria-hidden="true">
           <div className="hero__faces-rotated">
             {faceRows.map((row) => (
-              <img
-                className={`hero__face-row ${row.className}`}
-                key={row.className}
-                src={row.src}
-                alt={row.alt}
-                draggable={false}
-              />
+              <picture className={`hero__face-row ${row.className}`} key={row.className}>
+                <source media="(max-width: 900px)" srcSet={row.mobileSrc} />
+                <img
+                  src={row.src}
+                  alt={row.alt}
+                  draggable={false}
+                />
+              </picture>
             ))}
           </div>
         </div>

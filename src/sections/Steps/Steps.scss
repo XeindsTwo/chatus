@@ -43,6 +43,7 @@
   &__number {
     display: grid;
     order: 1;
+    line-height: 1;
     width: 34px;
     height: 34px;
     place-items: center;
@@ -94,10 +95,10 @@
 
 @include r(992) {
   .steps {
-    padding: 88px 0 65px;
+    padding: 24px 0 65px;
 
     h2 {
-      margin-bottom: 52px;
+      margin-bottom: 48px;
     }
 
     h3 {
@@ -106,7 +107,7 @@
 
     &__grid {
       grid-template-columns: 1fr;
-      gap: 54px;
+      gap: 40px;
     }
 
     &__item {

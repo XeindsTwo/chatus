@@ -88,20 +88,6 @@
   display: none;
 }
 
-@include r(768) {
-  .benefits__card--telegram .benefits__full-card {
-    display: none;
-  }
-
-  .benefits__card--telegram .benefits__decor {
-    display: block;
-  }
-
-  .benefits__card--telegram .benefits__content {
-    display: grid;
-  }
-}
-
 .benefits__content {
   position: relative;
   z-index: 2;
@@ -125,16 +111,44 @@
 
 @include r(1100) {
   .benefits__cards {
-    grid-template-columns: repeat(2, minmax(280px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 330px));
+    justify-content: center;
+    gap: 25px 30px;
   }
 }
 
-@include r(680) {
+@include r(710) {
+  .benefits__title {
+    text-align: center;
+  }
+
   .benefits__cards {
-    grid-template-columns: 1fr;
+    display: flex;
+    width: 100vw;
+    gap: 16px;
+    justify-content: flex-start;
+    margin-inline: calc((100vw - 100%) / -2);
+    padding-inline: max(16px, calc((100vw - 1040px) / 2));
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-padding-inline: 16px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    touch-action: pan-x pan-y;
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .benefits__card {
-    min-height: 420px;
+    flex: 0 0 330px;
+    min-height: 480px;
+    scroll-snap-align: start;
+  }
+
+  .benefits__card-title {
+    max-width: 210px;
   }
 }

@@ -288,8 +288,17 @@
   }
 
   .faq__telegram {
-    top: -28px;
-    width: 78px;
+    top: -20px;
+    right: 10px;
+    width: 62px;
+  }
+}
+
+@include r(468) {
+  .faq__telegram {
+    width: 52px;
+    right: 8px;
+    top: -14px;
   }
 }
 

@@ -19,6 +19,20 @@ const getAnchorOffset = () => Number.parseFloat(
   getComputedStyle(document.documentElement).getPropertyValue('--anchor-offset'),
 ) || 0;
 
+const getMobileAnchorOffset = (hash: string) => {
+  const baseOffset = getAnchorOffset();
+
+  if (!window.matchMedia('(max-width: 768px)').matches) {
+    return baseOffset;
+  }
+
+  if (hash === '#audience' || hash === '#steps') {
+    return Math.max(72, baseOffset - 36);
+  }
+
+  return baseOffset;
+};
+
 const scrollToHref = (href: string) => {
   const url = new URL(href, window.location.href);
 
@@ -36,7 +50,7 @@ const scrollToHref = (href: string) => {
 
   history.pushState(null, '', url.hash);
   window.scrollTo({
-    top: target.getBoundingClientRect().top + window.scrollY - getAnchorOffset(),
+    top: target.getBoundingClientRect().top + window.scrollY - getMobileAnchorOffset(url.hash),
     behavior: 'smooth',
   });
 };
