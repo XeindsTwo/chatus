@@ -35,7 +35,7 @@
     flex-direction: column;
     min-height: 182px;
     align-content: flex-start;
-    padding: 24px 29px 34px;
+    padding: 24px 29px;
     border-radius: 32px;
     border: 2px solid #FFFFFF;
     background: linear-gradient(133deg, #fff 0%, rgba(255, 255, 255, 0.8) 100%);
@@ -54,6 +54,10 @@
       margin-top: auto;
       margin-bottom: 16px;
       @include card-title;
+    }
+
+    p {
+      white-space: pre-line;
     }
 
     &:hover {

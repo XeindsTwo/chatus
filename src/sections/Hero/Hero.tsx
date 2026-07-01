@@ -22,6 +22,8 @@ const faceRows = [
 
 export function Hero() {
   const locale = useLocale();
+  const isEnglish = locale === 'en';
+  const isIndonesian = locale === 'id';
   const ref = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -147,19 +149,59 @@ export function Hero() {
       <div className="hero__container">
         <div className="hero__copy">
           <h1 className="hero__title hero__title--desktop" data-hero-reveal>
-            Найди
-            <br />
-            друга
+            {isEnglish ? (
+              <>
+                Find a
+                <br />
+                friend
+              </>
+            ) : isIndonesian ? (
+              <>
+                Temukan
+                <br />
+                teman
+              </>
+            ) : (
+              <>
+                Найди
+                <br />
+                друга
+              </>
+            )}
           </h1>
           <h1 className="hero__title hero__title--mobile" data-hero-reveal>
-            Найди
-            <br />
-            друга за пару
-            <br />
-            секунд
+            {isEnglish ? (
+              <>
+                Find a
+                <br />
+                friend
+                <br />
+                in a few seconds
+              </>
+            ) : isIndonesian ? (
+              <>
+                Temukan
+                <br />
+                teman dalam
+                <br />
+                sekejap
+              </>
+            ) : (
+              <>
+                Найди
+                <br />
+                друга за пару
+                <br />
+                секунд
+              </>
+            )}
           </h1>
           <p className="hero__text" data-hero-reveal>
-            Анонимное общение и новые знакомства за несколько секунд — без регистрации, анкет и раскрытия личности
+            {isEnglish
+              ? 'Anonymous chats and new people in seconds — no registration, \n profiles, or identity reveal'
+              : isIndonesian
+                ? 'Chat anonim dan teman baru dalam hitungan detik — tanpa registrasi, profil, atau identitas'
+              : 'Анонимное общение и новые знакомства за несколько секунд — без регистрации, анкет и раскрытия личности'}
           </p>
           <div className="hero__actions" data-hero-reveal>
             <Button href="https://t.me/chatusbot" target="_blank" rel="noreferrer">
@@ -171,10 +213,10 @@ export function Hero() {
                   fill="currentColor"
                 />
               </svg>
-              Найти собеседника
+              {isEnglish ? 'Start chatting' : isIndonesian ? 'Cari teman' : 'Найти собеседника'}
             </Button>
             <Button className="hero__rules-button" href={getLocalizedHref('/rules', locale)} variant="light">
-              Правила сервиса
+              {isEnglish ? 'Service Rules' : isIndonesian ? 'Aturan Layanan' : 'Правила сервиса'}
             </Button>
           </div>
         </div>
@@ -195,11 +237,31 @@ export function Hero() {
         </div>
 
         <strong className="hero__side-title" data-hero-reveal>
-          За
-          <br />
-          пару
-          <br />
-          секунд
+          {isEnglish ? (
+            <>
+              In
+              <br />
+              a few
+              <br />
+              seconds
+            </>
+          ) : isIndonesian ? (
+            <>
+              Cepat
+              <br />
+              dalam
+              <br />
+              sekejap
+            </>
+          ) : (
+            <>
+              За
+              <br />
+              пару
+              <br />
+              секунд
+            </>
+          )}
         </strong>
       </div>
     </section>

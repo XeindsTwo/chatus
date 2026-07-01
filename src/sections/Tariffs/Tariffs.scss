@@ -98,7 +98,9 @@
 }
 
 .tariffs__description {
-  max-width: 150px;
+  white-space: pre-line;
+  max-width: 200px;
+  width: 100%;
   margin-bottom: 28px;
 }
 

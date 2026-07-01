@@ -16,6 +16,8 @@ const introImages: Record<Locale, string> = {
 
 export function Intro() {
   const locale = useLocale();
+  const isEnglish = locale === 'en';
+  const isIndonesian = locale === 'id';
   const [imageSrc, setImageSrc] = useState(introImages[locale]);
 
   useEffect(() => {
@@ -64,13 +66,32 @@ export function Intro() {
 
       <div className="intro__content">
         <h2 className="intro__title section-title">
-          Что такое
-          <br/>
-          Chatus
+          {isEnglish ? (
+            <>
+              What is
+              <br/>
+              Chatus
+            </>
+          ) : isIndonesian ? (
+            <>
+              Apa itu
+              <br/>
+              Chatus
+            </>
+          ) : (
+            <>
+              Что такое
+              <br/>
+              Chatus
+            </>
+          )}
         </h2>
         <p>
-          Chatus помогает быстро найти человека для общения, флирта или знакомства. Просто запускаешь поиск — и уже
-          через несколько секунд можешь говорить с новым собеседником
+          {isEnglish
+            ? 'Chatus helps you quickly find someone to chat, flirt, or meet. Just start searching — and within a few seconds, you can start talking to a new person.'
+            : isIndonesian
+              ? 'Chatus membantumu cepat menemukan seseorang untuk mengobrol, flirting, atau berkenalan. Cukup mulai pencarian — dan dalam beberapa detik kamu bisa berbicara dengan orang baru.'
+            : 'Chatus помогает быстро найти человека для общения, флирта или знакомства. Просто запускаешь поиск — и уже через несколько секунд можешь говорить с новым собеседником'}
         </p>
       </div>
     </section>

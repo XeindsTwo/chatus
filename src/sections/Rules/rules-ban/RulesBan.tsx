@@ -85,35 +85,35 @@ const enBans = [
 const idBans = [
   {
     title: 'Spam \n dan iklan',
-    text: 'Promosi produk, layanan, channel, bot, atau proyek pihak ketiga dilarang.',
+    text: 'Promosi produk, layanan, \n channel, bot, atau proyek \n pihak ketiga dilarang.',
   },
   {
     title: 'Kekerasan \n dan hate',
-    text: 'Ancaman, ajakan kekerasan, terorisme, penggalangan dana, atau dukungan dilarang.',
+    text: 'Ancaman, ajakan kekerasan, \n terorisme, penggalangan dana, \n atau dukungan dilarang.',
   },
   {
     title: 'Konten dengan \n minor',
-    text: 'Konten yang melibatkan orang di bawah 18 dilarang keras dalam bentuk apa pun.',
+    text: 'Konten yang melibatkan orang \n di bawah 18 dilarang keras \n dalam bentuk apa pun.',
   },
   {
     title: 'Konten seksual \n tanpa izin',
-    text: 'Materi intim tanpa izin jelas dilarang. Jangan kirim foto tanpa diminta.',
+    text: 'Materi intim tanpa izin jelas \n dilarang. Jangan kirim foto \n tanpa diminta.',
   },
   {
     title: 'Penipuan \n dan scam',
-    text: 'Donasi palsu, skema uang, pencurian data kartu, atau data pribadi dilarang.',
+    text: 'Donasi palsu, skema uang, \n pencurian data kartu, atau \n data pribadi dilarang.',
   },
   {
     title: 'Data pribadi \n orang lain',
-    text: 'Jangan bagikan nama, alamat, nomor telepon, atau foto orang lain tanpa izin.',
+    text: 'Jangan bagikan nama, alamat, \n nomor telepon, atau foto \n orang lain tanpa izin.',
   },
   {
     title: 'Barang dan \n jasa ilegal',
-    text: 'Narkoba, senjata, dokumen palsu, atau perdagangan ilegal lain dilarang.',
+    text: 'Narkoba, senjata, dokumen \n palsu, atau perdagangan \n ilegal lain dilarang.',
   },
   {
     title: 'Hinaan \n dan pelecehan',
-    text: 'Hinaan, ancaman, penghinaan, atau pelecehan terhadap teman chat dilarang.',
+    text: 'Hinaan, ancaman, penghinaan, \n atau pelecehan terhadap \n teman chat dilarang.',
   },
   {
     title: 'Link t.me \n langsung',

@@ -46,17 +46,17 @@ const idPrinciples = [
   {
     title: 'Bersikap sopan',
     icon: iconPolite,
-    text: 'Hormati teman chat kamu. Jika tidak cocok, akhiri chat tanpa hinaan.',
+    text: 'Hormati teman chat kamu. \n Jika tidak cocok, akhiri \n chat tanpa hinaan.',
   },
   {
     title: 'Jangan rush membuka diri',
     icon: iconPrivacy,
-    text: 'Kamu memilih apa yang dibagi. Jangan kirim data pribadi ke orang asing.',
+    text: 'Kamu memilih apa yang dibagi. Jangan kirim data pribadi \n ke orang asing.',
   },
   {
     title: 'Buat chat menarik',
     icon: iconInterest,
-    text: 'Ajukan pertanyaan, bagikan pikiran, dan jaga obrolan. Chat baik butuh dua pihak.',
+    text: 'Ajukan pertanyaan, bagikan pikiran, dan jaga obrolan. \n Chat baik butuh dua pihak.',
   },
 ];
 

@@ -57,10 +57,11 @@
   border-radius: 32px;
   padding: 24px;
   background: $color-white;
-  box-shadow: -8px 12px 32px 0 rgb(191 196 202 / 6%);
+  box-shadow: -8px 12px 32px 0 rgba(191, 196, 202, 0.06);
   will-change: transform;
 
   p {
+    white-space: pre-line;
     max-width: 150px;
     margin-bottom: 46px;
     color: $color-ink;

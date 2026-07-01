@@ -20,14 +20,12 @@ const productLinks = [
 const legalLinks = [
   { label: 'Пользовательское соглашение', href: '/privacy' },
   { label: 'Политика конфиденциальности', href: '/privacy' },
-  { label: 'Условия оплаты', href: '/privacy' },
-  { label: 'Политика возврата', href: '/privacy' },
   { label: 'Правила общения', href: '/rules' },
 ];
 
 const telegramLinks = [
-  { label: 'Бот — @chatus', href: 'https://t.me/chatusbot' },
-  { label: 'Канал — @chatusme', href: 'https://t.me/chatusteam' },
+  { label: 'Бот — @chatus', href: 'https://t.me/chatus' },
+  { label: 'Канал — @chatusme', href: 'https://t.me/chatusme' },
 ];
 
 const enProductLinks = [
@@ -41,14 +39,12 @@ const enProductLinks = [
 const enLegalLinks = [
   { label: 'User Agreement', href: '/privacy' },
   { label: 'Privacy Policy', href: '/privacy' },
-  { label: 'Payment Terms', href: '/privacy' },
-  { label: 'Refund Policy', href: '/privacy' },
   { label: 'Chat Rules', href: '/rules' },
 ];
 
 const enTelegramLinks = [
-  { label: 'Bot - @chatus', href: 'https://t.me/chatusbot' },
-  { label: 'Channel - @chatusme', href: 'https://t.me/chatusteam' },
+  { label: 'Bot - @anonymous_chatusbot', href: 'https://t.me/anonymous_chatusbot' },
+  { label: 'Channel - @chatusfun', href: 'https://t.me/chatusfun' },
 ];
 
 const idProductLinks = [
@@ -62,14 +58,12 @@ const idProductLinks = [
 const idLegalLinks = [
   { label: 'Perjanjian Pengguna', href: '/privacy' },
   { label: 'Kebijakan Privasi', href: '/privacy' },
-  { label: 'Ketentuan Pembayaran', href: '/privacy' },
-  { label: 'Kebijakan Refund', href: '/privacy' },
   { label: 'Aturan Chat', href: '/rules' },
 ];
 
 const idTelegramLinks = [
-  { label: 'Bot - @chatus', href: 'https://t.me/chatusbot' },
-  { label: 'Channel - @chatusme', href: 'https://t.me/chatusteam' },
+  { label: 'Bot - @anonymous_chatusbot', href: 'https://t.me/anonymous_chatusbot' },
+  { label: 'Channel - @chatusfun', href: 'https://t.me/chatusfun' },
 ];
 
 export function SiteFooter() {
@@ -85,6 +79,7 @@ export function SiteFooter() {
     href: getLocalizedHref(link.href, locale),
   }));
   const currentTelegramLinks = isEnglish ? enTelegramLinks : isIndonesian ? idTelegramLinks : telegramLinks;
+  const layoutHref = locale === 'ru' ? 'https://layout.pics/ru' : 'https://layout.pics/';
   const productLabel = isEnglish ? 'Product' : isIndonesian ? 'Produk' : 'Продукт';
   const rulesLabel = isEnglish ? 'Service Rules' : isIndonesian ? 'Aturan Layanan' : 'Правила сервиса';
   const copyrightText = isEnglish
@@ -188,7 +183,7 @@ export function SiteFooter() {
         {madeText}
 
         <a
-          href="https://layout.pics/"
+          href={layoutHref}
           target="_blank"
           rel="noreferrer"
           aria-label="Layout"

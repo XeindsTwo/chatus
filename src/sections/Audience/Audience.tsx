@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import plusSrc from '@/assets/decor/icons/plus-auditoria.svg';
+import { useLocale } from '@/i18n/useLocale';
 import './Audience.scss';
 
 const stats = [
@@ -24,11 +25,51 @@ const stats = [
   },
 ];
 
+const enStats = [
+  {
+    label: 'Average time to \n find a chat partner',
+    value: '0,56 SEC',
+    className: 'audience__card--time',
+  },
+  {
+    label: 'Monthly active \n users',
+    value: '1 000 000+',
+    className: 'audience__card--users',
+  },
+  {
+    label: 'New conversations \n daily',
+    value: '500 000+',
+    className: 'audience__card--dialogs',
+  },
+];
+
+const idStats = [
+  {
+    label: 'Rata-rata waktu \n menemukan teman ngobrol',
+    value: '0,56 DTK',
+    className: 'audience__card--time',
+  },
+  {
+    label: 'Pengguna aktif \n bulanan',
+    value: '1 000 000+',
+    className: 'audience__card--users',
+  },
+  {
+    label: 'Percakapan \n baru setiap hari',
+    value: '500 000+',
+    className: 'audience__card--dialogs',
+  },
+];
+
 gsap.registerPlugin(ScrollTrigger);
 
 const desktopAnimationQuery = '(min-width: 993px)';
 
 export function Audience() {
+  const locale = useLocale();
+  const isEnglish = locale === 'en';
+  const isIndonesian = locale === 'id';
+  const currentStats = isEnglish ? enStats : isIndonesian ? idStats : stats;
   const sectionRef = useRef<HTMLElement | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const cardsRef = useRef<HTMLDivElement | null>(null);
@@ -227,15 +268,35 @@ export function Audience() {
     <section className="audience" id="audience" ref={sectionRef}>
       <div className="audience__panel audience-steps__surface" ref={panelRef}>
         <h2 className="audience__title section-title">
-          Chatus <span className="audience__desktop-dash">—</span> сервис
-          <br />
-          с активной
-          <br />
-          аудиторией
+          {isEnglish ? (
+            <>
+              Chatus connects
+              <br />
+              a live active
+              <br />
+              audience
+            </>
+          ) : isIndonesian ? (
+            <>
+              Chatus — platform
+              <br />
+              dengan audiens
+              <br />
+              aktif
+            </>
+          ) : (
+            <>
+              Chatus <span className="audience__desktop-dash">—</span> сервис
+              <br />
+              с активной
+              <br />
+              аудиторией
+            </>
+          )}
         </h2>
 
         <div className="audience__cards" ref={cardsRef}>
-          {stats.map((stat) => (
+          {currentStats.map((stat) => (
             <article className={`audience__card ${stat.className}`} key={stat.label}>
               <p>{stat.label}</p>
               <img className="audience__plus" src={plusSrc} alt="" aria-hidden="true" loading="lazy" decoding="async" />

@@ -1,8 +1,11 @@
+'use client';
+
 import checkIcon from '@/assets/decor/tariffs/check-arrow-item.svg';
 import diamondIcon from '@/assets/decor/tariffs/diamond.svg';
 import freeIcon from '@/assets/decor/tariffs/free.svg';
 import './Tariffs.scss';
 import {Button} from "@/components/Button";
+import { useLocale } from '@/i18n/useLocale';
 
 const plans = [
   {
@@ -23,8 +26,8 @@ const plans = [
   {
     name: 'Premium',
     description: 'Больше свободы в общении',
-    price: '160 ₽',
-    period: '/ в 3 дня',
+    price: '78 ₽',
+    period: '/ день',
     note: 'Расширенный доступ',
     icon: diamondIcon,
     variant: 'premium',
@@ -38,18 +41,109 @@ const plans = [
   },
 ];
 
+const enPlans = [
+  {
+    name: 'Free',
+    description: 'Basic chatting for meeting new people',
+    price: '$0',
+    period: '/ month',
+    note: 'Available for free',
+    icon: freeIcon,
+    variant: 'free',
+    features: [
+      'Random chat partner search',
+      'Anonymous text and audio chats',
+      'No registration required',
+      'Basic matching',
+      'Standard access',
+    ],
+  },
+  {
+    name: 'Premium',
+    description: 'More freedom \n in chatting',
+    price: '$1',
+    period: '/ day',
+    note: 'Extended access',
+    icon: diamondIcon,
+    variant: 'premium',
+    features: [
+      'Chat partner’s gender and age',
+      'Gender search settings',
+      'Flirt-room',
+      'Premium badge',
+      'No ads',
+    ],
+  },
+];
+
+const idPlans = [
+  {
+    name: 'Free',
+    description: 'Obrolan dasar untuk berkenalan',
+    price: 'RP 0',
+    period: '/ bulan',
+    note: 'Tersedia gratis',
+    icon: freeIcon,
+    variant: 'free',
+    features: [
+      'Pencarian teman ngobrol acak',
+      'Chat teks dan audio anonim',
+      'Tanpa registrasi',
+      'Pencocokan dasar',
+      'Akses standar',
+    ],
+  },
+  {
+    name: 'Premium',
+    description: 'Lebih bebas \n untuk ngobrol',
+    price: 'Rp18K',
+    period: '/ minggu',
+    note: 'Akses diperluas',
+    icon: diamondIcon,
+    variant: 'premium',
+    features: [
+      'Jenis kelamin dan usia lawan bicara',
+      'Pilih gender lawan bicara',
+      'Ruang flirting',
+      'Badge Premium',
+      'Tanpa iklan',
+    ],
+  },
+];
+
 export function Tariffs() {
+  const locale = useLocale();
+  const isEnglish = locale === 'en';
+  const isIndonesian = locale === 'id';
+  const currentPlans = isEnglish ? enPlans : isIndonesian ? idPlans : plans;
+
   return (
     <section className="tariffs" id="pricing">
       <div className="tariffs__container">
         <h2 className="tariffs__title section-title">
-          Больше
-          <br />
-          для общения
+          {isEnglish ? (
+            <>
+              More
+              <br />
+              for chatting
+            </>
+          ) : isIndonesian ? (
+            <>
+              Lebih banyak
+              <br />
+              untuk ngobrol
+            </>
+          ) : (
+            <>
+              Больше
+              <br />
+              для общения
+            </>
+          )}
         </h2>
 
         <div className="tariffs__cards">
-          {plans.map((plan) => (
+          {currentPlans.map((plan) => (
             <article className={`tariffs__card tariffs__card--${plan.variant}`} key={plan.name}>
               <img className="tariffs__decor" src={plan.icon} alt="" aria-hidden="true" loading="lazy" decoding="async" />
 
@@ -96,7 +190,7 @@ export function Tariffs() {
                               fill="white"
                           />
                       </svg>
-                      Узнать про Premium
+                      {isEnglish ? 'Learn about Premium' : isIndonesian ? 'Pelajari Premium' : 'Узнать про Premium'}
                   </Button>
               ) : null}
             </article>

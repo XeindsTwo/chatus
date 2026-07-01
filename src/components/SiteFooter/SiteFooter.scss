@@ -198,7 +198,7 @@
 
 .site-footer__nav {
   display: grid;
-  grid-template-columns: 140px 250px 182px;
+  grid-template-columns: 140px max-content max-content;
   gap: 72px;
   justify-self: end;
 }
@@ -207,6 +207,7 @@
   @include flex-align-center(6);
 
   width: fit-content;
+  white-space: nowrap;
 
   svg {
     display: block;
