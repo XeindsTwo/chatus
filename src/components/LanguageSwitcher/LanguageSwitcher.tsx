@@ -1,31 +1,27 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import { defaultLocale, locales, type Locale } from '@/i18n/config';
+import { getLocalizedHref, getPathLocale, localeChangeEvent, localeStorageKey, normalizeLocale } from '@/i18n/useLocale';
 import ogRu from '@/assets/og/og-ru.png';
 import './LanguageSwitcher.scss';
 
-const storageKey = 'chatus-locale';
-const localeChangeEvent = 'chatus-locale-change';
 const localeLabels: Record<Locale, string> = {
-  ru: 'Id',
+  id: 'Id',
   en: 'En',
-  es: 'Ru',
+  ru: 'Ru',
 };
 
 const localeOgImages: Record<Locale, string> = {
-  ru: ogRu.src,
+  id: ogRu.src,
   en: ogRu.src,
-  es: ogRu.src,
+  ru: ogRu.src,
 };
 
 type LanguageSwitcherProps = {
   className?: string;
 };
-
-function isLocale(value: string | null): value is Locale {
-  return Boolean(value && locales.includes(value as Locale));
-}
 
 function updateMetaContent(selector: string, content: string) {
   const meta = document.head.querySelector<HTMLMetaElement>(selector);
@@ -59,34 +55,37 @@ function syncOgImage(locale: Locale) {
 }
 
 export function LanguageSwitcher({ className }: LanguageSwitcherProps) {
+  const pathname = usePathname();
+  const router = useRouter();
   const [activeLocale, setActiveLocale] = useState<Locale>(defaultLocale);
 
   useEffect(() => {
-    const savedLocale = window.localStorage.getItem(storageKey) as Locale | null;
+    const pathLocale = getPathLocale(pathname);
 
-    if (isLocale(savedLocale)) {
-      setActiveLocale(savedLocale);
-      document.documentElement.lang = savedLocale;
-      syncOgImage(savedLocale);
-      return;
-    }
+    setActiveLocale(pathLocale ?? defaultLocale);
+  }, [pathname]);
 
-    syncOgImage(defaultLocale);
+  useEffect(() => {
+    const savedLocale = normalizeLocale(window.localStorage.getItem(localeStorageKey));
+
+    syncOgImage(savedLocale ?? defaultLocale);
   }, []);
 
   useEffect(() => {
     function syncLocale(locale: string | null) {
-      if (!isLocale(locale)) {
+      const nextLocale = normalizeLocale(locale);
+
+      if (!nextLocale) {
         return;
       }
 
-      setActiveLocale(locale);
-      document.documentElement.lang = locale;
-      syncOgImage(locale);
+      setActiveLocale(nextLocale);
+      document.documentElement.lang = nextLocale;
+      syncOgImage(nextLocale);
     }
 
     function handleStorage(event: StorageEvent) {
-      if (event.key === storageKey) {
+      if (event.key === localeStorageKey) {
         syncLocale(event.newValue);
       }
     }
@@ -106,10 +105,15 @@ export function LanguageSwitcher({ className }: LanguageSwitcherProps) {
 
   function selectLocale(locale: Locale) {
     setActiveLocale(locale);
-    window.localStorage.setItem(storageKey, locale);
+    window.localStorage.setItem(localeStorageKey, locale);
     document.documentElement.lang = locale;
     syncOgImage(locale);
     window.dispatchEvent(new CustomEvent(localeChangeEvent, { detail: locale }));
+
+    const nextHref = getLocalizedHref(pathname || '/', locale);
+    const hash = window.location.hash;
+
+    router.push(`${nextHref}${hash}`);
   }
 
   return (

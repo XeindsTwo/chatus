@@ -64,6 +64,8 @@ export function Benefits() {
                   src={benefit.background}
                   alt=""
                   aria-hidden="true"
+                  loading="lazy"
+                  decoding="async"
                 />
               ) : null}
 
@@ -73,6 +75,8 @@ export function Benefits() {
                   src={benefit.fullCardImage}
                   alt=""
                   aria-hidden="true"
+                  loading="lazy"
+                  decoding="async"
                 />
               ) : null}
 
@@ -81,6 +85,8 @@ export function Benefits() {
                 src={benefit.image}
                 alt=""
                 aria-hidden="true"
+                loading="lazy"
+                decoding="async"
               />
 
               {benefit.variant !== 'telegram' ? (

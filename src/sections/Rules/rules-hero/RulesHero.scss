@@ -90,6 +90,16 @@
   }
 }
 
+@include r(468) {
+  .rules-hero {
+    &__copy {
+      p {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
 @media (width < 390px) {
   .rules {
     &-age-card {

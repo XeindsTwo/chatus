@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useLocale } from '@/i18n/useLocale';
 import './Faq.scss';
 
 const questions = [
@@ -51,6 +52,54 @@ const contacts = [
   },
 ];
 
+const enQuestions = [
+  {
+    question: 'What is Chatus?',
+    answer:
+      'Chatus is a service for anonymous chatting, meeting people, and finding random chat partners. Here you can start a chat without registration or forms.',
+  },
+  {
+    question: 'How does payment work?',
+    answer:
+      'Premium is paid inside Chatus with Telegram Stars. If needed, Stars can be purchased in a partner bot with rubles or cryptocurrency. Premium features activate automatically after payment.',
+  },
+  {
+    question: 'Is chat anonymous?',
+    answer:
+      'Yes. Chatus lets you chat anonymously: you do not need to create a profile, upload photos, or provide personal data. Your Telegram profile data is not shown to the chat partner; you decide what to share.',
+  },
+  {
+    question: 'How do I report someone?',
+    answer:
+      'You can end a conversation and send a report through Chatus. We review reports and restrict users who violate the service rules.',
+  },
+  {
+    question: 'Do I need to sign up?',
+    answer:
+      'No. Chatus works inside Telegram: just open the bot and start searching for a chat partner.',
+  },
+];
+
+const enContacts = [
+  {
+    label: 'Support',
+    title: 't.me/chatusteam',
+    href: 'https://t.me/chatusteam',
+    accent: true,
+    isExternal: true,
+  },
+  {
+    label: 'Personal data requests',
+    title: 'privacy@maljoy.io',
+    href: 'mailto:privacy@maljoy.io',
+  },
+  {
+    label: 'Business inquiries',
+    title: 'hello@maljoy.io',
+    href: 'mailto:hello@maljoy.io',
+  },
+];
+
 function TelegramIcon({ className }: { className?: string }) {
   return (
     <svg className={className} width="68" height="59" viewBox="0 0 68 59" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -63,6 +112,10 @@ function TelegramIcon({ className }: { className?: string }) {
 }
 
 export function Faq() {
+  const locale = useLocale();
+  const isEnglish = locale === 'en';
+  const currentQuestions = isEnglish ? enQuestions : questions;
+  const currentContacts = isEnglish ? enContacts : contacts;
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
@@ -70,13 +123,13 @@ export function Faq() {
       <div className="faq__container">
         <div className="faq__inner">
           <h2 className="faq__title section-title">
-            Вопросы
+            {isEnglish ? 'Questions' : 'Вопросы'}
             <br />
-            <span>ответы</span>
+            <span>{isEnglish ? 'Answers' : 'ответы'}</span>
           </h2>
 
           <div className="faq__list">
-            {questions.map((item, index) => {
+            {currentQuestions.map((item, index) => {
               const isOpen = activeIndex === index;
 
               return (
@@ -102,8 +155,8 @@ export function Faq() {
           </div>
         </div>
         <div className="faq__contacts">
-          {contacts.map((contact) => (
-            <a className="faq__contact" href={contact.href} key={contact.title}>
+          {currentContacts.map((contact) => (
+            <a className="faq__contact" href={contact.href} key={contact.title} target={contact.isExternal ? '_blank' : undefined} rel={contact.isExternal ? 'noreferrer' : undefined}>
               {contact.accent ? (
                 <TelegramIcon className="faq__telegram" />
               ) : null}

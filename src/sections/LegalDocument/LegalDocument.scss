@@ -51,5 +51,19 @@
 @media (width <= 760px) {
   .legal-document {
     padding-top: 132px;
+
+    &__paragraphs {
+      p {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+@include r(530) {
+  .legal-document__paragraphs {
+    p {
+      font-size: 14px;
+    }
   }
 }

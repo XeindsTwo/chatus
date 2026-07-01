@@ -89,11 +89,11 @@
   }
 
   &__text {
+    font-size: 14px;
     position: relative;
     z-index: 3;
     margin-top: clamp(-18px, -1.5vw, -8px);
     color: $color-ink;
-    font-size: clamp(16px, 1.35vw, 21px);
     @include r(768) {
       max-width: 340px;
     }

@@ -1,7 +1,12 @@
+'use client';
+
+import type { MouseEvent } from 'react';
 import logoSrc from '@/assets/decor/icons/logo.svg';
 import footerDecorSrc from '@/assets/decor/footer.svg';
 import footerMobileDecorSrc from '@/assets/decor/footer-mobile.svg';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { getLocalizedHref, useLocale } from '@/i18n/useLocale';
+import { isMobileAnchorViewport, scrollToAnchorHref } from '@/lib/anchorScroll';
 import './SiteFooter.scss';
 
 const productLinks = [
@@ -25,11 +30,53 @@ const telegramLinks = [
   { label: 'Канал — @chatusme', href: 'https://t.me/chatusteam' },
 ];
 
+const enProductLinks = [
+  { label: 'Audience', href: '/#audience' },
+  { label: 'How it works', href: '/#steps' },
+  { label: 'Benefits', href: '/#benefits' },
+  { label: 'Premium', href: '/#pricing' },
+  { label: 'FAQ', href: '/#faq' },
+];
+
+const enLegalLinks = [
+  { label: 'User Agreement', href: '/privacy' },
+  { label: 'Privacy Policy', href: '/privacy' },
+  { label: 'Payment Terms', href: '/privacy' },
+  { label: 'Refund Policy', href: '/privacy' },
+  { label: 'Chat Rules', href: '/rules' },
+];
+
+const enTelegramLinks = [
+  { label: 'Bot - @chatus', href: 'https://t.me/chatusbot' },
+  { label: 'Channel - @chatusme', href: 'https://t.me/chatusteam' },
+];
+
 export function SiteFooter() {
+  const locale = useLocale();
+  const isEnglish = locale === 'en';
+  const currentProductLinks = (isEnglish ? enProductLinks : productLinks).map((link) => ({
+    ...link,
+    href: getLocalizedHref(link.href, locale),
+  }));
+  const currentLegalLinks = (isEnglish ? enLegalLinks : legalLinks).map((link) => ({
+    ...link,
+    href: link.href === '/rules' ? getLocalizedHref(link.href, locale) : link.href,
+  }));
+  const currentTelegramLinks = isEnglish ? enTelegramLinks : telegramLinks;
+
+  const handleProductLinkClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (!href.includes('#') || !isMobileAnchorViewport()) {
+      return;
+    }
+
+    event.preventDefault();
+    scrollToAnchorHref(href);
+  };
+
   return (
     <footer className="site-footer">
-      <img className="site-footer__decor" src={footerDecorSrc} alt="" aria-hidden="true" />
-      <img className="site-footer__decor-mobile" src={footerMobileDecorSrc} alt="" aria-hidden="true" />
+      <img className="site-footer__decor" src={footerDecorSrc} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+      <img className="site-footer__decor-mobile" src={footerMobileDecorSrc} alt="" aria-hidden="true" loading="lazy" decoding="async" />
 
       <div className="site-footer__container">
         <div className="site-footer__brand">
@@ -59,20 +106,26 @@ export function SiteFooter() {
               </svg>
             </a>
           </p>
-          <p className="site-footer__copyright">©2026 Chatus. Все права защищены.</p>
+          <p className="site-footer__copyright">
+            {isEnglish ? '©2026 Chatus. All rights reserved.' : '©2026 Chatus. Все права защищены.'}
+          </p>
           <div className="site-footer__actions">
             <LanguageSwitcher className="site-footer__langs" />
-            <a className="site-footer__rules" href="/rules">
-              Правила сервиса
+            <a className="site-footer__rules" href={getLocalizedHref('/rules', locale)}>
+              {isEnglish ? 'Service Rules' : 'Правила сервиса'}
             </a>
           </div>
         </div>
 
         <div className="site-footer__nav">
-          <nav className="site-footer__column" aria-label="Продукт">
-            <span>Продукт</span>
-            {productLinks.map((link) => (
-              <a href={link.href} key={link.label}>
+          <nav className="site-footer__column" aria-label={isEnglish ? 'Product' : 'Продукт'}>
+            <span>{isEnglish ? 'Product' : 'Продукт'}</span>
+            {currentProductLinks.map((link) => (
+              <a
+                href={link.href}
+                key={link.label}
+                onClick={(event) => handleProductLinkClick(event, link.href)}
+              >
                 {link.label}
               </a>
             ))}
@@ -80,7 +133,7 @@ export function SiteFooter() {
 
           <nav className="site-footer__column" aria-label="Legal">
             <span>Legal</span>
-            {legalLinks.map((link) => (
+            {currentLegalLinks.map((link) => (
               <a href={link.href} key={link.label}>
                 {link.label}
               </a>
@@ -89,7 +142,7 @@ export function SiteFooter() {
 
           <nav className="site-footer__column" aria-label="Telegram">
             <span>Telegram</span>
-            {telegramLinks.map((link) => (
+            {currentTelegramLinks.map((link) => (
               <a className="site-footer__external" href={link.href} key={link.label} target="_blank" rel="noreferrer">
                 {link.label}
                 <svg width="9" height="10" viewBox="0 0 9 10" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -102,7 +155,7 @@ export function SiteFooter() {
       </div>
 
       <p className="site-footer__made">
-        Сделано с любовью в
+        {isEnglish ? 'Made with love by' : 'Сделано с любовью в'}
 
         <a
           href="https://layout.pics/"

@@ -66,6 +66,9 @@ main {
   margin: 0 auto;
   opacity: .4;
   background-color: #FFF8D8;
+  @media (max-width: 610px) {
+    width: 94%;
+  }
 }
 
 .section-title {

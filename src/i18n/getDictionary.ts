@@ -1,12 +1,12 @@
 import { defaultLocale, type Locale } from './config';
 import { en } from './dictionaries/en';
-import { es } from './dictionaries/es';
+import { id } from './dictionaries/id';
 import { ru } from './dictionaries/ru';
 
 const dictionaries = {
+  id,
   ru,
   en,
-  es,
 };
 
 export function getDictionary(locale: Locale = defaultLocale) {

@@ -238,7 +238,7 @@ export function Audience() {
           {stats.map((stat) => (
             <article className={`audience__card ${stat.className}`} key={stat.label}>
               <p>{stat.label}</p>
-              <img className="audience__plus" src={plusSrc} alt="" aria-hidden="true" />
+              <img className="audience__plus" src={plusSrc} alt="" aria-hidden="true" loading="lazy" decoding="async" />
               <strong>{stat.value}</strong>
             </article>
           ))}

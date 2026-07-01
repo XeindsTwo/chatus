@@ -1,4 +1,7 @@
+'use client';
+
 import iconCross from '@/assets/decor/rules/cross.svg';
+import { useLocale } from '@/i18n/useLocale';
 import './RulesBan.scss';
 
 const bans = [
@@ -40,27 +43,70 @@ const bans = [
   },
 ];
 
+const enBans = [
+  {
+    title: 'Spam \n and ads',
+    text: 'Promoting products, services, channels, bots, or third-party projects is forbidden.',
+  },
+  {
+    title: 'Violence \n and hate',
+    text: 'Threats, calls for violence, terrorism, fundraising, or support for such actions are forbidden.',
+  },
+  {
+    title: 'Content with \n minors',
+    text: 'Any content involving people under 18 is strictly forbidden in any form or context.',
+  },
+  {
+    title: 'Sexual content \n without consent',
+    text: 'Intimate content sent without clear consent is forbidden. No unsolicited pics.',
+  },
+  {
+    title: 'Scams \n and fraud',
+    text: 'Money scams, fake fundraising, card data theft, or attempts to get personal data are forbidden.',
+  },
+  {
+    title: 'Private data \n of others',
+    text: 'Do not share names, addresses, phone numbers, or photos of others without consent.',
+  },
+  {
+    title: 'Illegal goods \n and services',
+    text: 'Drugs, weapons, fake documents, or any other illegal trade are forbidden.',
+  },
+  {
+    title: 'Insults and \n harassment',
+    text: 'Insults, humiliation, threats, or harassment of your chat partner are forbidden.',
+  },
+  {
+    title: 'Direct t.me \n links',
+    text: 'Sharing usernames (@username) and social media links is permitted. Clickable links to Telegram channels are not.',
+  },
+];
+
 export function RulesBan() {
+  const locale = useLocale();
+  const isEnglish = locale === 'en';
+  const items = isEnglish ? enBans : bans;
+
   return (
     <>
       <section className="rules-ban" aria-labelledby="rules-ban-title">
         <div className="rules-ban__intro">
           <h2 id="rules-ban-title">
-            Что нельзя
+            {isEnglish ? 'What not to do' : 'Что нельзя'}
             <br />
-            делать в Chatus
+            {isEnglish ? 'in Chatus' : 'делать в Chatus'}
           </h2>
           <p>
-            Эти правила работают для всех. Они помогают сделать так, чтобы
-            общение в чате оставалось безопасным и не превращалось во что-то
-            неприятное.
+            {isEnglish
+              ? 'These rules apply to everyone. They help keep chats safe and prevent conversations from turning into unpleasant experiences.'
+              : 'Эти правила работают для всех. Они помогают сделать так, чтобы общение в чате оставалось безопасным и не превращалось во что-то неприятное.'}
           </p>
         </div>
 
         <div className="rules-ban__grid">
-          {bans.map((item) => (
+          {items.map((item) => (
             <article className="rules-ban-card" key={item.title}>
-              <img src={iconCross} alt="" aria-hidden="true" />
+              <img src={iconCross} alt="" aria-hidden="true" loading="lazy" decoding="async" />
               <h3>{item.title}</h3>
               <p>{item.text}</p>
             </article>
@@ -70,16 +116,14 @@ export function RulesBan() {
 
       <section className="rules-penalty" aria-labelledby="rules-penalty-title">
         <h2 id="rules-penalty-title">
-          Что будет при
+          {isEnglish ? 'What happens if you' : 'Что будет при'}
           <br />
-          нарушении
+          {isEnglish ? 'break the rules' : 'нарушении'}
         </h2>
         <p>
-          Нарушение этих правил может привести к временному ограничению или
-          постоянной блокировке доступа к Chatus. Все сообщения проходят
-          автоматическую и ручную проверку. Если вы считаете, что вас
-          заблокировали по ошибке — напишите в поддержку, мы пересмотрим
-          решение.
+          {isEnglish
+            ? 'Breaking these rules may lead to a temporary restriction or a permanent ban from Chatus. Messages may be checked automatically and manually. If you think you were blocked by mistake, contact support and we will review the decision.'
+            : 'Нарушение этих правил может привести к временному ограничению или постоянной блокировке доступа к Chatus. Все сообщения проходят автоматическую и ручную проверку. Если вы считаете, что вас заблокировали по ошибке — напишите в поддержку, мы пересмотрим решение.'}
         </p>
       </section>
     </>

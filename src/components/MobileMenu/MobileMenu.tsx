@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import logoSrc from '@/assets/decor/icons/logo.svg';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { scrollToAnchorHref } from '@/lib/anchorScroll';
 import './MobileMenu.scss';
 
 type MobileMenuItem = {
@@ -15,44 +16,8 @@ type MobileMenuProps = {
   items: MobileMenuItem[];
 };
 
-const getAnchorOffset = () => Number.parseFloat(
-  getComputedStyle(document.documentElement).getPropertyValue('--anchor-offset'),
-) || 0;
-
-const getMobileAnchorOffset = (hash: string) => {
-  const baseOffset = getAnchorOffset();
-
-  if (!window.matchMedia('(max-width: 992px)').matches) {
-    return baseOffset;
-  }
-
-  if (hash === '#audience' || hash === '#steps') {
-    return 8;
-  }
-
-  return baseOffset;
-};
-
 const scrollToHref = (href: string) => {
-  const url = new URL(href, window.location.href);
-
-  if (url.origin !== window.location.origin || url.pathname !== window.location.pathname || !url.hash) {
-    window.location.href = href;
-    return;
-  }
-
-  const target = document.querySelector<HTMLElement>(url.hash);
-
-  if (!target) {
-    window.location.href = href;
-    return;
-  }
-
-  history.pushState(null, '', url.hash);
-  window.scrollTo({
-    top: target.getBoundingClientRect().top + window.scrollY - getMobileAnchorOffset(url.hash),
-    behavior: 'smooth',
-  });
+  scrollToAnchorHref(href);
 };
 
 export function MobileMenu({ items }: MobileMenuProps) {

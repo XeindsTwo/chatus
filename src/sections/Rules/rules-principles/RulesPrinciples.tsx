@@ -1,6 +1,9 @@
+'use client';
+
 import iconPolite from '@/assets/decor/rules/1.svg';
 import iconPrivacy from '@/assets/decor/rules/2.svg';
 import iconInterest from '@/assets/decor/rules/3.svg';
+import { useLocale } from '@/i18n/useLocale';
 import './RulesPrinciples.scss';
 
 const principles = [
@@ -21,13 +24,34 @@ const principles = [
   },
 ];
 
+const enPrinciples = [
+  {
+    title: 'Be polite',
+    icon: iconPolite,
+    text: 'Respect your chat partner. If the chat does not work out, end it without insults.',
+  },
+  {
+    title: 'Do not rush to open up',
+    icon: iconPrivacy,
+    text: 'You decide what to share. Do not send personal data to strangers.',
+  },
+  {
+    title: 'Make the chat fun',
+    icon: iconInterest,
+    text: 'Ask questions, share thoughts, and keep the dialogue going. A good chat needs both sides.',
+  },
+];
+
 export function RulesPrinciples() {
+  const locale = useLocale();
+  const items = locale === 'en' ? enPrinciples : principles;
+
   return (
-    <section className="rules-principles indent" aria-label="Главные правила общения">
-      {principles.map((item) => (
+    <section className="rules-principles indent" aria-label={locale === 'en' ? 'Main chat rules' : 'Главные правила общения'}>
+      {items.map((item) => (
         <article className="rules-principle-card" key={item.title}>
           <h2>{item.title}</h2>
-          <img src={item.icon} alt="" aria-hidden="true" />
+          <img src={item.icon} alt="" aria-hidden="true" loading="lazy" decoding="async" />
           <p>{item.text}</p>
         </article>
       ))}

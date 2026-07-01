@@ -243,6 +243,9 @@
 
   .faq__contacts {
     grid-template-columns: 1fr;
+    max-width: 540px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .faq__contact:last-child:nth-child(odd) {

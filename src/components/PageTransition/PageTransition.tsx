@@ -2,24 +2,12 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
+import { getAnchorOffset, isMobileAnchorViewport } from '@/lib/anchorScroll';
 import { markPageTransitionPending, markPageTransitionReady } from '@/lib/pageTransition';
 import './PageTransition.scss';
 
 const loaderDuration = 720;
 const revealDelay = 120;
-const mobileScrollQuery = '(max-width: 992px)';
-
-const getAnchorOffset = (hash: string) => {
-  const baseOffset = Number.parseFloat(
-    getComputedStyle(document.documentElement).getPropertyValue('--anchor-offset'),
-  ) || 0;
-
-  if (window.matchMedia(mobileScrollQuery).matches && (hash === '#audience' || hash === '#steps')) {
-    return 8;
-  }
-
-  return baseOffset;
-};
 
 function scrollToCurrentHash() {
   if (!window.location.hash) {
@@ -35,7 +23,7 @@ function scrollToCurrentHash() {
 
     window.scrollTo({
       top: target.getBoundingClientRect().top + window.scrollY - getAnchorOffset(window.location.hash),
-      behavior: window.matchMedia(mobileScrollQuery).matches ? 'auto' : 'smooth',
+      behavior: isMobileAnchorViewport() ? 'auto' : 'smooth',
     });
   } catch {
     // Hashes from regular section ids are valid selectors; ignore malformed external hashes.

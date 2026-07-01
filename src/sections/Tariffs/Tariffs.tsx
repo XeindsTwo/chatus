@@ -51,7 +51,7 @@ export function Tariffs() {
         <div className="tariffs__cards">
           {plans.map((plan) => (
             <article className={`tariffs__card tariffs__card--${plan.variant}`} key={plan.name}>
-              <img className="tariffs__decor" src={plan.icon} alt="" aria-hidden="true" />
+              <img className="tariffs__decor" src={plan.icon} alt="" aria-hidden="true" loading="lazy" decoding="async" />
 
               <h3 className="tariffs__name card-title">{plan.name}</h3>
               <p className="tariffs__description">{plan.description}</p>
@@ -68,7 +68,7 @@ export function Tariffs() {
               <ul className="tariffs__features">
                 {plan.features.map((feature, index) => (
                   <li key={`${plan.name}-${index}-${feature}`}>
-                    <img src={checkIcon} alt="" aria-hidden="true" />
+                    <img src={checkIcon} alt="" aria-hidden="true" loading="lazy" decoding="async" />
                     <span>{feature}</span>
                   </li>
                 ))}
