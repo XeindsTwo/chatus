@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
-import logoSrc from '@/assets/decor/icons/logo.svg';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { scrollToAnchorHref } from '@/lib/anchorScroll';
 import './MobileMenu.scss';
@@ -76,7 +75,11 @@ export function MobileMenu({ items }: MobileMenuProps) {
           setIsMounted(false);
 
           if (pendingHref) {
-            requestAnimationFrame(() => scrollToHref(pendingHref));
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                window.setTimeout(() => scrollToHref(pendingHref), 40);
+              });
+            });
           }
         },
       });
@@ -170,20 +173,6 @@ export function MobileMenu({ items }: MobileMenuProps) {
       {isMounted ? (
         <div className="mobile-menu" ref={overlayRef}>
           <div className="mobile-menu__panel" ref={panelRef}>
-            <div className="mobile-menu__top" data-mobile-menu-reveal>
-              <a
-                className="mobile-menu__brand"
-                href="/"
-                onClick={(event) => {
-                  event.preventDefault();
-                  closeMenu('/');
-                }}
-                aria-label="Chatus"
-              >
-                <img src={logoSrc} alt="Chatus" width="130" height="38" />
-              </a>
-            </div>
-
             <nav className="mobile-menu__nav" aria-label="Мобильная навигация">
               {items.map((item) => (
                 <a

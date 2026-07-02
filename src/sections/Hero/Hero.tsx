@@ -172,9 +172,7 @@ export function Hero() {
           <h1 className="hero__title hero__title--mobile" data-hero-reveal>
             {isEnglish ? (
               <>
-                Find a
-                <br />
-                friend
+                Find a friend
                 <br />
                 in a few seconds
               </>

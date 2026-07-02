@@ -7,12 +7,11 @@ import { useLocale } from '@/i18n/useLocale';
 import peepsCarousel from '@/peeps_carousel.lottie';
 import './Cta.scss';
 
-const desktopAnimationQuery = '(min-width: 993px)';
-
 export function Cta() {
   const locale = useLocale();
   const isEnglish = locale === 'en';
   const isIndonesian = locale === 'id';
+  const sectionRef = useRef<HTMLElement | null>(null);
   const animationRef = useRef<HTMLDivElement | null>(null);
   const dotLottieRef = useRef<DotLottie | null>(null);
   const shouldPlayRef = useRef(false);
@@ -30,54 +29,49 @@ export function Cta() {
   }, []);
 
   useEffect(() => {
-    const animation = animationRef.current;
+    const section = sectionRef.current;
 
-    if (!animation) {
+    if (!section) {
       return;
     }
 
-    const media = window.matchMedia(desktopAnimationQuery);
-    let observer: IntersectionObserver | undefined;
+    let animationFrame = 0;
 
-    const cleanupObserver = () => {
-      observer?.disconnect();
-      observer = undefined;
-    };
-
-    const setupObserver = () => {
-      cleanupObserver();
-
-      if (!media.matches) {
+    const checkSectionVisibility = () => {
+      if (hasPlayedRef.current) {
         return;
       }
 
-      observer = new IntersectionObserver(
-        ([entry]) => {
-          if (!entry.isIntersecting) {
-            return;
-          }
+      const rect = section.getBoundingClientRect();
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      const visibleHeight = Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0);
+      const ratioBase = Math.min(rect.height, viewportHeight);
+      const visibleRatio = ratioBase > 0 ? visibleHeight / ratioBase : 0;
 
-          shouldPlayRef.current = true;
-          playOnce();
-          observer?.disconnect();
-        },
-        { threshold: 0.42 },
-      );
-
-      observer.observe(animation);
+      if (visibleRatio >= 0.8) {
+        shouldPlayRef.current = true;
+        playOnce();
+      }
     };
 
-    setupObserver();
-    media.addEventListener('change', setupObserver);
+    const scheduleCheck = () => {
+      window.cancelAnimationFrame(animationFrame);
+      animationFrame = window.requestAnimationFrame(checkSectionVisibility);
+    };
+
+    scheduleCheck();
+    window.addEventListener('scroll', scheduleCheck, { passive: true });
+    window.addEventListener('resize', scheduleCheck);
 
     return () => {
-      media.removeEventListener('change', setupObserver);
-      cleanupObserver();
+      window.cancelAnimationFrame(animationFrame);
+      window.removeEventListener('scroll', scheduleCheck);
+      window.removeEventListener('resize', scheduleCheck);
     };
   }, [playOnce]);
 
   return (
-    <section className="cta">
+    <section className="cta" ref={sectionRef}>
       <div className="cta__container">
         <h2 className="cta__title section-title">
           {isEnglish ? 'Find someone' : isIndonesian ? 'Temukan teman' : 'Найдите своего'}

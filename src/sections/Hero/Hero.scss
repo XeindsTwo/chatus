@@ -57,6 +57,25 @@
 
   &__rules-button {
     display: none;
+    border: 1px solid rgba($color-ink, .2);
+    background: transparent;
+    color: $color-ink;
+    box-shadow: none;
+
+    &:hover {
+      border-color: rgba($color-ink, .6);
+      background: transparent;
+      box-shadow: none;
+      transform: none;
+    }
+
+    &:focus-visible {
+      border-color: transparent;
+      background: #fff;
+      color: $color-ink;
+      box-shadow: none;
+      outline-color: rgba($color-ink, .34);
+    }
   }
 
   &__faces {
@@ -203,7 +222,7 @@
     height: auto;
     min-height: auto;
     padding-top: 124px;
-    margin-bottom: 64px;
+    margin-bottom: 42px;
 
     &__container {
       display: flex;

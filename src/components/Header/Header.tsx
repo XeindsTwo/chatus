@@ -43,9 +43,13 @@ export function Header() {
 
   return (
     <header className="header">
-      <a className="header__brand" href={getLocalizedHref('/', locale)} aria-label="Chatus">
-        <img src={logoSrc} alt="Chatus" width="130" height="38" />
-      </a>
+      <div className="header__mobile-glass">
+        <a className="header__brand" href={getLocalizedHref('/', locale)} aria-label="Chatus">
+          <img src={logoSrc} alt="Chatus" width="130" height="38" />
+        </a>
+      </div>
+
+      <MobileMenu items={mobileItems} />
 
       <div className="header__glass">
         <LanguageSwitcher />
@@ -60,8 +64,6 @@ export function Header() {
           <Button>{startChatText}</Button>
         </div>
       </div>
-
-      <MobileMenu items={mobileItems} />
     </header>
   );
 }
