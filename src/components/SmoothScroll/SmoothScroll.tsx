@@ -8,8 +8,23 @@ import 'lenis/dist/lenis.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const desktopScrollQuery = '(min-width: 993px)';
+
+const isDesktopSafari = () => {
+  const userAgent = window.navigator.userAgent;
+  const isSafari = /^((?!chrome|android|crios|fxios|edg|opr).)*safari/i.test(userAgent);
+
+  return isSafari && window.matchMedia(desktopScrollQuery).matches;
+};
+
 export function SmoothScroll() {
   useEffect(() => {
+    const isDesktop = window.matchMedia(desktopScrollQuery).matches;
+
+    if (!isDesktop || isDesktopSafari()) {
+      return undefined;
+    }
+
     const anchorOffset = Number.parseFloat(
       getComputedStyle(document.documentElement).getPropertyValue('--anchor-offset'),
     ) || 0;

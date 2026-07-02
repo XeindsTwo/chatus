@@ -1,23 +1,44 @@
 'use client';
 
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { DotLottieReact, type DotLottie } from '@lottiefiles/dotlottie-react/webgl';
 import { Button } from '@/components/Button';
 import { useLocale } from '@/i18n/useLocale';
 import { getBotHref } from '@/lib/telegramLinks';
-import peepsCarousel from '@/peeps_carousel.lottie';
 import './Cta.scss';
+
+const mobileLottieQuery = '(max-width: 530px)';
+const peepsCarouselSrc = '/peeps_carousel.json';
+const peepsCarouselMobileSrc = '/peeps_carousel_mobile.json';
 
 export function Cta() {
   const locale = useLocale();
   const isEnglish = locale === 'en';
   const isIndonesian = locale === 'id';
   const botHref = getBotHref(locale);
+  const [isMobileLottie, setIsMobileLottie] = useState(false);
   const sectionRef = useRef<HTMLElement | null>(null);
   const animationRef = useRef<HTMLDivElement | null>(null);
   const dotLottieRef = useRef<DotLottie | null>(null);
   const shouldPlayRef = useRef(false);
   const hasPlayedRef = useRef(false);
+
+  useEffect(() => {
+    const media = window.matchMedia(mobileLottieQuery);
+    const syncLottieSource = () => {
+      setIsMobileLottie(media.matches);
+      dotLottieRef.current = null;
+      shouldPlayRef.current = false;
+      hasPlayedRef.current = false;
+    };
+
+    syncLottieSource();
+    media.addEventListener('change', syncLottieSource);
+
+    return () => {
+      media.removeEventListener('change', syncLottieSource);
+    };
+  }, []);
 
   const playOnce = useCallback(() => {
     if (hasPlayedRef.current || !dotLottieRef.current) {
@@ -97,7 +118,8 @@ export function Cta() {
             layout={{ fit: 'contain', align: [0.5, 0.5] }}
             loop={false}
             renderConfig={{ devicePixelRatio: 1 }}
-            src={peepsCarousel}
+            key={isMobileLottie ? 'mobile' : 'desktop'}
+            src={isMobileLottie ? peepsCarouselMobileSrc : peepsCarouselSrc}
             useFrameInterpolation={false}
           />
         </div>

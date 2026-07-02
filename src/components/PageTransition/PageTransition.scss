@@ -1,4 +1,5 @@
 @use '../../styles/abstracts/mixins' as *;
+@use '../../styles/abstracts/variables' as *;
 
 html.is-page-transitioning,
 body.is-page-transitioning {
@@ -12,16 +13,19 @@ body.is-page-transitioning {
   z-index: 9999;
   display: grid;
   place-items: center;
-  background:
-    radial-gradient(circle at 50% 42%, rgb(255 221 80 / 72%), transparent 0 28%),
-    linear-gradient(180deg, #ffbc20 0%, #fdab1b 100%);
-  color: #2a1b00;
+  overflow: hidden;
+  background: $color-sun;
+  color: $color-ink;
   opacity: 0;
   pointer-events: none;
   transition:
-    opacity 280ms ease,
-    visibility 280ms ease;
+    opacity 420ms ease,
+    visibility 420ms ease;
   visibility: hidden;
+  --loader-progress: 0%;
+  --loader-next-progress: min(100%, calc(var(--loader-progress) + 4%));
+  --loader-rise: 0%;
+  --loader-next-rise: 0%;
 
   &--visible {
     opacity: 1;
@@ -30,23 +34,117 @@ body.is-page-transitioning {
   }
 
   &__inner {
+    position: relative;
+    z-index: 2;
     display: grid;
     place-items: center;
   }
 
-  &__spinner {
-    display: block;
-    width: 50px;
-    height: 50px;
-    border: 4px solid rgb(255 255 255 / 34%);
-    border-top-color: #fff;
-    border-radius: 50%;
-    animation: page-transition-spin 720ms linear infinite;
+  &__percent {
+    @include display-title;
+
+    display: grid;
+    min-width: 88px;
+    min-height: 38px;
+    place-items: center;
+    border: 1px solid rgb(42 27 0 / 6%);
+    border-radius: 999px;
+    color: $color-ink;
+    font-size: 62px;
+    font-style: italic;
+    line-height: 0.95;
+    text-transform: uppercase;
+    filter: drop-shadow(0 10px 32px rgb(42 27 0 / 8%));
+    transform: translateY(-1px);
+  }
+
+  &__bar {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient($color-paper 0 0) 0 100% / var(--loader-next-progress) var(--loader-next-rise) no-repeat,
+      linear-gradient($color-ink 0 0) 0 100% / var(--loader-progress) var(--loader-rise) no-repeat;
+    clip-path:
+      polygon(
+        0 100%,
+        var(--loader-next-progress) calc(100% - var(--loader-next-rise)),
+        var(--loader-next-progress) 100%
+      );
+    transition:
+      background-size 360ms cubic-bezier(.22, 1, .36, 1),
+      clip-path 360ms cubic-bezier(.22, 1, .36, 1);
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: $color-ink;
+      clip-path:
+        polygon(
+          0 100%,
+          var(--loader-progress) calc(100% - var(--loader-rise)),
+          var(--loader-progress) 100%
+        );
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: $color-paper;
+      clip-path:
+        polygon(
+          var(--loader-progress) calc(100% - var(--loader-rise)),
+          var(--loader-next-progress) calc(100% - var(--loader-next-rise)),
+          var(--loader-next-progress) 100%,
+          var(--loader-progress) 100%
+        );
+    }
   }
 }
 
-@keyframes page-transition-spin {
-  to {
-    transform: rotate(360deg);
+@include r(768) {
+  .page-transition {
+    &__percent {
+      min-width: 78px;
+      font-size: 48px;
+    }
   }
 }
+
+@include r(390) {
+  .page-transition {
+    &__percent {
+      font-size: 46px;
+    }
+  }
+}
+
+@keyframes page-transition-percent {
+  0% {
+    transform: translateY(2px) scale(.98);
+  }
+
+  100% {
+    transform: translateY(-1px) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .page-transition--visible .page-transition__percent {
+    animation: page-transition-percent 760ms cubic-bezier(.22, 1, .36, 1) both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-transition,
+  .page-transition__bar {
+    transition: none;
+  }
+}
+
+/*
+  Keep the old spinner keyframes removed visually; this section intentionally
+  uses real page progress instead of an infinite loader.
+*/
