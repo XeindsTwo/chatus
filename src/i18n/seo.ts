@@ -42,9 +42,9 @@ const seoContent: Record<Locale, Record<SeoPage, { title: string; description: s
   },
   en: {
     home: {
-      title: 'Chatus — anonymous chat for communication and dating',
+      title: 'Chatus — anonymous chat roulette for meeting people and chatting',
       description:
-        'Anonymous Telegram chat for quick dating and communication without registration. Find a conversation partner in a few seconds and start chatting right away.',
+        'Anonymous chat roulette for quick connections and conversations, no sign-up needed. Find someone in seconds and start chatting.',
     },
     rules: {
       title: 'Chatus Rules',
@@ -57,9 +57,9 @@ const seoContent: Record<Locale, Record<SeoPage, { title: string; description: s
   },
   ru: {
     home: {
-      title: 'Chatus - анонимный чат для общения и знакомств',
+      title: 'Chatus — анонимная чат-рулетка для знакомств и общения',
       description:
-        'Анонимный чат в Telegram для быстрых знакомств и общения без регистрации. Найдите собеседника за несколько секунд и начните диалог сразу.',
+        'Анонимная чат-рулетка для быстрых знакомств и общения без регистрации. Найди собеседника за пару секунд и начинай общение.',
     },
     rules: {
       title: 'Правила Chatus',

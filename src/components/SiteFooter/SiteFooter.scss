@@ -62,7 +62,8 @@
 }
 
 .site-footer__powered-link {
-  display: flex;
+  display: inline-flex;
+  line-height: 1;
 
   .site-footer__mailjoy {
     display: block;
@@ -74,6 +75,10 @@
       fill: #2a1b00;
       fill-opacity: 0.9;
     }
+  }
+
+  svg {
+    transform: translateY(-2px);
   }
 
   svg path {
@@ -221,6 +226,7 @@
 .site-footer__made {
   @include container;
   @include flex-align-center(6);
+  align-items: baseline;
 
   position: absolute;
   left: 50%;
@@ -230,7 +236,8 @@
   transform: translateX(-50%);
 
   a {
-    @include flex-center;
+    display: inline-flex;
+    align-items: baseline;
 
     border-radius: 8px;
     transition: opacity 220ms ease,
@@ -270,6 +277,11 @@
   svg * {
     transition: all .3s;
   }
+}
+
+.site-footer__layout {
+  display: block;
+  transform: translateY(2px);
 }
 
 @include r(1020) {

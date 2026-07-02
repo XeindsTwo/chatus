@@ -88,10 +88,10 @@ export function Intro() {
         </h2>
         <p>
           {isEnglish
-            ? 'Chatus helps you quickly find someone to chat, flirt, or meet. Just start searching — and within a few seconds, you can start talking to a new person.'
+            ? 'Chatus is an anonymous chat roulette that helps you quickly find someone to chat, flirt, or connect with. Just hit search — and within a few seconds, you\'re talking to a new person.'
             : isIndonesian
               ? 'Chatus membantumu cepat menemukan seseorang untuk mengobrol, flirting, atau berkenalan. Cukup mulai pencarian — dan dalam beberapa detik kamu bisa berbicara dengan orang baru.'
-            : 'Chatus помогает быстро найти человека для общения, флирта или знакомства. Просто запускаешь поиск — и уже через несколько секунд можешь говорить с новым собеседником'}
+            : 'Chatus — это анонимная чат-рулетка, где можно легко найти собеседника для общения, знакомства или флирта. Запускаешь поиск — и уже через пару секунд ты общаешься с новым человеком.'}
         </p>
       </div>
     </section>

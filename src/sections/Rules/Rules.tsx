@@ -6,7 +6,7 @@ import './Rules.scss';
 
 export function Rules() {
   return (
-    <section className="rules-page">
+    <section className="rules-page indent">
       <img className="rules-page__rays" src={svetSrc.src} alt="" aria-hidden="true" loading="lazy" decoding="async" />
 
       <div className="rules-page__container">

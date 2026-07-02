@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import { SmoothScroll } from '@/components/SmoothScroll';
 import { PageTransition } from '@/components/PageTransition';
 import faviconHref from '@/assets/favicon.svg';
@@ -23,6 +24,15 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body>
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-EE08JE6MZL" strategy="afterInteractive" />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-EE08JE6MZL');
+          `}
+        </Script>
         <SmoothScroll />
         <PageTransition>{children}</PageTransition>
       </body>

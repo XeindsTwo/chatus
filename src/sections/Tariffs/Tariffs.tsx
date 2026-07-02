@@ -27,7 +27,7 @@ const plans = [
   {
     name: 'Premium',
     description: 'Больше свободы в общении',
-    price: '78 ₽',
+    price: '99 ₽',
     period: '/ день',
     note: 'Расширенный доступ',
     icon: diamondIcon,

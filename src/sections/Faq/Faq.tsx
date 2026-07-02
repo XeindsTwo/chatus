@@ -165,7 +165,7 @@ export function Faq() {
   const isIndonesian = locale === 'id';
   const currentQuestions = isEnglish ? enQuestions : isIndonesian ? idQuestions : questions;
   const currentContacts = isEnglish ? enContacts : isIndonesian ? idContacts : contacts;
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(-1);
 
   return (
     <section className="faq indent" id="faq">
