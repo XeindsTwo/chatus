@@ -93,12 +93,24 @@
         margin-inline: calc((100vw - 100%) / -2);
         padding-inline: max(16px, calc((100vw - 1040px) / 2));
         scroll-padding-inline: 16px;
-        scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
+        overscroll-behavior-x: contain;
+        touch-action: pan-y;
+        cursor: grab;
+        user-select: none;
 
         &::-webkit-scrollbar {
           display: none;
+        }
+
+        * {
+          user-select: none;
+          -webkit-user-drag: none;
+        }
+
+        &.smooth-horizontal-scroll--dragging {
+          cursor: grabbing;
         }
       }
     }
@@ -106,7 +118,6 @@
     &-ban-card {
       flex: 0 0 min(82vw, 318px);
       min-height: 340px;
-      scroll-snap-align: start;
     }
   }
 }

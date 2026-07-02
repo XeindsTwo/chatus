@@ -1,9 +1,11 @@
 'use client';
 
+import { useRef } from 'react';
 import iconPolite from '@/assets/decor/rules/1.svg';
 import iconPrivacy from '@/assets/decor/rules/2.svg';
 import iconInterest from '@/assets/decor/rules/3.svg';
 import { useLocale } from '@/i18n/useLocale';
+import { useSmoothHorizontalScroll } from '@/lib/useSmoothHorizontalScroll';
 import './RulesPrinciples.scss';
 
 const principles = [
@@ -63,9 +65,12 @@ const idPrinciples = [
 export function RulesPrinciples() {
   const locale = useLocale();
   const items = locale === 'en' ? enPrinciples : locale === 'id' ? idPrinciples : principles;
+  const listRef = useRef<HTMLElement | null>(null);
+
+  useSmoothHorizontalScroll(listRef, { media: '(max-width: 900px)' });
 
   return (
-    <section className="rules-principles indent" aria-label={locale === 'en' ? 'Main chat rules' : locale === 'id' ? 'Aturan utama chat' : 'Главные правила общения'}>
+    <section className="rules-principles indent" aria-label={locale === 'en' ? 'Main chat rules' : locale === 'id' ? 'Aturan utama chat' : 'Главные правила общения'} ref={listRef}>
       {items.map((item) => (
         <article className="rules-principle-card" key={item.title}>
           <h2>{item.title}</h2>

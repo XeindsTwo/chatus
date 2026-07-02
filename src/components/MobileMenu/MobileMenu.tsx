@@ -17,7 +17,10 @@ type MobileMenuProps = {
 };
 
 const scrollToHref = (href: string) => {
-  scrollToAnchorHref(href);
+  scrollToAnchorHref(href, {
+    duration: 1.35,
+    ease: 'power3.inOut',
+  });
 };
 
 export function MobileMenu({ items }: MobileMenuProps) {

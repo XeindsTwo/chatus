@@ -171,8 +171,8 @@
   @include flex-center;
   justify-self: start;
   min-height: 0;
-  margin-top: 40px;
-  padding: 0;
+  margin-top: 24px;
+  padding: 0 5px;
   border: 1px solid rgb(255 255 255 / 58%);
   border-radius: 999px;
   background: rgb(255 255 255 / 10%);
@@ -180,7 +180,7 @@
 
   button {
     @include flex-center;
-    padding: 23px 14px;
+    padding: 25px 16px;
     font-size: 14px;
   }
 
@@ -202,9 +202,9 @@
   }
 }
 
-@include r(390) {
+@include r(440) {
   .mobile-menu__nav {
-    margin-top: 50px;
+    margin-top: 40px;
 
     a {
       min-height: 68px;

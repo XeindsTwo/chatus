@@ -126,7 +126,7 @@
     -webkit-overflow-scrolling: touch;
     cursor: grab;
     overscroll-behavior-x: contain;
-    touch-action: none;
+    touch-action: pan-y;
     user-select: none;
     scrollbar-width: none;
     &::-webkit-scrollbar {

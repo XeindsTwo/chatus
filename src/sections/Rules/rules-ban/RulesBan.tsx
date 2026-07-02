@@ -1,7 +1,9 @@
 'use client';
 
+import { useRef } from 'react';
 import iconCross from '@/assets/decor/rules/cross.svg';
 import { useLocale } from '@/i18n/useLocale';
+import { useSmoothHorizontalScroll } from '@/lib/useSmoothHorizontalScroll';
 import './RulesBan.scss';
 
 const bans = [
@@ -126,6 +128,9 @@ export function RulesBan() {
   const isEnglish = locale === 'en';
   const isIndonesian = locale === 'id';
   const items = isEnglish ? enBans : isIndonesian ? idBans : bans;
+  const gridRef = useRef<HTMLDivElement | null>(null);
+
+  useSmoothHorizontalScroll(gridRef, { media: '(max-width: 900px)' });
 
   return (
     <>
@@ -145,7 +150,7 @@ export function RulesBan() {
           </p>
         </div>
 
-        <div className="rules-ban__grid">
+        <div className="rules-ban__grid" ref={gridRef}>
           {items.map((item) => (
             <article className="rules-ban-card" key={item.title}>
               <img src={iconCross} alt="" aria-hidden="true" loading="lazy" decoding="async" />

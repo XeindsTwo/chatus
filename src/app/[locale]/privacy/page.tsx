@@ -35,7 +35,7 @@ export default async function LocalizedPrivacyPage({ params }: LocalizedPrivacyP
   return (
     <main>
       <Header />
-      <LegalDocument />
+      <LegalDocument locale={locale} />
       <Cta />
       <SiteFooter />
     </main>

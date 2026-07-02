@@ -11,7 +11,7 @@ export default function PrivacyPage() {
   return (
     <main>
       <Header />
-      <LegalDocument />
+      <LegalDocument locale="ru" />
       <Cta />
       <SiteFooter />
     </main>

@@ -1,5 +1,6 @@
 'use client';
 
+import { useRef } from 'react';
 import benefitFast from '@/assets/decor/benefits/1.svg';
 import benefitFlirt from '@/assets/decor/benefits/2.svg';
 import benefitFlirtBg from '@/assets/decor/benefits/2-bg.svg';
@@ -10,6 +11,7 @@ import benefitTelegramCard from '@/assets/decor/benefits/card-4-desktop.svg';
 import benefitTelegramCardEn from '@/assets/decor/benefits/card-4-desktop-en.svg';
 import benefitTelegramCardId from '@/assets/decor/benefits/card-4-desktop-id.svg';
 import { useLocale } from '@/i18n/useLocale';
+import { useSmoothHorizontalScroll } from '@/lib/useSmoothHorizontalScroll';
 import './Benefits.scss';
 
 const benefits = [
@@ -116,6 +118,9 @@ export function Benefits() {
   const isEnglish = locale === 'en';
   const isIndonesian = locale === 'id';
   const currentBenefits = isEnglish ? enBenefits : isIndonesian ? idBenefits : benefits;
+  const cardsRef = useRef<HTMLDivElement | null>(null);
+
+  useSmoothHorizontalScroll(cardsRef, { media: '(max-width: 710px)' });
 
   return (
     <section className="benefits indent" id="benefits">
@@ -142,7 +147,7 @@ export function Benefits() {
           )}
         </h2>
 
-        <div className="benefits__cards">
+        <div className="benefits__cards" ref={cardsRef}>
           {currentBenefits.map((benefit) => (
             <article
               className={`benefits__card benefits__card--${benefit.variant}${

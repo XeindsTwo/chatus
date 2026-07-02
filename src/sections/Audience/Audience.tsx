@@ -5,6 +5,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import plusSrc from '@/assets/decor/icons/plus-auditoria.svg';
 import { useLocale } from '@/i18n/useLocale';
+import { useSmoothHorizontalScroll } from '@/lib/useSmoothHorizontalScroll';
 import './Audience.scss';
 
 const stats = [
@@ -73,6 +74,11 @@ export function Audience() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const cardsRef = useRef<HTMLDivElement | null>(null);
+
+  useSmoothHorizontalScroll(cardsRef, {
+    media: '(max-width: 992px)',
+    draggingClass: 'audience__cards--dragging',
+  });
 
   useEffect(() => {
     if (!sectionRef.current || !panelRef.current) {
@@ -174,93 +180,6 @@ export function Audience() {
     return () => {
       media.removeEventListener('change', setupAnimation);
       ctx?.revert();
-    };
-  }, []);
-
-  useEffect(() => {
-    const cards = cardsRef.current;
-
-    if (!cards) {
-      return;
-    }
-
-    const media = window.matchMedia('(max-width: 992px)');
-    let isDragging = false;
-    let startX = 0;
-    let startScrollLeft = 0;
-
-    const handleWheel = (event: WheelEvent) => {
-      if (!media.matches) {
-        return;
-      }
-
-      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
-
-      if (delta === 0) {
-        return;
-      }
-
-      const maxScrollLeft = cards.scrollWidth - cards.clientWidth;
-      const nextScrollLeft = cards.scrollLeft + delta;
-      const canScrollLeft = delta < 0 && cards.scrollLeft > 0;
-      const canScrollRight = delta > 0 && cards.scrollLeft < maxScrollLeft;
-
-      if (!canScrollLeft && !canScrollRight) {
-        return;
-      }
-
-      event.preventDefault();
-      cards.scrollLeft = Math.min(Math.max(nextScrollLeft, 0), maxScrollLeft);
-    };
-
-    const stopDragging = () => {
-      isDragging = false;
-      cards.classList.remove('audience__cards--dragging');
-    };
-
-    const handlePointerDown = (event: PointerEvent) => {
-      if (!media.matches) {
-        return;
-      }
-
-      isDragging = true;
-      startX = event.clientX;
-      startScrollLeft = cards.scrollLeft;
-      cards.classList.add('audience__cards--dragging');
-      cards.setPointerCapture(event.pointerId);
-    };
-
-    const handlePointerMove = (event: PointerEvent) => {
-      if (!isDragging) {
-        return;
-      }
-
-      event.preventDefault();
-      cards.scrollLeft = startScrollLeft - (event.clientX - startX);
-    };
-
-    const handlePointerUp = (event: PointerEvent) => {
-      if (cards.hasPointerCapture(event.pointerId)) {
-        cards.releasePointerCapture(event.pointerId);
-      }
-
-      stopDragging();
-    };
-
-    cards.addEventListener('wheel', handleWheel, { passive: false });
-    cards.addEventListener('pointerdown', handlePointerDown);
-    cards.addEventListener('pointermove', handlePointerMove);
-    cards.addEventListener('pointerup', handlePointerUp);
-    cards.addEventListener('pointercancel', handlePointerUp);
-    cards.addEventListener('pointerleave', stopDragging);
-
-    return () => {
-      cards.removeEventListener('wheel', handleWheel);
-      cards.removeEventListener('pointerdown', handlePointerDown);
-      cards.removeEventListener('pointermove', handlePointerMove);
-      cards.removeEventListener('pointerup', handlePointerUp);
-      cards.removeEventListener('pointercancel', handlePointerUp);
-      cards.removeEventListener('pointerleave', stopDragging);
     };
   }, []);
 

@@ -6,64 +6,232 @@
   padding: 160px 0;
   background: $color-sun;
   color: $color-ink;
-}
 
-.legal-document__container {
-  width: min(100% - 32px, 864px);
-  margin-inline: auto;
-}
+  &__container {
+    width: min(100% - 32px, 1040px);
+    margin-inline: auto;
+    min-width: 0;
+  }
 
-.legal-document__section {
-  display: grid;
-  gap: 40px;
-  @include r(1100) {
+  &__hero {
+    display: grid;
     gap: 30px;
-  }
+    min-width: 0;
+    max-width: 880px;
 
-  & + & {
-    margin-top: 64px;
-  }
+    > p {
+      width: fit-content;
+      padding: 10px 16px;
+      border: 1px solid rgb(42 27 0 / 14%);
+      border-radius: 999px;
+      background: rgb(255 255 255 / 20%);
+      color: rgb(42 27 0 / 68%);
+    }
 
-  h1,
-  h2 {
-    @include section-title-small;
-    @include r(768) {
-      word-break: break-word;
+    h1 {
+      @include section-title;
+      white-space: pre-line;
+      hyphens: auto;
+      max-width: 960px;
     }
   }
-}
 
-.legal-document__paragraphs {
-  display: grid;
-  gap: 20px;
+  &__lead {
+    display: grid;
+    gap: 16px;
+    min-width: 0;
+    max-width: 720px;
 
-  p {
-    font-size: 20px;
-    line-height: 1.5;
-    color: $primary1000;
-    letter-spacing: -0.02em;
-    @include r(1100) {
+    p {
+      color: $primary1000;
+      font-size: 22px;
+      line-height: 1.35;
+    }
+  }
+
+  &__sections {
+    display: grid;
+    gap: 88px;
+    min-width: 0;
+    margin-top: 96px;
+  }
+
+  &__section {
+    display: grid;
+    gap: 32px;
+    min-width: 0;
+    max-width: 880px;
+
+    h2 {
+      @include section-title-small;
+      font-size: clamp(34px, 4vw, 56px);
+      overflow-wrap: break-word;
+    }
+  }
+
+  &__content {
+    display: grid;
+    gap: 24px;
+    min-width: 0;
+
+    p,
+    li,
+    td,
+    th {
+      color: $primary1000;
       font-size: 18px;
+      line-height: 1.5;
+      overflow-wrap: break-word;
+    }
+
+    p,
+    ul {
+      min-width: 0;
+      max-width: 720px;
+    }
+
+    ul {
+      display: grid;
+      gap: 14px;
+      padding: 0;
+      list-style: none;
+    }
+
+    li {
+      position: relative;
+      padding-left: 18px;
+
+      &::before {
+        position: absolute;
+        top: .68em;
+        left: 0;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: $color-ink;
+        content: '';
+      }
+    }
+  }
+
+  &__table-wrap {
+    overflow-x: auto;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    border: 1px solid rgb(42 27 0 / 14%);
+    border-radius: 24px;
+    background: rgb(255 255 255 / 26%);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 42%);
+  }
+
+  table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    padding: 20px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    color: $color-ink;
+    font-weight: 700;
+  }
+
+  tr + tr,
+  tbody tr:first-child {
+    border-top: 1px solid rgb(42 27 0 / 12%);
+  }
+
+  th + th,
+  td + td {
+    border-left: 1px solid rgb(42 27 0 / 12%);
+  }
+
+  &__closing {
+    display: grid;
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 1px solid rgb(42 27 0 / 16%);
+
+    p {
+      color: $primary1000;
+      font-size: 16px;
     }
   }
 }
 
-@media (width <= 760px) {
+@include r(1100) {
   .legal-document {
-    padding-top: 132px;
+    padding: 136px 0 120px;
 
-    &__paragraphs {
+    &__section {
+      gap: 28px;
+    }
+  }
+}
+
+@include r(760) {
+  .legal-document {
+    padding: 124px 0 96px;
+
+    &__hero {
+      gap: 24px;
+    }
+
+    &__lead {
       p {
+        font-size: 18px;
+      }
+    }
+
+    &__sections {
+      gap: 56px;
+      margin-top: 72px;
+    }
+
+    &__content {
+      gap: 20px;
+
+      p,
+      li,
+      td,
+      th {
         font-size: 16px;
       }
+    }
+
+    th,
+    td {
+      padding: 16px;
     }
   }
 }
 
 @include r(530) {
-  .legal-document__paragraphs {
-    p {
-      font-size: 14px;
+  .legal-document {
+    &__lead {
+      p {
+        font-size: 16px;
+      }
+    }
+
+    &__content {
+      p,
+      li,
+      td,
+      th {
+        font-size: 14px;
+      }
+    }
+
+    table {
+      min-width: 680px;
     }
   }
 }
