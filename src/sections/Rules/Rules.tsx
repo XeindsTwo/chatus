@@ -1,4 +1,4 @@
-import svetSrc from '@/assets/decor/svet.png';
+import svetSrc from '@/assets/decor/svet.webp';
 import { RulesBan } from './rules-ban/RulesBan';
 import { RulesHero } from './rules-hero/RulesHero';
 import { RulesPrinciples } from './rules-principles/RulesPrinciples';

@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import whatThisSrc from '@/assets/what-this.png';
-import whatThisEnSrc from '@/assets/what-this-en.png';
-import whatThisIdSrc from '@/assets/what-this-id.png';
+import whatThisSrc from '@/assets/what-this.webp';
+import whatThisEnSrc from '@/assets/what-this-en.webp';
+import whatThisIdSrc from '@/assets/what-this-id.webp';
 import type { Locale } from '@/i18n/config';
 import { localeChangeEvent, localeStorageKey, normalizeLocale, useLocale } from '@/i18n/useLocale';
 import './Intro.scss';

@@ -10,6 +10,9 @@ import { isMobileAnchorViewport, scrollToAnchorHref } from '@/lib/anchorScroll';
 import { internationalBotHref, ruBotHref } from '@/lib/telegramLinks';
 import './SiteFooter.scss';
 
+const desktopFooterAnchorOffset = 86;
+const sectionTitleSelector = ':scope .section-title, :scope h1, :scope h2';
+
 const productLinks = [
   { label: 'Аудитория', href: '/#audience' },
   { label: 'Как это работает', href: '/#steps' },
@@ -91,12 +94,23 @@ export function SiteFooter() {
   const madeText = isEnglish ? 'Made with love by' : isIndonesian ? 'Dibuat dengan cinta oleh' : 'Сделано с любовью в';
 
   const handleProductLinkClick = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (!href.includes('#') || !isMobileAnchorViewport()) {
+    if (!href.includes('#')) {
       return;
     }
 
     event.preventDefault();
-    scrollToAnchorHref(href);
+
+    if (isMobileAnchorViewport()) {
+      scrollToAnchorHref(href);
+      return;
+    }
+
+    scrollToAnchorHref(href, {
+      duration: 1.12,
+      ease: 'power3.inOut',
+      offset: desktopFooterAnchorOffset,
+      targetSelector: sectionTitleSelector,
+    });
   };
 
   return (

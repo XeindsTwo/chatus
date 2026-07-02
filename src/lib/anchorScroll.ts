@@ -9,11 +9,17 @@ type AnchorScrollOptions = ScrollBehavior | {
   behavior?: ScrollBehavior;
   duration?: number;
   ease?: string;
+  offset?: number;
+  targetSelector?: string;
 };
 
 export const isMobileAnchorViewport = () => window.matchMedia(mobileScrollQuery).matches;
 
-export const getAnchorOffset = (hash: string) => {
+export const getAnchorOffset = (hash: string, offset?: number) => {
+  if (typeof offset === 'number') {
+    return offset;
+  }
+
   const baseOffset = Number.parseFloat(
     getComputedStyle(document.documentElement).getPropertyValue('--anchor-offset'),
   ) || 0;
@@ -25,14 +31,14 @@ export const getAnchorOffset = (hash: string) => {
   return baseOffset;
 };
 
-const getAnchorTop = (target: HTMLElement, hash: string) => (
-  target.getBoundingClientRect().top + window.scrollY - getAnchorOffset(hash)
+const getAnchorTop = (target: HTMLElement, hash: string, offset?: number) => (
+  target.getBoundingClientRect().top + window.scrollY - getAnchorOffset(hash, offset)
 );
 
-const correctAnchorPosition = (target: HTMLElement, hash: string, attempt = 0) => {
+const correctAnchorPosition = (target: HTMLElement, hash: string, offset?: number, attempt = 0) => {
   const correctionId = activeAnchorCorrection;
   const currentTop = window.scrollY;
-  const targetTop = getAnchorTop(target, hash);
+  const targetTop = getAnchorTop(target, hash, offset);
   const distance = Math.abs(targetTop - currentTop);
 
   if (distance > 2) {
@@ -51,7 +57,7 @@ const correctAnchorPosition = (target: HTMLElement, hash: string, attempt = 0) =
         activeAnchorTween = null;
 
         if (attempt < 4 && correctionId === activeAnchorCorrection) {
-          window.setTimeout(() => correctAnchorPosition(target, hash, attempt + 1), 90);
+          window.setTimeout(() => correctAnchorPosition(target, hash, offset, attempt + 1), 90);
         }
       },
       onInterrupt: () => {
@@ -63,7 +69,7 @@ const correctAnchorPosition = (target: HTMLElement, hash: string, attempt = 0) =
   }
 
   if (attempt < 4 && correctionId === activeAnchorCorrection) {
-    window.setTimeout(() => correctAnchorPosition(target, hash, attempt + 1), 90);
+    window.setTimeout(() => correctAnchorPosition(target, hash, offset, attempt + 1), 90);
   }
 };
 
@@ -75,15 +81,20 @@ export const scrollToAnchorHref = (href: string, options: AnchorScrollOptions = 
     return false;
   }
 
-  const target = document.querySelector<HTMLElement>(url.hash);
+  const sectionTarget = document.querySelector<HTMLElement>(url.hash);
 
-  if (!target) {
+  if (!sectionTarget) {
     window.location.href = href;
     return false;
   }
 
+  const offset = typeof options === 'string' ? undefined : options.offset;
+  const target = typeof options === 'string' || !options.targetSelector
+    ? sectionTarget
+    : sectionTarget.querySelector<HTMLElement>(options.targetSelector) ?? sectionTarget;
+
   history.pushState(null, '', url.hash);
-  const targetTop = getAnchorTop(target, url.hash);
+  const targetTop = getAnchorTop(target, url.hash, offset);
   const behavior = typeof options === 'string' ? options : options.behavior ?? 'smooth';
   const duration = typeof options === 'string' ? undefined : options.duration;
 
@@ -96,7 +107,7 @@ export const scrollToAnchorHref = (href: string, options: AnchorScrollOptions = 
       behavior,
     });
 
-    window.setTimeout(() => correctAnchorPosition(target, url.hash), behavior === 'smooth' ? 420 : 80);
+    window.setTimeout(() => correctAnchorPosition(target, url.hash, offset), behavior === 'smooth' ? 420 : 80);
 
     return true;
   }
@@ -110,14 +121,14 @@ export const scrollToAnchorHref = (href: string, options: AnchorScrollOptions = 
     ease: typeof options === 'string' ? 'power3.inOut' : options.ease ?? 'power3.inOut',
     overwrite: true,
     onUpdate: () => {
-      const liveTargetTop = getAnchorTop(target, url.hash);
+      const liveTargetTop = getAnchorTop(target, url.hash, offset);
       const nextTop = startTop + ((liveTargetTop - startTop) * scrollState.progress);
 
       window.scrollTo(0, nextTop);
     },
     onComplete: () => {
       activeAnchorTween = null;
-      window.scrollTo(0, getAnchorTop(target, url.hash));
+      window.scrollTo(0, getAnchorTop(target, url.hash, offset));
     },
     onInterrupt: () => {
       activeAnchorTween = null;

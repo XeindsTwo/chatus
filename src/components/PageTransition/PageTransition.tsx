@@ -3,37 +3,64 @@
 import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { getAnchorOffset, isMobileAnchorViewport } from '@/lib/anchorScroll';
+import { criticalImages } from '@/lib/criticalImages';
 import { markPageTransitionPending, markPageTransitionReady } from '@/lib/pageTransition';
 import './PageTransition.scss';
 
 const loaderMinDuration = 720;
-const revealDelay = 120;
-const loaderTickMs = 80;
+const completedHoldDelay = 360;
+const revealDelay = 760;
+const loadedCriticalImages = new Set<string>();
 
-function getContentLoadProgress() {
-  const images = Array.from(document.images).filter((image) => image.loading !== 'lazy');
-  const loadedImages = images.filter((image) => image.complete);
-  const imagesProgress = images.length > 0 ? loadedImages.length / images.length : 1;
-  const documentProgress = document.readyState === 'complete' ? 1 : document.readyState === 'interactive' ? 0.72 : 0.28;
+function preloadCriticalImages(onProgress: (progress: number) => void) {
+  const sources = [...new Set(criticalImages)].filter(Boolean);
 
-  return Math.min(1, (documentProgress * 0.45) + (imagesProgress * 0.55));
-}
+  if (sources.length === 0) {
+    onProgress(100);
+    return Promise.resolve();
+  }
 
-function whenCriticalContentReady() {
-  const imagePromises = Array.from(document.images)
-    .filter((image) => image.loading !== 'lazy' && !image.complete)
-    .map((image) => new Promise<void>((resolve) => {
-      image.addEventListener('load', () => resolve(), { once: true });
-      image.addEventListener('error', () => resolve(), { once: true });
-    }));
-  const fontPromise = 'fonts' in document ? document.fonts.ready.then(() => undefined) : Promise.resolve();
-  const documentPromise = document.readyState === 'complete'
-    ? Promise.resolve()
-    : new Promise<void>((resolve) => {
-      window.addEventListener('load', () => resolve(), { once: true });
-    });
+  let processed = 0;
+  const updateProgress = () => {
+    onProgress((processed / sources.length) * 100);
+  };
 
-  return Promise.all([documentPromise, fontPromise, ...imagePromises]);
+  updateProgress();
+
+  return Promise.all(
+    sources.map((src) => new Promise<void>((resolve) => {
+      if (loadedCriticalImages.has(src)) {
+        processed += 1;
+        updateProgress();
+        resolve();
+        return;
+      }
+
+      const image = new Image();
+      let isSettled = false;
+
+      const settle = () => {
+        if (isSettled) {
+          return;
+        }
+
+        isSettled = true;
+        loadedCriticalImages.add(src);
+        processed += 1;
+        updateProgress();
+        resolve();
+      };
+
+      image.onload = settle;
+      image.onerror = settle;
+      image.decoding = 'async';
+      image.src = src;
+
+      if (image.complete) {
+        settle();
+      }
+    })),
+  ).then(() => undefined);
 }
 
 function scrollToCurrentHash() {
@@ -76,33 +103,27 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     let isCancelled = false;
     let progressFrame = 0;
-    let progressTimer = 0;
     let hideTimer = 0;
+    let readyTimer = 0;
     const startedAt = performance.now();
+    const targetProgress = { current: 0 };
 
     markPageTransitionPending();
     setVisible(true);
     setProgress(0);
 
-    const animateProgress = (targetProgress: number) => {
+    const animateProgress = () => {
       setProgress((currentProgress) => {
-        const nextProgress = currentProgress + ((targetProgress - currentProgress) * 0.18);
+        const nextProgress = currentProgress + ((targetProgress.current - currentProgress) * 0.12);
+
+        if (targetProgress.current >= 100 && nextProgress > 99.6) {
+          return 100;
+        }
 
         return Math.min(99, Math.max(currentProgress, nextProgress));
       });
-    };
 
-    const scheduleProgressTick = () => {
-      progressTimer = window.setTimeout(() => {
-        progressFrame = window.requestAnimationFrame(() => {
-          if (isCancelled) {
-            return;
-          }
-
-          animateProgress(getContentLoadProgress() * 92);
-          scheduleProgressTick();
-        });
-      }, loaderTickMs);
+      progressFrame = window.requestAnimationFrame(animateProgress);
     };
 
     const completeTransition = () => {
@@ -110,6 +131,7 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
         return;
       }
 
+      targetProgress.current = 100;
       setProgress(100);
 
       hideTimer = window.setTimeout(() => {
@@ -130,13 +152,19 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
       }, 220);
     };
 
-    scheduleProgressTick();
+    progressFrame = window.requestAnimationFrame(animateProgress);
 
-    whenCriticalContentReady().then(() => {
+    preloadCriticalImages((nextProgress) => {
+      if (isCancelled) {
+        return;
+      }
+
+      targetProgress.current = Math.min(99, nextProgress);
+    }).then(() => {
       const elapsed = performance.now() - startedAt;
       const duration = didMountRef.current ? loaderMinDuration : loaderMinDuration + 180;
 
-      window.setTimeout(completeTransition, Math.max(0, duration - elapsed));
+      readyTimer = window.setTimeout(completeTransition, Math.max(0, duration + completedHoldDelay - elapsed));
     });
 
     didMountRef.current = true;
@@ -144,7 +172,7 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
     return () => {
       isCancelled = true;
       window.cancelAnimationFrame(progressFrame);
-      window.clearTimeout(progressTimer);
+      window.clearTimeout(readyTimer);
       window.clearTimeout(hideTimer);
     };
   }, [pathname]);

@@ -25,15 +25,7 @@ export function SmoothScroll() {
       return undefined;
     }
 
-    const anchorOffset = Number.parseFloat(
-      getComputedStyle(document.documentElement).getPropertyValue('--anchor-offset'),
-    ) || 0;
-
     const lenis = new Lenis({
-      anchors: {
-        offset: -anchorOffset,
-        duration: 1.25,
-      },
       lerp: 0.1,
       smoothWheel: true,
     });

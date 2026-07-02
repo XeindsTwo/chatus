@@ -6,6 +6,7 @@ import { Button } from '@/components/Button';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { MobileMenu } from '@/components/MobileMenu/MobileMenu';
 import { getLocalizedHref, useLocale } from '@/i18n/useLocale';
+import { isMobileAnchorViewport, scrollToAnchorHref } from '@/lib/anchorScroll';
 import { getBotHref } from '@/lib/telegramLinks';
 
 const navItems = [
@@ -35,6 +36,9 @@ const idNavItems = [
   { label: 'Aturan Layanan', href: '/rules' },
 ];
 
+const desktopHeaderAnchorOffset = 96;
+const sectionTitleSelector = ':scope .section-title, :scope h1, :scope h2';
+
 export function Header() {
   const locale = useLocale();
   const items = locale === 'en' ? enNavItems : locale === 'id' ? idNavItems : navItems;
@@ -57,7 +61,24 @@ export function Header() {
         <LanguageSwitcher />
         <nav className="header__nav" aria-label={locale === 'en' ? 'Main navigation' : 'Главная навигация'}>
           {localizedItems.map((item) => (
-            <a href={item.href} key={item.label}>
+            <a
+              href={item.href}
+              key={item.label}
+              onClickCapture={(event) => {
+                if (isMobileAnchorViewport() || !item.href.includes('#')) {
+                  return;
+                }
+
+                event.preventDefault();
+                event.stopPropagation();
+                scrollToAnchorHref(item.href, {
+                  duration: 1.12,
+                  ease: 'power3.inOut',
+                  offset: desktopHeaderAnchorOffset,
+                  targetSelector: sectionTitleSelector,
+                });
+              }}
+            >
               {item.label}
             </a>
           ))}
