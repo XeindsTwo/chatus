@@ -9,6 +9,20 @@
   color: $color-ink;
   margin-bottom: 80px;
 
+  &__rays {
+    position: absolute;
+    top: 48%;
+    left: 54%;
+    z-index: 0;
+    display: block;
+    width: clamp(880px, 72vw, 1240px);
+    height: auto;
+    max-width: none;
+    translate: -50% -50%;
+    pointer-events: none;
+    user-select: none;
+  }
+
   &__container {
     @include container;
 
@@ -183,6 +197,11 @@
       grid-template-columns: minmax(250px, 0.72fr) minmax(390px, 1.22fr) minmax(200px, 0.48fr);
     }
 
+    &__rays {
+      left: 55%;
+      width: 920px;
+    }
+
     &__title,
     &__side-title {
       font-size: clamp(58px, 6vw, 70px);
@@ -223,6 +242,14 @@
     min-height: auto;
     padding-top: 124px;
     margin-bottom: 42px;
+
+    &__rays {
+      top: 42%;
+      left: 50%;
+      width: 120vw;
+      min-width: 720px;
+      opacity: 1;
+    }
 
     &__container {
       display: flex;

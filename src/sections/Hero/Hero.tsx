@@ -13,6 +13,7 @@ import faceRowThree from '@/assets/faces/3.png';
 import mobileFaceRowOne from '@/assets/faces/mobile/1.png';
 import mobileFaceRowTwo from '@/assets/faces/mobile/2.png';
 import mobileFaceRowThree from '@/assets/faces/mobile/3.png';
+import luchiMainSrc from '@/assets/decor/luchi-main.png';
 import './Hero.scss';
 
 const faceRows = [
@@ -43,8 +44,12 @@ export function Hero() {
       media.add('(min-width: 901px)', () => {
         const rows = gsap.utils.toArray<HTMLElement>('.hero__face-row');
         const revealItems = gsap.utils.toArray<HTMLElement>('[data-hero-reveal]');
+        const rays = ref.current?.querySelector<HTMLElement>('.hero__rays');
 
         gsap.set(revealItems, { autoAlpha: 0, y: 34 });
+        if (rays) {
+          gsap.set(rays, { autoAlpha: 0 });
+        }
 
         gsap.set(rows, {
           autoAlpha: 1,
@@ -54,6 +59,14 @@ export function Hero() {
         });
 
         timeline = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+        if (rays) {
+          timeline.to(rays, {
+            autoAlpha: 1,
+            duration: 0.9,
+            ease: 'power2.out',
+          }, 0);
+        }
 
         timeline
           .to(revealItems, {
@@ -81,8 +94,12 @@ export function Hero() {
       media.add('(max-width: 900px)', () => {
         const rows = gsap.utils.toArray<HTMLElement>('.hero__face-row');
         const revealItems = gsap.utils.toArray<HTMLElement>('[data-hero-reveal]');
+        const rays = ref.current?.querySelector<HTMLElement>('.hero__rays');
 
         gsap.set(revealItems, { autoAlpha: 0, y: 28 });
+        if (rays) {
+          gsap.set(rays, { autoAlpha: 0 });
+        }
 
         gsap.set(rows, {
           autoAlpha: 1,
@@ -93,12 +110,24 @@ export function Hero() {
 
         timeline = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
 
+        if (rays) {
+          timeline.to(rays, {
+            autoAlpha: 1,
+            duration: 0.86,
+            ease: 'power2.out',
+          }, 0);
+        }
+
         timeline
-          .to(rows, {
-            xPercent: 0,
-            duration: 1.25,
-            ease: 'power4.out',
-          })
+          .to(
+            rows,
+            {
+              xPercent: 0,
+              duration: 1.25,
+              ease: 'power4.out',
+            },
+            0.06,
+          )
           .to(
             revealItems,
             {
@@ -144,6 +173,8 @@ export function Hero() {
   return (
     <section className="hero" ref={ref}>
       <Header />
+
+      <img className="hero__rays" src={luchiMainSrc.src} alt="" aria-hidden="true" decoding="async" />
 
       <div className="hero__mask hero__mask--top" aria-hidden="true" />
       <div className="hero__mask hero__mask--bottom" aria-hidden="true" />
