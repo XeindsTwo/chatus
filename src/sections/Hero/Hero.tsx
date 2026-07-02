@@ -6,6 +6,7 @@ import { Button } from '@/components/Button';
 import { Header } from '@/components/Header';
 import { getLocalizedHref, useLocale } from '@/i18n/useLocale';
 import { onPageTransitionReady } from '@/lib/pageTransition';
+import { getBotHref } from '@/lib/telegramLinks';
 import faceRowOne from '@/assets/faces/1.png';
 import faceRowTwo from '@/assets/faces/2.png';
 import faceRowThree from '@/assets/faces/3.png';
@@ -24,6 +25,7 @@ export function Hero() {
   const locale = useLocale();
   const isEnglish = locale === 'en';
   const isIndonesian = locale === 'id';
+  const botHref = getBotHref(locale);
   const ref = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -202,7 +204,7 @@ export function Hero() {
               : 'Анонимное общение и новые знакомства за несколько секунд — без регистрации, анкет и раскрытия личности'}
           </p>
           <div className="hero__actions" data-hero-reveal>
-            <Button href="https://t.me/chatusbot" target="_blank" rel="noreferrer">
+            <Button href={botHref} target="_blank" rel="noreferrer">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path
                   fillRule="evenodd"

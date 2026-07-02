@@ -1,5 +1,6 @@
 import './Footer.scss';
 import { Button } from '@/components/Button';
+import { ruBotHref } from '@/lib/telegramLinks';
 
 export function Footer() {
   return (
@@ -19,7 +20,7 @@ export function Footer() {
           Декоративные изображения можно будет заменить на готовые рендеры или
           иллюстрации без перестройки секций.
         </p>
-        <Button href="https://t.me/chatusbot" target="_blank" rel="noreferrer">Найти собеседника</Button>
+        <Button href={ruBotHref} target="_blank" rel="noreferrer">Найти собеседника</Button>
       </div>
     </footer>
   );

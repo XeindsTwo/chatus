@@ -6,6 +6,7 @@ import freeIcon from '@/assets/decor/tariffs/free.svg';
 import './Tariffs.scss';
 import {Button} from "@/components/Button";
 import { useLocale } from '@/i18n/useLocale';
+import { getBotHref } from '@/lib/telegramLinks';
 
 const plans = [
   {
@@ -116,6 +117,7 @@ export function Tariffs() {
   const isEnglish = locale === 'en';
   const isIndonesian = locale === 'id';
   const currentPlans = isEnglish ? enPlans : isIndonesian ? idPlans : plans;
+  const botHref = getBotHref(locale);
 
   return (
     <section className="tariffs" id="pricing">
@@ -171,7 +173,7 @@ export function Tariffs() {
               {plan.variant === 'premium' ? (
                   <Button
                       className={'tariffs__button'}
-                      href="https://t.me/chatusbot"
+                      href={botHref}
                       target="_blank"
                       rel="noreferrer"
                       variant="dark"

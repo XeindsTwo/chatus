@@ -6,6 +6,7 @@ import { Button } from '@/components/Button';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { MobileMenu } from '@/components/MobileMenu/MobileMenu';
 import { getLocalizedHref, useLocale } from '@/i18n/useLocale';
+import { getBotHref } from '@/lib/telegramLinks';
 
 const navItems = [
   { label: 'Аудитория', href: '/#audience' },
@@ -40,6 +41,7 @@ export function Header() {
   const localizedItems = items.map((item) => ({ ...item, href: getLocalizedHref(item.href, locale) }));
   const mobileItems = localizedItems.filter((item) => !item.href.endsWith('/rules'));
   const startChatText = locale === 'en' ? 'Start chatting' : locale === 'id' ? 'Mulai chat' : 'Начать общение';
+  const botHref = getBotHref(locale);
 
   return (
     <header className="header">
@@ -61,7 +63,7 @@ export function Header() {
           ))}
         </nav>
         <div className="header__actions">
-          <Button>{startChatText}</Button>
+          <Button href={botHref} target="_blank" rel="noreferrer">{startChatText}</Button>
         </div>
       </div>
     </header>
