@@ -225,9 +225,9 @@
 
 .site-footer__made {
   @include container;
-  @include flex-align-center(6);
+  display: flex;
   align-items: baseline;
-
+  gap: 7px;
   position: absolute;
   left: 50%;
   bottom: 44px;
@@ -279,9 +279,29 @@
   }
 }
 
-.site-footer__layout {
-  display: block;
-  transform: translateY(2px);
+.site-footer__made-link {
+  line-height: 0;
+  transform: translateY(6px);
+
+  &:hover {
+    svg {
+      path {
+        &:first-child {
+          stroke-opacity: 1;
+          stroke: $color-ink;
+        }
+
+        &:nth-child(2) {
+          fill-opacity: 1;
+        }
+      }
+    }
+  }
+
+  svg {
+    display: block;
+    flex: 0 0 auto;
+  }
 }
 
 @include r(1020) {

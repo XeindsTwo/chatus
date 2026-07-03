@@ -1,44 +1,20 @@
 'use client';
 
 import { Button } from '@/components/Button';
-import peepsCarouselAdaptiveSrc from '@/assets/peeps_carousel_adaptive.webm';
 import peepsCarouselDesktopSrc from '@/assets/peeps_carousel_desktop.webm';
 import { useLocale } from '@/i18n/useLocale';
 import { getBotHref } from '@/lib/telegramLinks';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import './Cta.scss';
-
-const adaptiveVideoQuery = '(max-width: 999px)';
 
 export function Cta() {
   const locale = useLocale();
   const isEnglish = locale === 'en';
   const isIndonesian = locale === 'id';
   const botHref = getBotHref(locale);
-  const [isAdaptiveVideo, setIsAdaptiveVideo] = useState(false);
   const sectionRef = useRef<HTMLElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const hasPlayedRef = useRef(false);
-
-  useEffect(() => {
-    const media = window.matchMedia(adaptiveVideoQuery);
-    const syncVideoSource = () => {
-      setIsAdaptiveVideo(media.matches);
-      hasPlayedRef.current = false;
-
-      if (videoRef.current) {
-        videoRef.current.pause();
-        videoRef.current.currentTime = 0;
-      }
-    };
-
-    syncVideoSource();
-    media.addEventListener('change', syncVideoSource);
-
-    return () => {
-      media.removeEventListener('change', syncVideoSource);
-    };
-  }, []);
 
   const playOnce = useCallback(() => {
     const video = videoRef.current;
@@ -96,12 +72,11 @@ export function Cta() {
         <div className="cta__animation" aria-label={isEnglish ? 'Chat partners animation' : isIndonesian ? 'Animasi teman chat' : 'Анимация собеседников'}>
           <video
             className="cta__video"
-            key={isAdaptiveVideo ? 'adaptive' : 'desktop'}
             muted
             playsInline
             preload="metadata"
             ref={videoRef}
-            src={isAdaptiveVideo ? peepsCarouselAdaptiveSrc : peepsCarouselDesktopSrc}
+            src={peepsCarouselDesktopSrc}
           />
         </div>
 

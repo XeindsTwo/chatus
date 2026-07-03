@@ -49,10 +49,14 @@
     &::before {
       inset: 0;
       background:
-        radial-gradient(circle 245px at 7vw 50%, #f4f5f8 0%, rgb(244 245 248 / 98%) 46%, rgb(244 245 248 / 0%) 78%),
-        radial-gradient(circle 245px at calc(100% - 7vw) 50%, #f2f4f7 0%, rgb(242 244 247 / 98%) 46%, rgb(242 244 247 / 0%) 78%);
-      @include r(700) {
-        display: none;
+        linear-gradient(90deg, #f4f5f8 0, #f4f5f8 clamp(150px, 12vw, 190px), rgb(244 245 248 / 0%) clamp(250px, 22vw, 330px)),
+        linear-gradient(270deg, #f2f4f7 0, #f2f4f7 clamp(150px, 12vw, 190px), rgb(242 244 247 / 0%) clamp(250px, 22vw, 330px)),
+        radial-gradient(circle 260px at 10vw 50%, #f4f5f8 0%, rgb(244 245 248 / 98%) 42%, rgb(244 245 248 / 0%) 76%),
+        radial-gradient(circle 260px at calc(100% - 10vw) 50%, #f2f4f7 0%, rgb(242 244 247 / 98%) 42%, rgb(242 244 247 / 0%) 76%);
+      @include r(992) {
+        background:
+          linear-gradient(90deg, #f4f5f8 0, #f4f5f8 18vw, rgb(244 245 248 / 0%) 38vw),
+          linear-gradient(270deg, #f2f4f7 0, #f2f4f7 18vw, rgb(242 244 247 / 0%) 38vw);
       }
     }
 
@@ -67,50 +71,24 @@
 
     @media (max-width: 1300px) {
       height: auto;
-      margin-top: -135px;
-      margin-bottom: -70px;
     }
-
-    @media (max-width: 1100px) {
-      margin-top: -120px;
-    }
-
-    @include r(992) {
-      margin-top: -115px;
-      margin-bottom: -60px;
-    }
-
     @include r(880) {
-      margin-top: -99px;
-      margin-bottom: -50px;
+      margin-top: 5px;
     }
-
     @include r(768) {
       width: 110vw;
-      margin-top: -102px;
     }
     @media (max-width: 700px) {
-      margin-top: -94px;
-      width: 117vw;
-      margin-bottom: -40px;
-    }
-    @include r(610) {
-      margin-top: -85px;
-    }
-    @media (max-width: 560px) {
-      width: 112vw;
-      margin-top: -78px;
-      margin-bottom: -34px;
+      width: 120vw;
     }
     @media (max-width: 530px) {
-      width: 110vw;
-      margin-top: 10px;
+      width: 124vw;
     }
     @include r(468) {
       margin-bottom: 20px;
     }
     @media (max-width: 440px) {
-      width: 135vw;
+      width: 165vw;
     }
   }
 

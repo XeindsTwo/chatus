@@ -2,6 +2,7 @@ import gsap from 'gsap';
 
 const mobileScrollQuery = '(max-width: 992px)';
 const compactMobileHashes = new Set(['#audience', '#steps']);
+const correctionThreshold = 14;
 let activeAnchorTween: gsap.core.Tween | null = null;
 let activeAnchorCorrection = 0;
 
@@ -35,13 +36,21 @@ const getAnchorTop = (target: HTMLElement, hash: string, offset?: number) => (
   target.getBoundingClientRect().top + window.scrollY - getAnchorOffset(hash, offset)
 );
 
+const clearVisibleHash = () => {
+  if (!window.location.hash) {
+    return;
+  }
+
+  history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+};
+
 const correctAnchorPosition = (target: HTMLElement, hash: string, offset?: number, attempt = 0) => {
   const correctionId = activeAnchorCorrection;
   const currentTop = window.scrollY;
   const targetTop = getAnchorTop(target, hash, offset);
   const distance = Math.abs(targetTop - currentTop);
 
-  if (distance > 2) {
+  if (distance > correctionThreshold) {
     const scrollState = { y: currentTop };
 
     activeAnchorTween?.kill();
@@ -93,7 +102,7 @@ export const scrollToAnchorHref = (href: string, options: AnchorScrollOptions = 
     ? sectionTarget
     : sectionTarget.querySelector<HTMLElement>(options.targetSelector) ?? sectionTarget;
 
-  history.pushState(null, '', url.hash);
+  clearVisibleHash();
   const targetTop = getAnchorTop(target, url.hash, offset);
   const behavior = typeof options === 'string' ? options : options.behavior ?? 'smooth';
   const duration = typeof options === 'string' ? undefined : options.duration;
@@ -116,6 +125,7 @@ export const scrollToAnchorHref = (href: string, options: AnchorScrollOptions = 
   const scrollState = { progress: 0 };
   const isMobile = isMobileAnchorViewport();
   const initialTargetTop = targetTop;
+  const lockTargetTop = isMobile || url.hash === '#audience';
 
   activeAnchorTween = gsap.to(scrollState, {
     progress: 1,
@@ -123,7 +133,7 @@ export const scrollToAnchorHref = (href: string, options: AnchorScrollOptions = 
     ease: typeof options === 'string' ? 'power3.inOut' : options.ease ?? 'power3.inOut',
     overwrite: true,
     onUpdate: () => {
-      const liveTargetTop = isMobile ? initialTargetTop : getAnchorTop(target, url.hash, offset);
+      const liveTargetTop = lockTargetTop ? initialTargetTop : getAnchorTop(target, url.hash, offset);
       const nextTop = startTop + ((liveTargetTop - startTop) * scrollState.progress);
 
       window.scrollTo(0, nextTop);
@@ -131,14 +141,14 @@ export const scrollToAnchorHref = (href: string, options: AnchorScrollOptions = 
     onComplete: () => {
       activeAnchorTween = null;
 
-      if (isMobile) {
+      if (lockTargetTop) {
         return;
       }
 
       const finalTop = getAnchorTop(target, url.hash, offset);
       const finalDistance = Math.abs(finalTop - window.scrollY);
 
-      if (finalDistance > 2) {
+      if (finalDistance > correctionThreshold) {
         window.scrollTo(0, finalTop);
       }
     },
