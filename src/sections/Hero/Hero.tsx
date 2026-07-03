@@ -13,7 +13,7 @@ import faceRowThree from '@/assets/faces/3.webp';
 import mobileFaceRowOne from '@/assets/faces/mobile/1.webp';
 import mobileFaceRowTwo from '@/assets/faces/mobile/2.webp';
 import mobileFaceRowThree from '@/assets/faces/mobile/3.webp';
-import luchiMainSrc from '@/assets/decor/luchi-main.webp';
+import heroBackgroundSrc from '@/assets/new_home_screen.webp';
 import './Hero.scss';
 
 const faceRows = [
@@ -44,11 +44,11 @@ export function Hero() {
       media.add('(min-width: 901px)', () => {
         const rows = gsap.utils.toArray<HTMLElement>('.hero__face-row');
         const revealItems = gsap.utils.toArray<HTMLElement>('[data-hero-reveal]');
-        const rays = ref.current?.querySelector<HTMLElement>('.hero__rays');
+        const background = ref.current?.querySelector<HTMLElement>('.hero__background');
 
         gsap.set(revealItems, { autoAlpha: 0, y: 34 });
-        if (rays) {
-          gsap.set(rays, { autoAlpha: 0 });
+        if (background) {
+          gsap.set(background, { autoAlpha: 0 });
         }
 
         gsap.set(rows, {
@@ -60,8 +60,8 @@ export function Hero() {
 
         timeline = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
 
-        if (rays) {
-          timeline.to(rays, {
+        if (background) {
+          timeline.to(background, {
             autoAlpha: 1,
             duration: 0.9,
             ease: 'power2.out',
@@ -94,11 +94,11 @@ export function Hero() {
       media.add('(max-width: 900px)', () => {
         const rows = gsap.utils.toArray<HTMLElement>('.hero__face-row');
         const revealItems = gsap.utils.toArray<HTMLElement>('[data-hero-reveal]');
-        const rays = ref.current?.querySelector<HTMLElement>('.hero__rays');
+        const background = ref.current?.querySelector<HTMLElement>('.hero__background');
 
         gsap.set(revealItems, { autoAlpha: 0, y: 28 });
-        if (rays) {
-          gsap.set(rays, { autoAlpha: 0 });
+        if (background) {
+          gsap.set(background, { autoAlpha: 0 });
         }
 
         gsap.set(rows, {
@@ -110,8 +110,8 @@ export function Hero() {
 
         timeline = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
 
-        if (rays) {
-          timeline.to(rays, {
+        if (background) {
+          timeline.to(background, {
             autoAlpha: 1,
             duration: 0.86,
             ease: 'power2.out',
@@ -174,7 +174,7 @@ export function Hero() {
     <section className="hero" ref={ref}>
       <Header />
 
-      <img className="hero__rays" src={luchiMainSrc.src} alt="" aria-hidden="true" decoding="async" />
+      <img className="hero__background" src={heroBackgroundSrc.src} alt="" aria-hidden="true" decoding="async" />
 
       <div className="hero__mask hero__mask--top" aria-hidden="true" />
       <div className="hero__mask hero__mask--bottom" aria-hidden="true" />

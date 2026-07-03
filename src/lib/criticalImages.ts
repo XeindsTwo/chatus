@@ -4,7 +4,7 @@ import faceRowThree from '@/assets/faces/3.webp';
 import mobileFaceRowOne from '@/assets/faces/mobile/1.webp';
 import mobileFaceRowTwo from '@/assets/faces/mobile/2.webp';
 import mobileFaceRowThree from '@/assets/faces/mobile/3.webp';
-import luchiMain from '@/assets/decor/luchi-main.webp';
+import heroBackground from '@/assets/new_home_screen.webp';
 import whatThis from '@/assets/what-this.webp';
 import whatThisEn from '@/assets/what-this-en.webp';
 import whatThisId from '@/assets/what-this-id.webp';
@@ -42,7 +42,7 @@ export const criticalImages = [
   mobileFaceRowOne,
   mobileFaceRowTwo,
   mobileFaceRowThree,
-  luchiMain,
+  heroBackground,
   whatThis,
   whatThisEn,
   whatThisId,
