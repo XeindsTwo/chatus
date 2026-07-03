@@ -82,50 +82,39 @@ export function Cta() {
       return;
     }
 
-    const observer = new IntersectionObserver(
+    const preloadObserver = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           loadLottie();
-          observer.disconnect();
+          preloadObserver.disconnect();
         }
       },
-      { rootMargin: '420px 0px', threshold: 0.01 },
+      { rootMargin: '420px 0px', threshold: 0 },
     );
 
-    let animationFrame = 0;
+    const playObserver = new IntersectionObserver(
+      ([entry]) => {
+        const rect = entry.boundingClientRect;
+        const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+        const visibleHeight = Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0);
+        const ratioBase = Math.min(rect.height, viewportHeight);
+        const visibleRatio = ratioBase > 0 ? visibleHeight / ratioBase : 0;
 
-    const checkSectionVisibility = () => {
-      if (hasPlayedRef.current) {
-        return;
-      }
+        if (visibleRatio >= 0.8) {
+          shouldPlayRef.current = true;
+          playOnce();
+          playObserver.disconnect();
+        }
+      },
+      { threshold: [0, 0.25, 0.5, 0.75, 1] },
+    );
 
-      const rect = section.getBoundingClientRect();
-      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-      const visibleHeight = Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0);
-      const ratioBase = Math.min(rect.height, viewportHeight);
-      const visibleRatio = ratioBase > 0 ? visibleHeight / ratioBase : 0;
-
-      if (visibleRatio >= 0.8) {
-        shouldPlayRef.current = true;
-        playOnce();
-      }
-    };
-
-    const scheduleCheck = () => {
-      window.cancelAnimationFrame(animationFrame);
-      animationFrame = window.requestAnimationFrame(checkSectionVisibility);
-    };
-
-    observer.observe(section);
-    scheduleCheck();
-    window.addEventListener('scroll', scheduleCheck, { passive: true });
-    window.addEventListener('resize', scheduleCheck);
+    preloadObserver.observe(section);
+    playObserver.observe(section);
 
     return () => {
-      observer.disconnect();
-      window.cancelAnimationFrame(animationFrame);
-      window.removeEventListener('scroll', scheduleCheck);
-      window.removeEventListener('resize', scheduleCheck);
+      preloadObserver.disconnect();
+      playObserver.disconnect();
     };
   }, [loadLottie, playOnce]);
 

@@ -1,8 +1,6 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import plusSrc from '@/assets/decor/icons/plus-auditoria.svg';
 import { useLocale } from '@/i18n/useLocale';
 import { useSmoothHorizontalScroll } from '@/lib/useSmoothHorizontalScroll';
@@ -62,9 +60,11 @@ const idStats = [
   },
 ];
 
-gsap.registerPlugin(ScrollTrigger);
-
 const desktopAnimationQuery = '(min-width: 993px)';
+
+type AudienceGsapContext = {
+  revert: () => void;
+};
 
 export function Audience() {
   const locale = useLocale();
@@ -86,9 +86,13 @@ export function Audience() {
     }
 
     const media = window.matchMedia(desktopAnimationQuery);
-    let ctx: gsap.Context | undefined;
+    let ctx: AudienceGsapContext | undefined;
+    let setupVersion = 0;
 
     const setupAnimation = () => {
+      setupVersion += 1;
+      const currentVersion = setupVersion;
+
       ctx?.revert();
       ctx = undefined;
 
@@ -97,7 +101,20 @@ export function Audience() {
         return;
       }
 
-      ctx = gsap.context(() => {
+      Promise.all([
+        import('gsap'),
+        import('gsap/ScrollTrigger'),
+      ]).then(([gsapModule, scrollTriggerModule]) => {
+        if (currentVersion !== setupVersion || !sectionRef.current || !panelRef.current || !media.matches) {
+          return;
+        }
+
+        const gsap = gsapModule.default;
+        const ScrollTrigger = scrollTriggerModule.ScrollTrigger;
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        ctx = gsap.context(() => {
         const cards = gsap.utils.toArray<HTMLElement>('.audience__card');
         const title = sectionRef.current?.querySelector<HTMLElement>('.audience__title');
 
@@ -171,13 +188,15 @@ export function Audience() {
             0.24,
           )
           .fromTo(title, { scale: 0.96, y: 10 }, { scale: 1, y: 0, duration: 0.55 }, 0);
-      }, sectionRef);
+        }, sectionRef);
+      });
     };
 
     setupAnimation();
     media.addEventListener('change', setupAnimation);
 
     return () => {
+      setupVersion += 1;
       media.removeEventListener('change', setupAnimation);
       ctx?.revert();
     };

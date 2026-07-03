@@ -138,7 +138,7 @@
     overscroll-behavior-x: contain;
     scroll-padding-inline: 16px;
     scrollbar-width: none;
-    touch-action: pan-y;
+    touch-action: auto;
     -webkit-overflow-scrolling: touch;
     cursor: grab;
     user-select: none;
