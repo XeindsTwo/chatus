@@ -1,7 +1,6 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { scrollToAnchorHref } from '@/lib/anchorScroll';
 import './MobileMenu.scss';
@@ -13,6 +12,24 @@ type MobileMenuItem = {
 
 type MobileMenuProps = {
   items: MobileMenuItem[];
+};
+
+type MobileMenuTimeline = {
+  fromTo: (
+    target: Element | Element[] | null,
+    fromVars: Record<string, unknown>,
+    toVars: Record<string, unknown>,
+    position?: number,
+  ) => MobileMenuTimeline;
+  kill: () => void;
+  progress: (value: number) => MobileMenuTimeline;
+  timeScale: (value: number) => MobileMenuTimeline;
+  play: (from?: number) => MobileMenuTimeline;
+  reverse: () => MobileMenuTimeline;
+};
+
+type MobileMenuGsapContext = {
+  revert: () => void;
 };
 
 const scrollToHref = (href: string) => {
@@ -27,8 +44,9 @@ export function MobileMenu({ items }: MobileMenuProps) {
   const [isMounted, setIsMounted] = useState(false);
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
-  const timelineRef = useRef<gsap.core.Timeline | null>(null);
+  const timelineRef = useRef<MobileMenuTimeline | null>(null);
   const pendingHrefRef = useRef<string | null>(null);
+  const isOpenRef = useRef(isOpen);
 
   const closeMenu = useCallback((href?: string) => {
     if (!isOpen) {
@@ -40,6 +58,10 @@ export function MobileMenu({ items }: MobileMenuProps) {
     }
 
     setIsOpen(false);
+  }, [isOpen]);
+
+  useEffect(() => {
+    isOpenRef.current = isOpen;
   }, [isOpen]);
 
   useEffect(() => {
@@ -60,7 +82,17 @@ export function MobileMenu({ items }: MobileMenuProps) {
       return;
     }
 
-    const ctx = gsap.context(() => {
+    let ctx: MobileMenuGsapContext | undefined;
+    let isCancelled = false;
+
+    import('gsap').then((module) => {
+      if (isCancelled || !overlayRef.current || !panelRef.current) {
+        return;
+      }
+
+      const gsap = module.default;
+
+      ctx = gsap.context(() => {
       const nav = overlayRef.current?.querySelector<HTMLElement>('.mobile-menu__nav');
       const langs = overlayRef.current?.querySelector<HTMLElement>('.mobile-menu__langs');
       const revealBlocks = [nav, langs].filter(Boolean) as HTMLElement[];
@@ -105,10 +137,22 @@ export function MobileMenu({ items }: MobileMenuProps) {
         );
 
       timelineRef.current.timeScale(1);
-    }, overlayRef);
+      }, overlayRef);
+
+      if (isOpenRef.current) {
+        pendingHrefRef.current = null;
+        timelineRef.current?.timeScale(1);
+        timelineRef.current?.play(0);
+      } else {
+        timelineRef.current?.progress(1);
+        timelineRef.current?.timeScale(1.08);
+        timelineRef.current?.reverse();
+      }
+    });
 
     return () => {
-      ctx.revert();
+      isCancelled = true;
+      ctx?.revert();
       timelineRef.current = null;
     };
   }, [isMounted]);

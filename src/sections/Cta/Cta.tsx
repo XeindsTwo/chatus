@@ -1,7 +1,7 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { DotLottieReact, type DotLottie } from '@lottiefiles/dotlottie-react/webgl';
+import { useCallback, useEffect, useRef, useState, type ComponentType } from 'react';
+import type { DotLottie } from '@lottiefiles/dotlottie-react/webgl';
 import { Button } from '@/components/Button';
 import { useLocale } from '@/i18n/useLocale';
 import { getBotHref } from '@/lib/telegramLinks';
@@ -11,15 +11,28 @@ const mobileLottieQuery = '(max-width: 530px)';
 const peepsCarouselSrc = '/peeps_carousel.json';
 const peepsCarouselMobileSrc = '/peeps_carousel_mobile.json';
 
+type DotLottieReactComponent = ComponentType<{
+  autoplay?: boolean;
+  className?: string;
+  dotLottieRefCallback?: (dotLottie: DotLottie) => void;
+  layout?: { fit: 'contain'; align: [number, number] };
+  loop?: boolean;
+  renderConfig?: { devicePixelRatio: number };
+  src: string;
+  useFrameInterpolation?: boolean;
+}>;
+
 export function Cta() {
   const locale = useLocale();
   const isEnglish = locale === 'en';
   const isIndonesian = locale === 'id';
   const botHref = getBotHref(locale);
   const [isMobileLottie, setIsMobileLottie] = useState(false);
+  const [DotLottieComponent, setDotLottieComponent] = useState<DotLottieReactComponent | null>(null);
   const sectionRef = useRef<HTMLElement | null>(null);
   const animationRef = useRef<HTMLDivElement | null>(null);
   const dotLottieRef = useRef<DotLottie | null>(null);
+  const isLottieLoadingRef = useRef(false);
   const shouldPlayRef = useRef(false);
   const hasPlayedRef = useRef(false);
 
@@ -51,12 +64,33 @@ export function Cta() {
     hasPlayedRef.current = true;
   }, []);
 
+  const loadLottie = useCallback(() => {
+    if (DotLottieComponent || isLottieLoadingRef.current) {
+      return;
+    }
+
+    isLottieLoadingRef.current = true;
+    import('@lottiefiles/dotlottie-react/webgl').then((module) => {
+      setDotLottieComponent(() => module.DotLottieReact);
+    });
+  }, [DotLottieComponent]);
+
   useEffect(() => {
     const section = sectionRef.current;
 
     if (!section) {
       return;
     }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          loadLottie();
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '420px 0px', threshold: 0.01 },
+    );
 
     let animationFrame = 0;
 
@@ -82,16 +116,18 @@ export function Cta() {
       animationFrame = window.requestAnimationFrame(checkSectionVisibility);
     };
 
+    observer.observe(section);
     scheduleCheck();
     window.addEventListener('scroll', scheduleCheck, { passive: true });
     window.addEventListener('resize', scheduleCheck);
 
     return () => {
+      observer.disconnect();
       window.cancelAnimationFrame(animationFrame);
       window.removeEventListener('scroll', scheduleCheck);
       window.removeEventListener('resize', scheduleCheck);
     };
-  }, [playOnce]);
+  }, [loadLottie, playOnce]);
 
   return (
     <section className="cta" ref={sectionRef}>
@@ -105,23 +141,25 @@ export function Cta() {
         </h2>
 
         <div className="cta__animation" aria-label={isEnglish ? 'Chat partners animation' : isIndonesian ? 'Animasi teman chat' : 'Анимация собеседников'} ref={animationRef}>
-          <DotLottieReact
-            autoplay={false}
-            className="cta__lottie"
-            dotLottieRefCallback={(dotLottie) => {
-              dotLottieRef.current = dotLottie;
+          {DotLottieComponent ? (
+            <DotLottieComponent
+              autoplay={false}
+              className="cta__lottie"
+              dotLottieRefCallback={(dotLottie) => {
+                dotLottieRef.current = dotLottie;
 
-              if (shouldPlayRef.current) {
-                playOnce();
-              }
-            }}
-            layout={{ fit: 'contain', align: [0.5, 0.5] }}
-            loop={false}
-            renderConfig={{ devicePixelRatio: 1 }}
-            key={isMobileLottie ? 'mobile' : 'desktop'}
-            src={isMobileLottie ? peepsCarouselMobileSrc : peepsCarouselSrc}
-            useFrameInterpolation={false}
-          />
+                if (shouldPlayRef.current) {
+                  playOnce();
+                }
+              }}
+              layout={{ fit: 'contain', align: [0.5, 0.5] }}
+              loop={false}
+              renderConfig={{ devicePixelRatio: 1 }}
+              key={isMobileLottie ? 'mobile' : 'desktop'}
+              src={isMobileLottie ? peepsCarouselMobileSrc : peepsCarouselSrc}
+              useFrameInterpolation={false}
+            />
+          ) : null}
         </div>
 
         <p className="cta__text">

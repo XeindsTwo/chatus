@@ -1,12 +1,6 @@
 'use client';
 
 import { useEffect } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Lenis from 'lenis';
-import 'lenis/dist/lenis.css';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const desktopScrollQuery = '(min-width: 993px)';
 
@@ -19,30 +13,52 @@ const isDesktopSafari = () => {
 
 export function SmoothScroll() {
   useEffect(() => {
+    let cleanup: (() => void) | undefined;
+    let isCancelled = false;
     const isDesktop = window.matchMedia(desktopScrollQuery).matches;
 
     if (!isDesktop || isDesktopSafari()) {
       return undefined;
     }
 
-    const lenis = new Lenis({
-      lerp: 0.1,
-      smoothWheel: true,
+    Promise.all([
+      import('gsap'),
+      import('gsap/ScrollTrigger'),
+      import('lenis'),
+    ]).then(([gsapModule, scrollTriggerModule, lenisModule]) => {
+      if (isCancelled) {
+        return;
+      }
+
+      const gsap = gsapModule.default;
+      const ScrollTrigger = scrollTriggerModule.ScrollTrigger;
+      const Lenis = lenisModule.default;
+      const lenis = new Lenis({
+        lerp: 0.1,
+        smoothWheel: true,
+      });
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      const updateScrollTrigger = () => ScrollTrigger.update();
+      const updateLenis = (time: number) => {
+        lenis.raf(time * 1000);
+      };
+
+      lenis.on('scroll', updateScrollTrigger);
+      gsap.ticker.add(updateLenis);
+      gsap.ticker.lagSmoothing(0);
+
+      cleanup = () => {
+        lenis.off('scroll', updateScrollTrigger);
+        gsap.ticker.remove(updateLenis);
+        lenis.destroy();
+      };
     });
 
-    const updateScrollTrigger = () => ScrollTrigger.update();
-    const updateLenis = (time: number) => {
-      lenis.raf(time * 1000);
-    };
-
-    lenis.on('scroll', updateScrollTrigger);
-    gsap.ticker.add(updateLenis);
-    gsap.ticker.lagSmoothing(0);
-
     return () => {
-      lenis.off('scroll', updateScrollTrigger);
-      gsap.ticker.remove(updateLenis);
-      lenis.destroy();
+      isCancelled = true;
+      cleanup?.();
     };
   }, []);
 

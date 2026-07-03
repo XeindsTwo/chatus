@@ -44,9 +44,7 @@ body.is-page-transitioning {
     @include display-title;
 
     display: grid;
-    min-width: 88px;
-    min-height: 38px;
-    padding: 14px;
+    padding: 20px 32px;
     place-items: center;
     border: 1px solid rgb(42 27 0 / 6%);
     border-radius: 999px;
