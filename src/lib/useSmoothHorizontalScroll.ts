@@ -9,6 +9,10 @@ type SmoothHorizontalScrollOptions = {
 };
 
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
+const wheelSpeed = 1.45;
+const dragSpeed = 1.14;
+const momentumSpeed = 600;
+const dragThreshold = 6;
 
 export function useSmoothHorizontalScroll(
   ref: RefObject<HTMLElement | null>,
@@ -33,6 +37,9 @@ export function useSmoothHorizontalScroll(
     let velocity = 0;
 
     const getMaxScrollLeft = () => Math.max(0, element.scrollWidth - element.clientWidth);
+    const applyScroll = (scrollLeft: number) => {
+      element.scrollLeft = clamp(scrollLeft, 0, getMaxScrollLeft());
+    };
     const animateScroll = (scrollLeft: number, duration = 0.32, ease = 'power3.out') => {
       gsap.to(element, {
         scrollLeft: clamp(scrollLeft, 0, getMaxScrollLeft()),
@@ -51,7 +58,7 @@ export function useSmoothHorizontalScroll(
       element.classList.remove(draggingClass);
 
       if (isHorizontalDrag && Math.abs(velocity) > 0.04) {
-        animateScroll(element.scrollLeft + velocity * 430, 0.9, 'power4.out');
+        animateScroll(element.scrollLeft + velocity * momentumSpeed, 0.68, 'power4.out');
       }
 
       isHorizontalDrag = false;
@@ -78,11 +85,11 @@ export function useSmoothHorizontalScroll(
       }
 
       event.preventDefault();
-      animateScroll(element.scrollLeft + delta * 1.25, 0.54, 'power3.out');
+      animateScroll(element.scrollLeft + delta * wheelSpeed, 0.48, 'power3.out');
     };
 
     const handlePointerDown = (event: PointerEvent) => {
-      if (!matcher.matches || event.button > 0) {
+      if (!matcher.matches || event.button > 0 || event.pointerType === 'touch') {
         return;
       }
 
@@ -109,7 +116,7 @@ export function useSmoothHorizontalScroll(
       const deltaY = event.clientY - startY;
 
       if (!isHorizontalDrag) {
-        if (Math.abs(deltaX) < 6 && Math.abs(deltaY) < 6) {
+        if (Math.abs(deltaX) < dragThreshold && Math.abs(deltaY) < dragThreshold) {
           return;
         }
 
@@ -129,7 +136,7 @@ export function useSmoothHorizontalScroll(
       lastX = event.clientX;
       lastTime = now;
 
-      animateScroll(startScrollLeft - deltaX, 0.22, 'power2.out');
+      applyScroll(startScrollLeft - deltaX * dragSpeed);
     };
 
     const handlePointerUp = (event: PointerEvent) => {
@@ -140,12 +147,70 @@ export function useSmoothHorizontalScroll(
       stopDragging();
     };
 
+    const handleTouchStart = (event: TouchEvent) => {
+      if (!matcher.matches || event.touches.length !== 1) {
+        return;
+      }
+
+      const touch = event.touches[0];
+
+      gsap.killTweensOf(element);
+      isDragging = true;
+      isHorizontalDrag = false;
+      pointerId = null;
+      startX = touch.clientX;
+      startY = touch.clientY;
+      lastX = touch.clientX;
+      lastTime = performance.now();
+      startScrollLeft = element.scrollLeft;
+      velocity = 0;
+      element.classList.add(draggingClass);
+    };
+
+    const handleTouchMove = (event: TouchEvent) => {
+      if (!isDragging || event.touches.length !== 1) {
+        return;
+      }
+
+      const touch = event.touches[0];
+      const deltaX = touch.clientX - startX;
+      const deltaY = touch.clientY - startY;
+
+      if (!isHorizontalDrag) {
+        if (Math.abs(deltaX) < dragThreshold && Math.abs(deltaY) < dragThreshold) {
+          return;
+        }
+
+        if (Math.abs(deltaY) > Math.abs(deltaX)) {
+          stopDragging();
+          return;
+        }
+
+        isHorizontalDrag = true;
+      }
+
+      event.preventDefault();
+
+      const now = performance.now();
+      const frameDelta = Math.max(now - lastTime, 16);
+
+      velocity = (lastX - touch.clientX) / frameDelta;
+      lastX = touch.clientX;
+      lastTime = now;
+
+      applyScroll(startScrollLeft - deltaX * dragSpeed);
+    };
+
     element.addEventListener('wheel', handleWheel, { passive: false });
     element.addEventListener('pointerdown', handlePointerDown);
     element.addEventListener('pointermove', handlePointerMove);
     element.addEventListener('pointerup', handlePointerUp);
     element.addEventListener('pointercancel', handlePointerUp);
     element.addEventListener('pointerleave', stopDragging);
+    element.addEventListener('touchstart', handleTouchStart, { passive: true });
+    element.addEventListener('touchmove', handleTouchMove, { passive: false });
+    element.addEventListener('touchend', stopDragging);
+    element.addEventListener('touchcancel', stopDragging);
 
     return () => {
       gsap.killTweensOf(element);
@@ -155,6 +220,10 @@ export function useSmoothHorizontalScroll(
       element.removeEventListener('pointerup', handlePointerUp);
       element.removeEventListener('pointercancel', handlePointerUp);
       element.removeEventListener('pointerleave', stopDragging);
+      element.removeEventListener('touchstart', handleTouchStart);
+      element.removeEventListener('touchmove', handleTouchMove);
+      element.removeEventListener('touchend', stopDragging);
+      element.removeEventListener('touchcancel', stopDragging);
     };
   }, [draggingClass, media, ref]);
 }

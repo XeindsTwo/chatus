@@ -61,8 +61,9 @@ export function MobileMenu({ items }: MobileMenuProps) {
     }
 
     const ctx = gsap.context(() => {
-      const menuItems = gsap.utils.toArray<HTMLElement>('.mobile-menu__nav a');
-      const supportingItems = gsap.utils.toArray<HTMLElement>('[data-mobile-menu-reveal]');
+      const nav = overlayRef.current?.querySelector<HTMLElement>('.mobile-menu__nav');
+      const langs = overlayRef.current?.querySelector<HTMLElement>('.mobile-menu__langs');
+      const revealBlocks = [nav, langs].filter(Boolean) as HTMLElement[];
 
       timelineRef.current?.kill();
       timelineRef.current = gsap.timeline({
@@ -92,21 +93,15 @@ export function MobileMenu({ items }: MobileMenuProps) {
         )
         .fromTo(
           panelRef.current,
-          { autoAlpha: 0, xPercent: -8 },
-          { autoAlpha: 1, xPercent: 0, duration: 0.36, ease: 'power3.out' },
+          { autoAlpha: 0, xPercent: -5 },
+          { autoAlpha: 1, xPercent: 0, duration: 0.34, ease: 'power3.out' },
           0,
         )
         .fromTo(
-          supportingItems,
-          { autoAlpha: 0, x: -20 },
-          { autoAlpha: 1, x: 0, duration: 0.28, stagger: 0.04 },
-          0.1,
-        )
-        .fromTo(
-          menuItems,
-          { autoAlpha: 0, x: -38, skewX: -4 },
-          { autoAlpha: 1, x: 0, skewX: 0, duration: 0.36, stagger: 0.055, ease: 'back.out(1.35)' },
-          0.16,
+          revealBlocks,
+          { autoAlpha: 0, x: -26 },
+          { autoAlpha: 1, x: 0, duration: 0.42, stagger: 0.07, ease: 'power3.out' },
+          0.12,
         );
 
       timelineRef.current.timeScale(1);
@@ -130,7 +125,7 @@ export function MobileMenu({ items }: MobileMenuProps) {
       return;
     }
 
-    timelineRef.current.timeScale(0.92);
+    timelineRef.current.timeScale(1.08);
     timelineRef.current.reverse();
   }, [isMounted, isOpen]);
 
