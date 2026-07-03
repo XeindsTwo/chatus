@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
 
   webpack(config) {
     config.module.rules.push({
-      test: /\.lottie$/,
+      test: /\.webm$/i,
       type: 'asset/resource',
     });
 

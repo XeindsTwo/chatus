@@ -1,79 +1,56 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState, type ComponentType } from 'react';
-import type { DotLottie } from '@lottiefiles/dotlottie-react/webgl';
 import { Button } from '@/components/Button';
+import peepsCarouselAdaptiveSrc from '@/assets/peeps_carousel_adaptive.webm';
+import peepsCarouselDesktopSrc from '@/assets/peeps_carousel_desktop.webm';
 import { useLocale } from '@/i18n/useLocale';
 import { getBotHref } from '@/lib/telegramLinks';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import './Cta.scss';
 
-const mobileLottieQuery = '(max-width: 530px)';
-const peepsCarouselSrc = '/peeps_carousel.json';
-const peepsCarouselMobileSrc = '/peeps_carousel_mobile.json';
-
-type DotLottieReactComponent = ComponentType<{
-  autoplay?: boolean;
-  className?: string;
-  dotLottieRefCallback?: (dotLottie: DotLottie) => void;
-  layout?: { fit: 'contain'; align: [number, number] };
-  loop?: boolean;
-  renderConfig?: { devicePixelRatio: number };
-  src: string;
-  useFrameInterpolation?: boolean;
-}>;
+const adaptiveVideoQuery = '(max-width: 999px)';
 
 export function Cta() {
   const locale = useLocale();
   const isEnglish = locale === 'en';
   const isIndonesian = locale === 'id';
   const botHref = getBotHref(locale);
-  const [isMobileLottie, setIsMobileLottie] = useState(false);
-  const [DotLottieComponent, setDotLottieComponent] = useState<DotLottieReactComponent | null>(null);
+  const [isAdaptiveVideo, setIsAdaptiveVideo] = useState(false);
   const sectionRef = useRef<HTMLElement | null>(null);
-  const animationRef = useRef<HTMLDivElement | null>(null);
-  const dotLottieRef = useRef<DotLottie | null>(null);
-  const isLottieLoadingRef = useRef(false);
-  const shouldPlayRef = useRef(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const hasPlayedRef = useRef(false);
 
   useEffect(() => {
-    const media = window.matchMedia(mobileLottieQuery);
-    const syncLottieSource = () => {
-      setIsMobileLottie(media.matches);
-      dotLottieRef.current = null;
-      shouldPlayRef.current = false;
+    const media = window.matchMedia(adaptiveVideoQuery);
+    const syncVideoSource = () => {
+      setIsAdaptiveVideo(media.matches);
       hasPlayedRef.current = false;
+
+      if (videoRef.current) {
+        videoRef.current.pause();
+        videoRef.current.currentTime = 0;
+      }
     };
 
-    syncLottieSource();
-    media.addEventListener('change', syncLottieSource);
+    syncVideoSource();
+    media.addEventListener('change', syncVideoSource);
 
     return () => {
-      media.removeEventListener('change', syncLottieSource);
+      media.removeEventListener('change', syncVideoSource);
     };
   }, []);
 
   const playOnce = useCallback(() => {
-    if (hasPlayedRef.current || !dotLottieRef.current) {
+    const video = videoRef.current;
+
+    if (hasPlayedRef.current || !video) {
       return;
     }
 
-    dotLottieRef.current.stop();
-    dotLottieRef.current.setLoop(false);
-    dotLottieRef.current.play();
+    video.currentTime = 0;
+    void video.play();
     hasPlayedRef.current = true;
   }, []);
-
-  const loadLottie = useCallback(() => {
-    if (DotLottieComponent || isLottieLoadingRef.current) {
-      return;
-    }
-
-    isLottieLoadingRef.current = true;
-    import('@lottiefiles/dotlottie-react/webgl').then((module) => {
-      setDotLottieComponent(() => module.DotLottieReact);
-    });
-  }, [DotLottieComponent]);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -81,16 +58,6 @@ export function Cta() {
     if (!section) {
       return;
     }
-
-    const preloadObserver = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          loadLottie();
-          preloadObserver.disconnect();
-        }
-      },
-      { rootMargin: '420px 0px', threshold: 0 },
-    );
 
     const playObserver = new IntersectionObserver(
       ([entry]) => {
@@ -101,7 +68,6 @@ export function Cta() {
         const visibleRatio = ratioBase > 0 ? visibleHeight / ratioBase : 0;
 
         if (visibleRatio >= 0.8) {
-          shouldPlayRef.current = true;
           playOnce();
           playObserver.disconnect();
         }
@@ -109,14 +75,12 @@ export function Cta() {
       { threshold: [0, 0.25, 0.5, 0.75, 1] },
     );
 
-    preloadObserver.observe(section);
     playObserver.observe(section);
 
     return () => {
-      preloadObserver.disconnect();
       playObserver.disconnect();
     };
-  }, [loadLottie, playOnce]);
+  }, [playOnce]);
 
   return (
     <section className="cta" ref={sectionRef}>
@@ -129,26 +93,16 @@ export function Cta() {
           {isEnglish ? 'right now' : isIndonesian ? 'sekarang' : 'уже сейчас'}
         </h2>
 
-        <div className="cta__animation" aria-label={isEnglish ? 'Chat partners animation' : isIndonesian ? 'Animasi teman chat' : 'Анимация собеседников'} ref={animationRef}>
-          {DotLottieComponent ? (
-            <DotLottieComponent
-              autoplay={false}
-              className="cta__lottie"
-              dotLottieRefCallback={(dotLottie) => {
-                dotLottieRef.current = dotLottie;
-
-                if (shouldPlayRef.current) {
-                  playOnce();
-                }
-              }}
-              layout={{ fit: 'contain', align: [0.5, 0.5] }}
-              loop={false}
-              renderConfig={{ devicePixelRatio: 1 }}
-              key={isMobileLottie ? 'mobile' : 'desktop'}
-              src={isMobileLottie ? peepsCarouselMobileSrc : peepsCarouselSrc}
-              useFrameInterpolation={false}
-            />
-          ) : null}
+        <div className="cta__animation" aria-label={isEnglish ? 'Chat partners animation' : isIndonesian ? 'Animasi teman chat' : 'Анимация собеседников'}>
+          <video
+            className="cta__video"
+            key={isAdaptiveVideo ? 'adaptive' : 'desktop'}
+            muted
+            playsInline
+            preload="metadata"
+            ref={videoRef}
+            src={isAdaptiveVideo ? peepsCarouselAdaptiveSrc : peepsCarouselDesktopSrc}
+          />
         </div>
 
         <p className="cta__text">
