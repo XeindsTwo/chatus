@@ -34,7 +34,7 @@ type MobileMenuGsapContext = {
 
 const scrollToHref = (href: string) => {
   scrollToAnchorHref(href, {
-    duration: 1.35,
+    duration: 1.48,
     ease: 'power3.inOut',
   });
 };

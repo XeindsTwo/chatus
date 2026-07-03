@@ -114,6 +114,8 @@ export const scrollToAnchorHref = (href: string, options: AnchorScrollOptions = 
 
   const startTop = window.scrollY;
   const scrollState = { progress: 0 };
+  const isMobile = isMobileAnchorViewport();
+  const initialTargetTop = targetTop;
 
   activeAnchorTween = gsap.to(scrollState, {
     progress: 1,
@@ -121,14 +123,24 @@ export const scrollToAnchorHref = (href: string, options: AnchorScrollOptions = 
     ease: typeof options === 'string' ? 'power3.inOut' : options.ease ?? 'power3.inOut',
     overwrite: true,
     onUpdate: () => {
-      const liveTargetTop = getAnchorTop(target, url.hash, offset);
+      const liveTargetTop = isMobile ? initialTargetTop : getAnchorTop(target, url.hash, offset);
       const nextTop = startTop + ((liveTargetTop - startTop) * scrollState.progress);
 
       window.scrollTo(0, nextTop);
     },
     onComplete: () => {
       activeAnchorTween = null;
-      window.scrollTo(0, getAnchorTop(target, url.hash, offset));
+
+      if (isMobile) {
+        return;
+      }
+
+      const finalTop = getAnchorTop(target, url.hash, offset);
+      const finalDistance = Math.abs(finalTop - window.scrollY);
+
+      if (finalDistance > 2) {
+        window.scrollTo(0, finalTop);
+      }
     },
     onInterrupt: () => {
       activeAnchorTween = null;
