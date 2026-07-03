@@ -9,9 +9,6 @@ type SmoothHorizontalScrollOptions = {
 };
 
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
-const wheelSpeed = 1.45;
-const dragSpeed = 1.14;
-const momentumSpeed = 600;
 
 export function useSmoothHorizontalScroll(
   ref: RefObject<HTMLElement | null>,
@@ -54,7 +51,7 @@ export function useSmoothHorizontalScroll(
       element.classList.remove(draggingClass);
 
       if (isHorizontalDrag && Math.abs(velocity) > 0.04) {
-        animateScroll(element.scrollLeft + velocity * momentumSpeed, 0.68, 'power4.out');
+        animateScroll(element.scrollLeft + velocity * 430, 0.9, 'power4.out');
       }
 
       isHorizontalDrag = false;
@@ -81,7 +78,7 @@ export function useSmoothHorizontalScroll(
       }
 
       event.preventDefault();
-      animateScroll(element.scrollLeft + delta * wheelSpeed, 0.48, 'power3.out');
+      animateScroll(element.scrollLeft + delta * 1.25, 0.54, 'power3.out');
     };
 
     const handlePointerDown = (event: PointerEvent) => {
@@ -132,7 +129,7 @@ export function useSmoothHorizontalScroll(
       lastX = event.clientX;
       lastTime = now;
 
-      animateScroll(startScrollLeft - deltaX * dragSpeed, 0.18, 'power2.out');
+      animateScroll(startScrollLeft - deltaX, 0.22, 'power2.out');
     };
 
     const handlePointerUp = (event: PointerEvent) => {
