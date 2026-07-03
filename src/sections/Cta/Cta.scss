@@ -21,7 +21,7 @@
 
   &__title {
     position: relative;
-    z-index: 3;
+    z-index: 330;
     max-width: 860px;
     color: $color-ink;
     @media (max-width: 390px) {
@@ -36,7 +36,7 @@
     height: 490px;
     margin-inline: calc(50% - 50vw);
     pointer-events: none;
-    margin-top: -35px;
+    margin-top: -15px;
     margin-bottom: 30px;
 
     &::before,
@@ -104,24 +104,13 @@
     }
     @media (max-width: 530px) {
       width: 110vw;
-      margin-top: -72px;
+      margin-top: 10px;
     }
     @include r(468) {
-      margin-top: -66px;
-      margin-bottom: -20px;
+      margin-bottom: 20px;
     }
     @media (max-width: 440px) {
-      width: 120vw;
-    }
-    @media (max-width: 415px) {
-      margin-top: -60px;
-    }
-    @media (max-width: 410px) {
-      width: 132vw;
-      margin-top: -69px;
-    }
-    @media (max-width: 395px) {
-      margin-top: -64px;
+      width: 135vw;
     }
   }
 
