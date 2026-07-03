@@ -35,7 +35,6 @@ export function Hero() {
     }
 
     let startDelay: gsap.core.Tween | undefined;
-    let fallbackDelay: gsap.core.Tween | undefined;
     let timeline: gsap.core.Timeline | undefined;
 
     const ctx = gsap.context(() => {
@@ -160,12 +159,9 @@ export function Hero() {
       startDelay = gsap.delayedCall(0.24, playTimeline);
     });
 
-    fallbackDelay = gsap.delayedCall(1.25, playTimeline);
-
     return () => {
       cleanupReady();
       startDelay?.kill();
-      fallbackDelay?.kill();
       ctx.revert();
     };
   }, []);
