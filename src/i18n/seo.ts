@@ -1,25 +1,28 @@
 import type { Metadata } from 'next';
-import ogEn from '@/assets/og/og-en.png';
-import ogId from '@/assets/og/og-id.png';
-import ogRu from '@/assets/og/og-ru.png';
 import { defaultLocale, type Locale } from './config';
 
 type SeoPage = 'home' | 'rules' | 'privacy';
 
-const localeConfig: Record<Locale, { ogLocale: string; ogImage: typeof ogRu; pathPrefix: string }> = {
+const rawSiteOrigin =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://chatus-tau.vercel.app');
+
+export const siteOrigin = rawSiteOrigin.replace(/\/$/, '');
+
+const localeConfig: Record<Locale, { ogLocale: string; ogImage: string; pathPrefix: string }> = {
   id: {
     ogLocale: 'id_ID',
-    ogImage: ogId,
+    ogImage: '/og-id.png?v=3',
     pathPrefix: '/id',
   },
   en: {
     ogLocale: 'en_US',
-    ogImage: ogEn,
+    ogImage: '/og-en.png?v=3',
     pathPrefix: '/en',
   },
   ru: {
     ogLocale: 'ru_RU',
-    ogImage: ogRu,
+    ogImage: '/og-ru.png?v=3',
     pathPrefix: '',
   },
 };
@@ -42,9 +45,9 @@ const seoContent: Record<Locale, Record<SeoPage, { title: string; description: s
   },
   en: {
     home: {
-      title: 'Chatus — anonymous chat roulette for meeting people and chatting',
+      title: 'Chatus — anonymous chat for communication and dating',
       description:
-        'Anonymous chat roulette for quick connections and conversations, no sign-up needed. Find someone in seconds and start chatting.',
+        'Anonymous Telegram chat for quick dating and communication without registration. Find a conversation partner in a few seconds and start chatting right away.',
     },
     rules: {
       title: 'Chatus Rules',
@@ -103,6 +106,8 @@ export function buildSeoMetadata(locale: Locale, page: SeoPage): Metadata {
   const content = seoContent[locale][page];
   const config = localeConfig[locale];
   const canonical = getCanonicalPath(locale, page);
+  const absoluteCanonical = `${siteOrigin}${canonical}`;
+  const ogImage = `${siteOrigin}${config.ogImage}`;
 
   return {
     title: content.title,
@@ -114,20 +119,20 @@ export function buildSeoMetadata(locale: Locale, page: SeoPage): Metadata {
     openGraph: {
       title: content.title,
       description: content.description,
-      images: [{ url: config.ogImage.src, width: config.ogImage.width, height: config.ogImage.height, alt: content.title }],
+      images: [{ url: ogImage, width: 1200, height: 630, alt: content.title }],
       locale: config.ogLocale,
       alternateLocale: Object.values(localeConfig)
         .map((item) => item.ogLocale)
         .filter((ogLocale) => ogLocale !== config.ogLocale),
       siteName: 'Chatus',
       type: 'website',
-      url: canonical,
+      url: absoluteCanonical,
     },
     twitter: {
       card: 'summary_large_image',
       title: content.title,
       description: content.description,
-      images: [config.ogImage.src],
+      images: [ogImage],
     },
   };
 }

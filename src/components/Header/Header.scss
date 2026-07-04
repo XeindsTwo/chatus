@@ -132,7 +132,7 @@
     position: relative;
     z-index: 130;
     display: grid;
-    grid-template-columns: 160px 48px;
+    grid-template-columns: 160px 56px;
     align-items: center;
     justify-content: space-between;
     min-height: 72px;
@@ -183,7 +183,7 @@
   }
 
   .header__mobile-glass {
-    grid-template-columns: 144px 48px;
+    grid-template-columns: 144px 56px;
     min-height: 66px;
     padding: 9px 10px 9px 14px;
   }

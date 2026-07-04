@@ -4,9 +4,6 @@ import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { defaultLocale, locales, type Locale } from '@/i18n/config';
 import { getLocalizedHref, getPathLocale, localeChangeEvent, localeStorageKey, normalizeLocale } from '@/i18n/useLocale';
-import ogEn from '@/assets/og/og-en.png';
-import ogId from '@/assets/og/og-id.png';
-import ogRu from '@/assets/og/og-ru.png';
 import './LanguageSwitcher.scss';
 
 const localeLabels: Record<Locale, string> = {
@@ -16,9 +13,9 @@ const localeLabels: Record<Locale, string> = {
 };
 
 const localeOgImages: Record<Locale, string> = {
-  id: ogId.src,
-  en: ogEn.src,
-  ru: ogRu.src,
+  id: '/og-id.png?v=3',
+  en: '/og-en.png?v=3',
+  ru: '/og-ru.png?v=3',
 };
 
 type LanguageSwitcherProps = {

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { Audience } from '@/sections/Audience';
 import { Benefits } from '@/sections/Benefits';
 import { SiteFooter } from '@/components/SiteFooter';
@@ -7,6 +8,9 @@ import { Hero } from '@/sections/Hero';
 import { Intro } from '@/sections/Intro';
 import { Steps } from '@/sections/Steps';
 import { Tariffs } from '@/sections/Tariffs';
+import { buildSeoMetadata } from '@/i18n/seo';
+
+export const metadata: Metadata = buildSeoMetadata('ru', 'home');
 
 export default function Home() {
   return (
