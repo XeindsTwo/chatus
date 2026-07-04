@@ -20,7 +20,7 @@
   h2 {
     @include section-title;
 
-    max-width: 690px;
+    max-width: 670px;
     margin: 0 auto clamp(58px, 7vw, 86px);
     color: $color-ink;
   }

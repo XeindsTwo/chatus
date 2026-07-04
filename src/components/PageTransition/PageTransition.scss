@@ -23,9 +23,8 @@ body.is-page-transitioning {
     visibility 420ms ease;
   visibility: hidden;
   --loader-progress: 0%;
-  --loader-next-progress: min(100%, calc(var(--loader-progress) + 4%));
   --loader-rise: 0%;
-  --loader-next-rise: 0%;
+  --loader-max-rise: 63%;
 
   &--visible {
     opacity: 1;
@@ -44,7 +43,7 @@ body.is-page-transitioning {
     @include display-title;
 
     display: grid;
-    padding: 20px 32px;
+    padding: 14px;
     place-items: center;
     border: 1px solid rgb(42 27 0 / 6%);
     border-radius: 999px;
@@ -61,20 +60,22 @@ body.is-page-transitioning {
     position: absolute;
     inset: 0;
     z-index: 1;
-    background:
-      linear-gradient($color-paper 0 0) 0 100% / var(--loader-next-progress) var(--loader-next-rise) no-repeat,
-      linear-gradient($color-ink 0 0) 0 100% / var(--loader-progress) var(--loader-rise) no-repeat;
-    clip-path:
-      polygon(
-        0 100%,
-        var(--loader-next-progress) calc(100% - var(--loader-next-rise)),
-        var(--loader-next-progress) 100%
-      );
-    transition:
-      background-size 360ms cubic-bezier(.22, 1, .36, 1),
-      clip-path 360ms cubic-bezier(.22, 1, .36, 1);
 
     &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: $color-ink;
+      opacity: .14;
+      clip-path:
+        polygon(
+          0 100%,
+          100% calc(100% - var(--loader-max-rise)),
+          100% 100%
+        );
+    }
+
+    &::after {
       content: '';
       position: absolute;
       inset: 0;
@@ -85,20 +86,7 @@ body.is-page-transitioning {
           var(--loader-progress) calc(100% - var(--loader-rise)),
           var(--loader-progress) 100%
         );
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: $color-paper;
-      clip-path:
-        polygon(
-          var(--loader-progress) calc(100% - var(--loader-rise)),
-          var(--loader-next-progress) calc(100% - var(--loader-next-rise)),
-          var(--loader-next-progress) 100%,
-          var(--loader-progress) 100%
-        );
+      transition: clip-path 360ms cubic-bezier(.22, 1, .36, 1);
     }
   }
 }

@@ -203,12 +203,9 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
   }, []);
 
   const roundedProgress = Math.round(progress);
-  const nextProgress = Math.min(100, progress + 4);
   const loaderStyle = {
     '--loader-progress': `${progress}%`,
-    '--loader-next-progress': `${nextProgress}%`,
     '--loader-rise': `${progress * 0.63}%`,
-    '--loader-next-rise': `${nextProgress * 0.63}%`,
   } as React.CSSProperties;
 
   return (
