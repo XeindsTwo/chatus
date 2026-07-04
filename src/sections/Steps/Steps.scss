@@ -5,22 +5,9 @@
   --steps-top-cover: clamp(72px, calc((100vh - 560px) * 0.55), 120px);
 
   position: relative;
+  z-index: 0;
   overflow: visible;
   padding: var(--steps-top-cover) 0 65px;
-
-  &::before {
-    position: absolute;
-    z-index: 0;
-    top: calc(var(--steps-top-cover) * -1);
-    right: 0;
-    left: 0;
-    height: var(--steps-top-cover);
-    background:
-      url('../../assets/audience-steps-bg.svg') center top / cover no-repeat,
-      $color-paper;
-    content: '';
-    pointer-events: none;
-  }
 
   &__container {
     @include container;

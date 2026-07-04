@@ -3,9 +3,12 @@
 
 .audience {
   position: relative;
+  z-index: 1;
   display: grid;
   min-height: 100svh;
-  place-items: center;
+  align-items: start;
+  justify-items: center;
+  padding-top: 30px;
   background: transparent;
 }
 
@@ -18,12 +21,18 @@
   justify-items: center;
   overflow: clip;
   padding: 96px 24px 0;
-  box-shadow: 0 32px 90px rgb(67 47 18 / 10%);
   will-change: width, height, border-radius;
 }
 
 .audience__panel--expanded {
   overflow: visible;
+}
+
+.audience__content {
+  display: grid;
+  width: 100%;
+  justify-items: center;
+  will-change: transform;
 }
 
 .audience__title {

@@ -116,24 +116,33 @@ export function Audience() {
 
         ctx = gsap.context(() => {
         const cards = gsap.utils.toArray<HTMLElement>('.audience__card');
+        const content = sectionRef.current?.querySelector<HTMLElement>('.audience__content');
         const title = sectionRef.current?.querySelector<HTMLElement>('.audience__title');
 
-        if (!title) {
+        if (!content || !title) {
           return;
         }
 
         const getPanelSize = () => {
           const viewportWidth = window.innerWidth;
           const viewportHeight = window.innerHeight;
+          const topGap = 30;
+
+          const contentShift = viewportHeight >= 820
+            ? Math.min(160, Math.max(0, (viewportHeight - 760) * 0.45))
+            : 0;
 
           return {
             startWidth: Math.min(832, viewportWidth - 32),
             startHeight: Math.min(Math.max(viewportHeight * 0.58, 560), viewportHeight - 96),
             finalWidth: viewportWidth,
-            finalHeight: viewportHeight,
+            finalHeight: viewportHeight + topGap,
+            finalY: -topGap,
+            contentShift,
           };
         };
 
+        gsap.set(content, { y: 0 });
         gsap.set(cards[0], { x: -46, y: 58, rotate: -2.5 });
         gsap.set(cards[1], { x: 0, y: 18, rotate: 1.25 });
         gsap.set(cards[2], { x: 46, y: -18, rotate: 2.5 });
@@ -170,9 +179,17 @@ export function Audience() {
               width: () => getPanelSize().finalWidth,
               height: () => getPanelSize().finalHeight,
               borderRadius: 0,
-              y: 0,
+              y: () => getPanelSize().finalY,
               duration: 1,
             },
+          )
+          .to(
+            content,
+            {
+              y: () => getPanelSize().contentShift,
+              duration: 1,
+            },
+            0,
           )
           .to(
             cards,
@@ -203,6 +220,7 @@ export function Audience() {
   return (
     <section className="audience" id="audience" ref={sectionRef}>
       <div className="audience__panel audience-steps__surface" ref={panelRef}>
+        <div className="audience__content">
         <h2 className="audience__title section-title">
           {isEnglish ? (
             <>
@@ -239,6 +257,7 @@ export function Audience() {
               <strong>{stat.value}</strong>
             </article>
           ))}
+        </div>
         </div>
       </div>
     </section>

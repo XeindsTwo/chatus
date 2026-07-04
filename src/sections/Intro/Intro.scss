@@ -7,9 +7,12 @@
   place-items: center;
   overflow: hidden;
   margin-top: 120px;
+  margin-bottom: 160px;
+
   @include r(1200) {
     margin-top: 96px;
   }
+
   @include r(992) {
     margin-bottom: 96px;
   }
