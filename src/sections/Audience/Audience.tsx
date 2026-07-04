@@ -125,14 +125,12 @@ export function Audience() {
         const getPanelSize = () => {
           const viewportWidth = window.innerWidth;
           const viewportHeight = window.innerHeight;
-          const isShortViewport = viewportHeight < 760;
 
           return {
             startWidth: Math.min(832, viewportWidth - 32),
             startHeight: Math.min(Math.max(viewportHeight * 0.58, 560), viewportHeight - 96),
             finalWidth: viewportWidth,
             finalHeight: viewportHeight,
-            contentY: isShortViewport ? -Math.min(130, 760 - viewportHeight) : 0,
           };
         };
 
@@ -172,7 +170,7 @@ export function Audience() {
               width: () => getPanelSize().finalWidth,
               height: () => getPanelSize().finalHeight,
               borderRadius: 0,
-              y: () => getPanelSize().contentY,
+              y: 0,
               duration: 1,
             },
           )

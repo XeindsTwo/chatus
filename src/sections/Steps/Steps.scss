@@ -109,6 +109,30 @@
   }
 }
 
+@media (width > 992px) and (height <= 760px) {
+  .steps {
+    --steps-top-cover: clamp(32px, 5vh, 44px);
+
+    padding-bottom: 56px;
+
+    h2 {
+      margin-bottom: clamp(42px, 5.8vh, 56px);
+    }
+  }
+}
+
+@media (width > 992px) and (height <= 700px) {
+  .steps {
+    --steps-top-cover: 24px;
+
+    padding-bottom: 48px;
+
+    h2 {
+      margin-bottom: 38px;
+    }
+  }
+}
+
 @include r(992) {
   .steps {
     padding: 96px 0 65px;
