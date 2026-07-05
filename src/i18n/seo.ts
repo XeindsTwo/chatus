@@ -12,17 +12,17 @@ export const siteOrigin = rawSiteOrigin.replace(/\/$/, '');
 const localeConfig: Record<Locale, { ogLocale: string; ogImage: string; pathPrefix: string }> = {
   id: {
     ogLocale: 'id_ID',
-    ogImage: '/og-id.png?v=3',
+    ogImage: '/og-id.png?v=4',
     pathPrefix: '/id',
   },
   en: {
     ogLocale: 'en_US',
-    ogImage: '/og-en.png?v=3',
+    ogImage: '/og-en.png?v=4',
     pathPrefix: '/en',
   },
   ru: {
     ogLocale: 'ru_RU',
-    ogImage: '/og-ru.png?v=3',
+    ogImage: '/og-ru.png?v=4',
     pathPrefix: '',
   },
 };
@@ -95,10 +95,10 @@ function getLanguages(page: SeoPage) {
   const pagePath = alternatePaths[page];
 
   return {
-    id: `/id${pagePath === '/' ? '' : pagePath}`,
-    en: `/en${pagePath === '/' ? '' : pagePath}`,
-    ru: pagePath,
-    'x-default': pagePath,
+    id: `${siteOrigin}/id${pagePath === '/' ? '' : pagePath}`,
+    en: `${siteOrigin}/en${pagePath === '/' ? '' : pagePath}`,
+    ru: `${siteOrigin}${pagePath}`,
+    'x-default': `${siteOrigin}${pagePath}`,
   };
 }
 
@@ -113,7 +113,7 @@ export function buildSeoMetadata(locale: Locale, page: SeoPage): Metadata {
     title: content.title,
     description: content.description,
     alternates: {
-      canonical,
+      canonical: absoluteCanonical,
       languages: getLanguages(page),
     },
     openGraph: {

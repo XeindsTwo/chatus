@@ -12,46 +12,9 @@ const localeLabels: Record<Locale, string> = {
   ru: 'Ru',
 };
 
-const localeOgImages: Record<Locale, string> = {
-  id: '/og-id.png?v=3',
-  en: '/og-en.png?v=3',
-  ru: '/og-ru.png?v=3',
-};
-
 type LanguageSwitcherProps = {
   className?: string;
 };
-
-function updateMetaContent(selector: string, content: string) {
-  const meta = document.head.querySelector<HTMLMetaElement>(selector);
-
-  if (meta) {
-    meta.content = content;
-    return;
-  }
-
-  const nextMeta = document.createElement('meta');
-  const propertyMatch = selector.match(/property="([^"]+)"/);
-  const nameMatch = selector.match(/name="([^"]+)"/);
-
-  if (propertyMatch) {
-    nextMeta.setAttribute('property', propertyMatch[1]);
-  }
-
-  if (nameMatch) {
-    nextMeta.setAttribute('name', nameMatch[1]);
-  }
-
-  nextMeta.content = content;
-  document.head.appendChild(nextMeta);
-}
-
-function syncOgImage(locale: Locale) {
-  const image = new URL(localeOgImages[locale] ?? localeOgImages[defaultLocale], window.location.origin).href;
-
-  updateMetaContent('meta[property="og:image"]', image);
-  updateMetaContent('meta[name="twitter:image"]', image);
-}
 
 export function LanguageSwitcher({ className }: LanguageSwitcherProps) {
   const pathname = usePathname();
@@ -65,12 +28,6 @@ export function LanguageSwitcher({ className }: LanguageSwitcherProps) {
   }, [pathname]);
 
   useEffect(() => {
-    const savedLocale = normalizeLocale(window.localStorage.getItem(localeStorageKey));
-
-    syncOgImage(savedLocale ?? defaultLocale);
-  }, []);
-
-  useEffect(() => {
     function syncLocale(locale: string | null) {
       const nextLocale = normalizeLocale(locale);
 
@@ -80,7 +37,6 @@ export function LanguageSwitcher({ className }: LanguageSwitcherProps) {
 
       setActiveLocale(nextLocale);
       document.documentElement.lang = nextLocale;
-      syncOgImage(nextLocale);
     }
 
     function handleStorage(event: StorageEvent) {
@@ -106,7 +62,6 @@ export function LanguageSwitcher({ className }: LanguageSwitcherProps) {
     setActiveLocale(locale);
     window.localStorage.setItem(localeStorageKey, locale);
     document.documentElement.lang = locale;
-    syncOgImage(locale);
     window.dispatchEvent(new CustomEvent(localeChangeEvent, { detail: locale }));
 
     const nextHref = getLocalizedHref(pathname || '/', locale);
