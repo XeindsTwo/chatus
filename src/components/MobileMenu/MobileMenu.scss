@@ -20,8 +20,8 @@
   z-index: 120;
   width: 56px;
   height: 56px;
-  border: 1px solid rgb(0 0 0 / 7%);
-  background: rgb(255 255 255 / 13%);
+  border: 1px solid transparent;
+  background: transparent;
   border-radius: 50%;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -54,24 +54,52 @@
 
   &:hover,
   &:focus-visible {
-    border-color: rgb(255 255 255 / 10%);
-    background: rgb(255 255 255 / 12%);
     transform: translateY(-1px);
-    @media (max-width: 1000px) {
-      border-color: rgb(0 0 0 / 7%);
-      background: rgb(255 255 255 / 13%);
-    }
   }
 
   &:focus-visible {
-    outline: 2px solid rgb(255 255 255 / 18%);
+    outline: 2px solid rgb(255 255 255 / 22%);
     outline-offset: 4px;
   }
 }
 
+.mobile-menu-toggle--orange {
+  border-color: rgb(255 255 255 / 4%);
+  background: rgb(255 255 255 / 8%);
+
+  span {
+    background: $color-white;
+  }
+
+  &:hover,
+  &:focus-visible {
+    border-color: rgb(255 255 255 / 8%);
+    background: rgb(255 255 255 / 12%);
+  }
+}
+
+.mobile-menu-toggle--light {
+  border-color: transparent;
+  background: rgb(42 27 0 / 8%);
+
+  span {
+    background: $color-ink;
+  }
+
+  &:hover,
+  &:focus-visible {
+    border-color: transparent;
+    background: rgb(42 27 0 / 12%);
+  }
+
+  &:focus-visible {
+    outline-color: rgb(42 27 0 / 18%);
+  }
+}
+
 .mobile-menu-toggle--open {
-  border-color: rgb(0 0 0 / 7%);
-  background: rgb(255 255 255 / 13%);
+  border-color: rgb(255 255 255 / 4%);
+  background: rgb(255 255 255 / 8%);
   box-shadow: none;
 
   span {
@@ -85,6 +113,12 @@
 
   span:last-child {
     transform: rotate(-45deg);
+  }
+
+  &:hover,
+  &:focus-visible {
+    border-color: rgb(255 255 255 / 8%);
+    background: rgb(255 255 255 / 12%);
   }
 }
 

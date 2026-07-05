@@ -32,6 +32,76 @@ type MobileMenuGsapContext = {
   revert: () => void;
 };
 
+type MobileMenuToggleTheme = 'orange' | 'light';
+
+const orangeBackgroundClassPattern = /(hero|intro|benefits|tariffs|faq|legal-document|rules-page|mobile-menu)/;
+const lightBackgroundClassPattern = /(audience|steps|cta|site-footer|footer)/;
+
+const isOrangeColor = (color: string) => {
+  const match = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
+
+  if (!match) {
+    return false;
+  }
+
+  const [, red, green, blue, alpha = '1'] = match;
+  const opacity = Number.parseFloat(alpha);
+
+  return opacity > 0.08 && Number(red) > 210 && Number(green) > 120 && Number(green) < 210 && Number(blue) < 90;
+};
+
+const resolveToggleTheme = (toggle: HTMLButtonElement | null): MobileMenuToggleTheme => {
+  if (!toggle) {
+    return 'orange';
+  }
+
+  const rect = toggle.getBoundingClientRect();
+  const elements = document.elementsFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
+
+  for (const element of elements) {
+    if (!(element instanceof HTMLElement)) {
+      continue;
+    }
+
+    if (
+      element === toggle ||
+      element.closest('.header') ||
+      element.closest('.mobile-menu-toggle') ||
+      element.closest('.mobile-menu')
+    ) {
+      continue;
+    }
+
+    const className = element.className.toString();
+
+    if (lightBackgroundClassPattern.test(className)) {
+      return 'light';
+    }
+
+    if (orangeBackgroundClassPattern.test(className)) {
+      return 'orange';
+    }
+
+    let current: HTMLElement | null = element;
+
+    while (current && current !== document.body) {
+      const backgroundColor = getComputedStyle(current).backgroundColor;
+
+      if (isOrangeColor(backgroundColor)) {
+        return 'orange';
+      }
+
+      if (backgroundColor !== 'rgba(0, 0, 0, 0)' && backgroundColor !== 'transparent') {
+        return 'light';
+      }
+
+      current = current.parentElement;
+    }
+  }
+
+  return 'orange';
+};
+
 const scrollToHref = (href: string) => {
   scrollToAnchorHref(href, {
     duration: 1.48,
@@ -42,6 +112,8 @@ const scrollToHref = (href: string) => {
 export function MobileMenu({ items }: MobileMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [toggleTheme, setToggleTheme] = useState<MobileMenuToggleTheme>('orange');
+  const toggleRef = useRef<HTMLButtonElement | null>(null);
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const timelineRef = useRef<MobileMenuTimeline | null>(null);
@@ -67,8 +139,45 @@ export function MobileMenu({ items }: MobileMenuProps) {
   useEffect(() => {
     if (isOpen) {
       setIsMounted(true);
+      setToggleTheme('orange');
       document.documentElement.classList.add('is-mobile-menu-open');
     }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (isOpen) {
+      return;
+    }
+
+    let frame = 0;
+
+    const updateToggleTheme = () => {
+      frame = 0;
+      const nextTheme = resolveToggleTheme(toggleRef.current);
+
+      setToggleTheme((currentTheme) => (currentTheme === nextTheme ? currentTheme : nextTheme));
+    };
+
+    const requestThemeUpdate = () => {
+      if (frame) {
+        return;
+      }
+
+      frame = window.requestAnimationFrame(updateToggleTheme);
+    };
+
+    requestThemeUpdate();
+    window.addEventListener('scroll', requestThemeUpdate, { passive: true });
+    window.addEventListener('resize', requestThemeUpdate);
+
+    return () => {
+      if (frame) {
+        window.cancelAnimationFrame(frame);
+      }
+
+      window.removeEventListener('scroll', requestThemeUpdate);
+      window.removeEventListener('resize', requestThemeUpdate);
+    };
   }, [isOpen]);
 
   useEffect(() => {
@@ -192,9 +301,10 @@ export function MobileMenu({ items }: MobileMenuProps) {
   return (
     <>
       <button
+        ref={toggleRef}
         aria-expanded={isOpen}
         aria-label={isOpen ? 'Закрыть меню' : 'Открыть меню'}
-        className={`mobile-menu-toggle ${isOpen ? 'mobile-menu-toggle--open' : ''}`}
+        className={`mobile-menu-toggle mobile-menu-toggle--${toggleTheme} ${isOpen ? 'mobile-menu-toggle--open' : ''}`}
         onClick={() => {
           if (isOpen) {
             closeMenu();
