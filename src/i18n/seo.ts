@@ -18,12 +18,12 @@ const localeConfig: Record<Locale, { ogLocale: string; ogImage: string; pathPref
   en: {
     ogLocale: 'en_US',
     ogImage: '/og-en.png?v=4',
-    pathPrefix: '/en',
+    pathPrefix: '',
   },
   ru: {
     ogLocale: 'ru_RU',
     ogImage: '/og-ru.png?v=4',
-    pathPrefix: '',
+    pathPrefix: '/ru',
   },
 };
 
@@ -96,8 +96,8 @@ function getLanguages(page: SeoPage) {
 
   return {
     id: `${siteOrigin}/id${pagePath === '/' ? '' : pagePath}`,
-    en: `${siteOrigin}/en${pagePath === '/' ? '' : pagePath}`,
-    ru: `${siteOrigin}${pagePath}`,
+    en: `${siteOrigin}${pagePath}`,
+    ru: `${siteOrigin}/ru${pagePath === '/' ? '' : pagePath}`,
     'x-default': `${siteOrigin}${pagePath}`,
   };
 }

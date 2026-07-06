@@ -5,7 +5,7 @@ import { SiteFooter } from '@/components/SiteFooter';
 import { Cta } from '@/sections/Cta';
 import { Faq } from '@/sections/Faq';
 import { Rules } from '@/sections/Rules';
-import { locales, type Locale } from '@/i18n/config';
+import { defaultLocale, locales, type Locale } from '@/i18n/config';
 import { buildSeoMetadata } from '@/i18n/seo';
 
 type LocalizedRulesPageProps = {
@@ -13,13 +13,13 @@ type LocalizedRulesPageProps = {
 };
 
 export function generateStaticParams() {
-  return locales.map((locale) => ({ locale }));
+  return locales.filter((locale) => locale !== defaultLocale).map((locale) => ({ locale }));
 }
 
 export async function generateMetadata({ params }: LocalizedRulesPageProps): Promise<Metadata> {
   const { locale } = await params;
 
-  if (!locales.includes(locale)) {
+  if (!locales.includes(locale) || locale === defaultLocale) {
     notFound();
   }
 
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: LocalizedRulesPageProps): Pro
 export default async function LocalizedRulesPage({ params }: LocalizedRulesPageProps) {
   const { locale } = await params;
 
-  if (!locales.includes(locale)) {
+  if (!locales.includes(locale) || locale === defaultLocale) {
     notFound();
   }
 

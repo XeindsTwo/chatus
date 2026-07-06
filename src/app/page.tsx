@@ -10,7 +10,7 @@ import { Steps } from '@/sections/Steps';
 import { Tariffs } from '@/sections/Tariffs';
 import { buildSeoMetadata } from '@/i18n/seo';
 
-export const metadata: Metadata = buildSeoMetadata('ru', 'home');
+export const metadata: Metadata = buildSeoMetadata('en', 'home');
 
 export default function Home() {
   return (

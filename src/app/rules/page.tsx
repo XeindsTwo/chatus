@@ -6,7 +6,7 @@ import { Faq } from '@/sections/Faq';
 import { Rules } from '@/sections/Rules';
 import { buildSeoMetadata } from '@/i18n/seo';
 
-export const metadata: Metadata = buildSeoMetadata('ru', 'rules');
+export const metadata: Metadata = buildSeoMetadata('en', 'rules');
 
 export default function RulesPage() {
   return (

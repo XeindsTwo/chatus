@@ -9,7 +9,7 @@ import { Hero } from '@/sections/Hero';
 import { Intro } from '@/sections/Intro';
 import { Steps } from '@/sections/Steps';
 import { Tariffs } from '@/sections/Tariffs';
-import { locales, type Locale } from '@/i18n/config';
+import { defaultLocale, locales, type Locale } from '@/i18n/config';
 import { buildSeoMetadata } from '@/i18n/seo';
 
 type LocalizedPageProps = {
@@ -17,13 +17,13 @@ type LocalizedPageProps = {
 };
 
 export function generateStaticParams() {
-  return locales.map((locale) => ({ locale }));
+  return locales.filter((locale) => locale !== defaultLocale).map((locale) => ({ locale }));
 }
 
 export async function generateMetadata({ params }: LocalizedPageProps): Promise<Metadata> {
   const { locale } = await params;
 
-  if (!locales.includes(locale)) {
+  if (!locales.includes(locale) || locale === defaultLocale) {
     notFound();
   }
 
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: LocalizedPageProps): Promise<
 export default async function LocalizedHome({ params }: LocalizedPageProps) {
   const { locale } = await params;
 
-  if (!locales.includes(locale)) {
+  if (!locales.includes(locale) || locale === defaultLocale) {
     notFound();
   }
 

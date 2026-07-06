@@ -61,6 +61,7 @@ export function LanguageSwitcher({ className }: LanguageSwitcherProps) {
   function selectLocale(locale: Locale) {
     setActiveLocale(locale);
     window.localStorage.setItem(localeStorageKey, locale);
+    document.cookie = `${localeStorageKey}=${locale}; path=/; max-age=31536000; samesite=lax`;
     document.documentElement.lang = locale;
     window.dispatchEvent(new CustomEvent(localeChangeEvent, { detail: locale }));
 
@@ -71,7 +72,7 @@ export function LanguageSwitcher({ className }: LanguageSwitcherProps) {
   }
 
   return (
-    <div className={['language-switcher', className].filter(Boolean).join(' ')} aria-label="Выбор языка">
+    <div className={['language-switcher', className].filter(Boolean).join(' ')} aria-label="Language selection">
       {locales.map((locale) => (
         <button
           aria-pressed={activeLocale === locale}

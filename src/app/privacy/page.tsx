@@ -5,13 +5,13 @@ import { Cta } from '@/sections/Cta';
 import { LegalDocument } from '@/sections/LegalDocument';
 import { buildSeoMetadata } from '@/i18n/seo';
 
-export const metadata: Metadata = buildSeoMetadata('ru', 'privacy');
+export const metadata: Metadata = buildSeoMetadata('en', 'privacy');
 
 export default function PrivacyPage() {
   return (
     <main>
       <Header />
-      <LegalDocument locale="ru" />
+      <LegalDocument locale="en" />
       <Cta />
       <SiteFooter />
     </main>
