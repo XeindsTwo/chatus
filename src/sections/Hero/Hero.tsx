@@ -198,7 +198,7 @@ export function Hero() {
               </>
             )}
           </h1>
-          <h1 className="hero__title hero__title--mobile" data-hero-reveal>
+          <p className="hero__title hero__title--mobile" data-hero-reveal>
             {isEnglish ? (
               <>
                 Find a friend
@@ -222,7 +222,7 @@ export function Hero() {
                 секунд
               </>
             )}
-          </h1>
+          </p>
           <p className="hero__text" data-hero-reveal>
             {isEnglish
               ? 'Anonymous chats and new people in seconds — no registration, \n profiles, or identity reveal'

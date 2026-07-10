@@ -2,10 +2,10 @@ import type { Metadata } from 'next';
 import { SmoothScroll } from '@/components/SmoothScroll';
 import { PageTransition } from '@/components/PageTransition';
 import faviconHref from '@/assets/favicon.svg';
+import type { Locale } from '@/i18n/config';
 import { siteOrigin } from '@/i18n/seo';
-import '@/styles/main.scss';
 
-export const metadata: Metadata = {
+export const rootMetadata: Metadata = {
   metadataBase: new URL(siteOrigin),
   icons: {
     icon: [{ url: faviconHref, type: 'image/svg+xml', sizes: '256x256' }],
@@ -14,13 +14,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
+type AppShellProps = Readonly<{
   children: React.ReactNode;
-}>) {
+  lang: Locale;
+}>;
+
+export function AppShell({ children, lang }: AppShellProps) {
   return (
-    <html lang="en">
+    <html lang={lang}>
       <head>
         <script
           dangerouslySetInnerHTML={{

@@ -3,9 +3,7 @@ import { defaultLocale, type Locale } from './config';
 
 type SeoPage = 'home' | 'rules' | 'privacy';
 
-const rawSiteOrigin =
-  process.env.NEXT_PUBLIC_SITE_URL ??
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://chatus.net');
+const rawSiteOrigin = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://chatus.net';
 
 export const siteOrigin = rawSiteOrigin.replace(/\/$/, '');
 
