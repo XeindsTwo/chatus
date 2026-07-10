@@ -1,8 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+import type { Locale } from '@/i18n/config';
 import { useLocale } from '@/i18n/useLocale';
 import './Faq.scss';
+
+type FaqQuestion = {
+  question: string;
+  answer: string;
+};
 
 const questions = [
   {
@@ -148,6 +154,25 @@ const idContacts = [
   },
 ];
 
+function stringifyJsonLd(data: unknown) {
+  return JSON.stringify(data).replace(/</g, '\\u003c');
+}
+
+function getFaqJsonLd(items: FaqQuestion[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer,
+      },
+    })),
+  };
+}
+
 function TelegramIcon({ className }: { className?: string }) {
   return (
     <svg className={className} width="68" height="59" viewBox="0 0 68 59" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -159,8 +184,13 @@ function TelegramIcon({ className }: { className?: string }) {
   );
 }
 
-export function Faq() {
-  const locale = useLocale();
+type FaqProps = {
+  locale?: Locale;
+};
+
+export function Faq({ locale: initialLocale }: FaqProps = {}) {
+  const detectedLocale = useLocale();
+  const locale = initialLocale ?? detectedLocale;
   const isEnglish = locale === 'en';
   const isIndonesian = locale === 'id';
   const currentQuestions = isEnglish ? enQuestions : isIndonesian ? idQuestions : questions;
@@ -169,6 +199,10 @@ export function Faq() {
 
   return (
     <section className="faq indent" id="faq">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: stringifyJsonLd(getFaqJsonLd(currentQuestions)) }}
+      />
       <div className="faq__container">
         <div className="faq__inner">
           <h2 className="faq__title section-title">

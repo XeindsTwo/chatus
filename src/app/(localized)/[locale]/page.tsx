@@ -48,7 +48,7 @@ export default async function LocalizedHome({ params }: LocalizedPageProps) {
       </div>
       <Benefits />
       <Tariffs />
-      <Faq />
+      <Faq locale={locale} />
       <Cta />
       <SiteFooter />
     </main>

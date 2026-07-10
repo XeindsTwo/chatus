@@ -3,17 +3,18 @@
 import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { getAnchorOffset, isMobileAnchorViewport } from '@/lib/anchorScroll';
-import { criticalImages } from '@/lib/criticalImages';
+import { getCriticalImages } from '@/lib/criticalImages';
 import { markPageTransitionPending, markPageTransitionReady } from '@/lib/pageTransition';
 import './PageTransition.scss';
 
-const loaderMinDuration = 720;
-const completedHoldDelay = 360;
-const revealDelay = 760;
+const loaderMinDuration = 180;
+const completedHoldDelay = 80;
+const revealDelay = 220;
+const imagePreloadTimeout = 2500;
 const loadedCriticalImages = new Set<string>();
 
-function preloadCriticalImages(onProgress: (progress: number) => void) {
-  const sources = [...new Set(criticalImages)].filter(Boolean);
+function preloadCriticalImages(onProgress: (progress: number) => void, isMobile: boolean) {
+  const sources = [...new Set(getCriticalImages(isMobile))].filter(Boolean);
 
   if (sources.length === 0) {
     onProgress(100);
@@ -59,6 +60,8 @@ function preloadCriticalImages(onProgress: (progress: number) => void) {
       if (image.complete) {
         settle();
       }
+
+      window.setTimeout(settle, imagePreloadTimeout);
     })),
   ).then(() => undefined);
 }
@@ -107,6 +110,7 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
     let readyTimer = 0;
     const startedAt = performance.now();
     const targetProgress = { current: 0 };
+    const isMobile = window.matchMedia('(max-width: 999px)').matches;
 
     markPageTransitionPending();
     setVisible(true);
@@ -160,9 +164,9 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
       }
 
       targetProgress.current = Math.min(99, nextProgress);
-    }).then(() => {
+    }, isMobile).then(() => {
       const elapsed = performance.now() - startedAt;
-      const duration = didMountRef.current ? loaderMinDuration : loaderMinDuration + 180;
+      const duration = didMountRef.current ? loaderMinDuration : loaderMinDuration + 120;
 
       readyTimer = window.setTimeout(completeTransition, Math.max(0, duration + completedHoldDelay - elapsed));
     });

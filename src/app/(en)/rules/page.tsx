@@ -13,7 +13,7 @@ export default function RulesPage() {
     <main>
       <Header />
       <Rules />
-      <Faq />
+      <Faq locale="en" />
       <Cta />
       <SiteFooter />
     </main>

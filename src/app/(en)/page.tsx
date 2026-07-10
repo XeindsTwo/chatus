@@ -24,7 +24,7 @@ export default function Home() {
       </div>
       <Benefits />
       <Tariffs />
-      <Faq />
+      <Faq locale="en" />
       <Cta />
       <SiteFooter />
     </main>

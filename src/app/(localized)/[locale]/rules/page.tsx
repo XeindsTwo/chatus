@@ -37,7 +37,7 @@ export default async function LocalizedRulesPage({ params }: LocalizedRulesPageP
     <main>
       <Header />
       <Rules />
-      <Faq />
+      <Faq locale={locale} />
       <Cta />
       <SiteFooter />
     </main>

@@ -19,7 +19,46 @@ type AppShellProps = Readonly<{
   lang: Locale;
 }>;
 
+const websiteDescriptions: Record<Locale, string> = {
+  en: 'Anonymous Telegram chat for quick dating and communication without registration.',
+  id: 'Chat anonim di Telegram untuk berkenalan dan mengobrol cepat tanpa registrasi.',
+  ru: 'Анонимная чат-рулетка для быстрых знакомств и общения без регистрации.',
+};
+
+function stringifyJsonLd(data: unknown) {
+  return JSON.stringify(data).replace(/</g, '\\u003c');
+}
+
+function getBaseJsonLd(lang: Locale) {
+  const organization = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': `${siteOrigin}/#organization`,
+    name: 'Chatus',
+    url: siteOrigin,
+    logo: `${siteOrigin}/og-en.png?v=4`,
+    sameAs: ['https://t.me/chatus', 'https://t.me/chatusme'],
+  };
+
+  const website = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${siteOrigin}/#website`,
+    name: 'Chatus',
+    url: siteOrigin,
+    inLanguage: lang,
+    description: websiteDescriptions[lang],
+    publisher: {
+      '@id': `${siteOrigin}/#organization`,
+    },
+  };
+
+  return [organization, website];
+}
+
 export function AppShell({ children, lang }: AppShellProps) {
+  const [organizationJsonLd, websiteJsonLd] = getBaseJsonLd(lang);
+
   return (
     <html lang={lang}>
       <head>
@@ -33,6 +72,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-TTBQ2DMN');
             `,
           }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: stringifyJsonLd(organizationJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: stringifyJsonLd(websiteJsonLd) }}
         />
       </head>
       <body>
