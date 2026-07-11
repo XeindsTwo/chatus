@@ -1,17 +1,20 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import whatThisAvifSrc from '@/assets/what-this.avif';
 import whatThisSrc from '@/assets/what-this.webp';
+import whatThisEnAvifSrc from '@/assets/what-this-en.avif';
 import whatThisEnSrc from '@/assets/what-this-en.webp';
+import whatThisIdAvifSrc from '@/assets/what-this-id.avif';
 import whatThisIdSrc from '@/assets/what-this-id.webp';
 import type { Locale } from '@/i18n/config';
 import { localeChangeEvent, localeStorageKey, normalizeLocale, useLocale } from '@/i18n/useLocale';
 import './Intro.scss';
 
-const introImages: Record<Locale, string> = {
-  id: whatThisIdSrc.src,
-  en: whatThisEnSrc.src,
-  ru: whatThisSrc.src,
+const introImages: Record<Locale, { avif: string; webp: string }> = {
+  id: { avif: whatThisIdAvifSrc.src, webp: whatThisIdSrc.src },
+  en: { avif: whatThisEnAvifSrc.src, webp: whatThisEnSrc.src },
+  ru: { avif: whatThisAvifSrc.src, webp: whatThisSrc.src },
 };
 
 export function Intro() {
@@ -60,7 +63,11 @@ export function Intro() {
   return (
     <section className="intro">
       <div className="faq__container">
-        <img className="intro__image" src={imageSrc} alt="" aria-hidden="true" loading="lazy" decoding="async"/>
+        <picture>
+          <source srcSet={imageSrc.avif} type="image/avif" />
+          <source srcSet={imageSrc.webp} type="image/webp" />
+          <img className="intro__image" src={imageSrc.webp} alt="" aria-hidden="true" loading="lazy" decoding="async"/>
+        </picture>
       </div>
 
 

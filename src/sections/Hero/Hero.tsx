@@ -7,9 +7,27 @@ import { Header } from '@/components/Header';
 import { getLocalizedHref, useLocale } from '@/i18n/useLocale';
 import { onPageTransitionReady } from '@/lib/pageTransition';
 import { getBotHref } from '@/lib/telegramLinks';
+import faceRowOneAvif from '@/assets/faces/1.avif';
+import faceRowOne from '@/assets/faces/1.webp';
+import faceRowTwoAvif from '@/assets/faces/2.avif';
+import faceRowTwo from '@/assets/faces/2.webp';
+import faceRowThreeAvif from '@/assets/faces/3.avif';
+import faceRowThree from '@/assets/faces/3.webp';
+import mobileFaceRowOneAvif from '@/assets/faces/mobile/1.avif';
+import mobileFaceRowOne from '@/assets/faces/mobile/1.webp';
+import mobileFaceRowTwoAvif from '@/assets/faces/mobile/2.avif';
+import mobileFaceRowTwo from '@/assets/faces/mobile/2.webp';
+import mobileFaceRowThreeAvif from '@/assets/faces/mobile/3.avif';
+import mobileFaceRowThree from '@/assets/faces/mobile/3.webp';
+import heroBackgroundAvifSrc from '@/assets/new_home_screen.avif';
 import heroBackgroundSrc from '@/assets/new_home_screen.webp';
-import peepsCarouselDesktopSrc from '@/assets/peeps_carousel_desktop.webm';
 import './Hero.scss';
+
+const faceRows = [
+  { avifSrc: faceRowOneAvif.src, src: faceRowOne.src, mobileAvifSrc: mobileFaceRowOneAvif.src, mobileSrc: mobileFaceRowOne.src, className: 'hero__face-row--one', alt: '' },
+  { avifSrc: faceRowTwoAvif.src, src: faceRowTwo.src, mobileAvifSrc: mobileFaceRowTwoAvif.src, mobileSrc: mobileFaceRowTwo.src, className: 'hero__face-row--two', alt: '' },
+  { avifSrc: faceRowThreeAvif.src, src: faceRowThree.src, mobileAvifSrc: mobileFaceRowThreeAvif.src, mobileSrc: mobileFaceRowThree.src, className: 'hero__face-row--three', alt: '' },
+];
 
 export function Hero() {
   const locale = useLocale();
@@ -25,12 +43,12 @@ export function Hero() {
 
     let startDelay: gsap.core.Tween | undefined;
     let timeline: gsap.core.Timeline | undefined;
-    const video = ref.current.querySelector<HTMLVideoElement>('.hero__faces-video');
 
     const ctx = gsap.context(() => {
       const media = gsap.matchMedia();
 
       media.add('(min-width: 901px)', () => {
+        const rows = gsap.utils.toArray<HTMLElement>('.hero__face-row');
         const revealItems = gsap.utils.toArray<HTMLElement>('[data-hero-reveal]');
         const background = ref.current?.querySelector<HTMLElement>('.hero__background');
 
@@ -39,7 +57,12 @@ export function Hero() {
           gsap.set(background, { autoAlpha: 0 });
         }
 
-        gsap.set(video, { autoAlpha: 0 });
+        gsap.set(rows, {
+          autoAlpha: 1,
+          yPercent: (index) => [-115, 115, -115][index] ?? -115,
+          xPercent: 0,
+          scale: 1,
+        });
 
         timeline = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
 
@@ -52,17 +75,21 @@ export function Hero() {
         }
 
         timeline
-          .to(video, {
-            autoAlpha: 1,
-            duration: 0.8,
-            ease: 'power2.out',
-          }, 0.12)
           .to(revealItems, {
             autoAlpha: 1,
             y: 0,
             duration: 0.72,
             stagger: 0.1,
-          });
+          })
+          .to(
+            rows,
+            {
+              yPercent: 0,
+              duration: 1.35,
+              ease: 'power4.out',
+            },
+            0.12,
+          );
 
         return () => {
           timeline?.kill();
@@ -71,6 +98,7 @@ export function Hero() {
       });
 
       media.add('(max-width: 900px)', () => {
+        const rows = gsap.utils.toArray<HTMLElement>('.hero__face-row');
         const revealItems = gsap.utils.toArray<HTMLElement>('[data-hero-reveal]');
         const background = ref.current?.querySelector<HTMLElement>('.hero__background');
 
@@ -79,7 +107,12 @@ export function Hero() {
           gsap.set(background, { autoAlpha: 0 });
         }
 
-        gsap.set(video, { autoAlpha: 0 });
+        gsap.set(rows, {
+          autoAlpha: 1,
+          xPercent: (index) => [-115, 115, -115][index] ?? -115,
+          yPercent: 0,
+          scale: 1,
+        });
 
         timeline = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
 
@@ -92,11 +125,15 @@ export function Hero() {
         }
 
         timeline
-          .to(video, {
-            autoAlpha: 1,
-            duration: 0.8,
-            ease: 'power2.out',
-          }, 0.1)
+          .to(
+            rows,
+            {
+              xPercent: 0,
+              duration: 1.25,
+              ease: 'power4.out',
+            },
+            0.06,
+          )
           .to(
             revealItems,
             {
@@ -122,7 +159,6 @@ export function Hero() {
         return;
       }
 
-      video?.play().catch(() => undefined);
       timeline.play(0);
     };
 
@@ -141,7 +177,11 @@ export function Hero() {
     <section className="hero" ref={ref}>
       <Header />
 
-      <img className="hero__background" src={heroBackgroundSrc.src} alt="" aria-hidden="true" decoding="async" />
+      <picture>
+        <source srcSet={heroBackgroundAvifSrc.src} type="image/avif" />
+        <source srcSet={heroBackgroundSrc.src} type="image/webp" />
+        <img className="hero__background" src={heroBackgroundSrc.src} alt="" aria-hidden="true" decoding="async" />
+      </picture>
 
       <div className="hero__mask hero__mask--top" aria-hidden="true" />
       <div className="hero__mask hero__mask--bottom" aria-hidden="true" />
@@ -220,13 +260,21 @@ export function Hero() {
         </div>
 
         <div className="hero__faces" aria-hidden="true">
-          <video
-            className="hero__faces-video"
-            muted
-            playsInline
-            preload="auto"
-            src={peepsCarouselDesktopSrc}
-          />
+          <div className="hero__faces-rotated">
+            {faceRows.map((row) => (
+              <picture className={`hero__face-row ${row.className}`} key={row.className}>
+                <source media="(max-width: 900px)" srcSet={row.mobileAvifSrc} type="image/avif" />
+                <source media="(max-width: 900px)" srcSet={row.mobileSrc} type="image/webp" />
+                <source srcSet={row.avifSrc} type="image/avif" />
+                <source srcSet={row.src} type="image/webp" />
+                <img
+                  src={row.src}
+                  alt={row.alt}
+                  draggable={false}
+                />
+              </picture>
+            ))}
+          </div>
         </div>
 
         <strong className="hero__side-title" data-hero-reveal>

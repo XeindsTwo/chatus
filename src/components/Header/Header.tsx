@@ -1,7 +1,7 @@
 'use client';
 
 import './Header.scss';
-import logoSrc from '@/assets/decor/icons/logo.svg';
+import logoSrc from '@/assets/decor/icons/logo-new.svg';
 import { Button } from '@/components/Button';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { MobileMenu } from '@/components/MobileMenu/MobileMenu';
@@ -51,7 +51,7 @@ export function Header() {
     <header className="header">
       <div className="header__mobile-glass">
         <a className="header__brand" href={getLocalizedHref('/', locale)} aria-label="Chatus">
-          <img src={logoSrc} alt="Chatus" width="130" height="38" />
+          <img src={logoSrc} alt="Chatus" width="138" height="34" />
         </a>
       </div>
 
