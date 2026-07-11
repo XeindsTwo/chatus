@@ -69,7 +69,7 @@ export function Cta() {
           {isEnglish ? 'right now' : isIndonesian ? 'sekarang' : 'уже сейчас'}
         </h2>
 
-        <div className="cta__animation" aria-label={isEnglish ? 'Chat partners animation' : isIndonesian ? 'Animasi teman chat' : 'Анимация собеседников'}>
+        <div className="cta__animation" aria-hidden="true">
           <video
             className="cta__video"
             muted
