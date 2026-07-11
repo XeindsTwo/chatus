@@ -1,7 +1,7 @@
 'use client';
 
 import type { MouseEvent } from 'react';
-import logoSrc from '@/assets/decor/icons/logo.svg';
+import logoSrc from '@/assets/decor/icons/logo-new.svg';
 import footerDecorSrc from '@/assets/decor/footer.svg';
 import footerMobileDecorSrc from '@/assets/decor/footer-mobile.svg';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
@@ -121,7 +121,7 @@ export function SiteFooter() {
       <div className="site-footer__container">
         <div className="site-footer__brand">
           <a className="site-footer__logo" href={getLocalizedHref('/', locale)} aria-label="Chatus">
-            <img src={logoSrc} alt="Chatus" width="130" height="38" />
+            <img src={logoSrc} alt="Chatus" width="138" height="34" />
           </a>
           <p className="site-footer__powered">
             powered by

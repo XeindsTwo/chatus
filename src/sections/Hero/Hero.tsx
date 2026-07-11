@@ -7,19 +7,26 @@ import { Header } from '@/components/Header';
 import { getLocalizedHref, useLocale } from '@/i18n/useLocale';
 import { onPageTransitionReady } from '@/lib/pageTransition';
 import { getBotHref } from '@/lib/telegramLinks';
+import faceRowOneAvif from '@/assets/faces/1.avif';
 import faceRowOne from '@/assets/faces/1.webp';
+import faceRowTwoAvif from '@/assets/faces/2.avif';
 import faceRowTwo from '@/assets/faces/2.webp';
+import faceRowThreeAvif from '@/assets/faces/3.avif';
 import faceRowThree from '@/assets/faces/3.webp';
+import mobileFaceRowOneAvif from '@/assets/faces/mobile/1.avif';
 import mobileFaceRowOne from '@/assets/faces/mobile/1.webp';
+import mobileFaceRowTwoAvif from '@/assets/faces/mobile/2.avif';
 import mobileFaceRowTwo from '@/assets/faces/mobile/2.webp';
+import mobileFaceRowThreeAvif from '@/assets/faces/mobile/3.avif';
 import mobileFaceRowThree from '@/assets/faces/mobile/3.webp';
+import heroBackgroundAvifSrc from '@/assets/new_home_screen.avif';
 import heroBackgroundSrc from '@/assets/new_home_screen.webp';
 import './Hero.scss';
 
 const faceRows = [
-  { src: faceRowOne.src, mobileSrc: mobileFaceRowOne.src, className: 'hero__face-row--one', alt: '' },
-  { src: faceRowTwo.src, mobileSrc: mobileFaceRowTwo.src, className: 'hero__face-row--two', alt: '' },
-  { src: faceRowThree.src, mobileSrc: mobileFaceRowThree.src, className: 'hero__face-row--three', alt: '' },
+  { avifSrc: faceRowOneAvif.src, src: faceRowOne.src, mobileAvifSrc: mobileFaceRowOneAvif.src, mobileSrc: mobileFaceRowOne.src, className: 'hero__face-row--one', alt: '' },
+  { avifSrc: faceRowTwoAvif.src, src: faceRowTwo.src, mobileAvifSrc: mobileFaceRowTwoAvif.src, mobileSrc: mobileFaceRowTwo.src, className: 'hero__face-row--two', alt: '' },
+  { avifSrc: faceRowThreeAvif.src, src: faceRowThree.src, mobileAvifSrc: mobileFaceRowThreeAvif.src, mobileSrc: mobileFaceRowThree.src, className: 'hero__face-row--three', alt: '' },
 ];
 
 export function Hero() {
@@ -170,7 +177,11 @@ export function Hero() {
     <section className="hero" ref={ref}>
       <Header />
 
-      <img className="hero__background" src={heroBackgroundSrc.src} alt="" aria-hidden="true" decoding="async" />
+      <picture>
+        <source srcSet={heroBackgroundAvifSrc.src} type="image/avif" />
+        <source srcSet={heroBackgroundSrc.src} type="image/webp" />
+        <img className="hero__background" src={heroBackgroundSrc.src} alt="" aria-hidden="true" decoding="async" />
+      </picture>
 
       <div className="hero__mask hero__mask--top" aria-hidden="true" />
       <div className="hero__mask hero__mask--bottom" aria-hidden="true" />
@@ -252,7 +263,10 @@ export function Hero() {
           <div className="hero__faces-rotated">
             {faceRows.map((row) => (
               <picture className={`hero__face-row ${row.className}`} key={row.className}>
-                <source media="(max-width: 900px)" srcSet={row.mobileSrc} />
+                <source media="(max-width: 900px)" srcSet={row.mobileAvifSrc} type="image/avif" />
+                <source media="(max-width: 900px)" srcSet={row.mobileSrc} type="image/webp" />
+                <source srcSet={row.avifSrc} type="image/avif" />
+                <source srcSet={row.src} type="image/webp" />
                 <img
                   src={row.src}
                   alt={row.alt}
