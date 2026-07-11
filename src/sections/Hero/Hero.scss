@@ -102,50 +102,17 @@
     pointer-events: none;
   }
 
-  &__faces-rotated {
-    position: absolute;
-    inset: -170px -180px -70px;
-    translate: -26px 0;
-    transform: rotate(30deg);
-    transform-origin: center;
-  }
-
-  &__face-row {
+  &__faces-video {
     position: absolute;
     top: 50%;
     left: 50%;
-    display: block;
-    width: 156px !important;
+    width: min(1000px, 78vw);
     height: auto;
-    max-width: none !important;
-    transform-origin: 50% 50%;
-    will-change: transform;
+    max-width: none;
+    translate: -38% -50%;
+    mix-blend-mode: multiply;
+    will-change: opacity;
     user-select: none;
-
-    img {
-      display: block;
-      width: 100%;
-      height: auto;
-      max-width: none;
-    }
-
-    &--one {
-      z-index: 3;
-      margin-top: -620px;
-      margin-left: -163px;
-    }
-
-    &--two {
-      z-index: 2;
-      margin-top: -700px;
-      margin-left: 0;
-    }
-
-    &--three {
-      z-index: 1;
-      margin-top: -620px;
-      margin-left: 163px;
-    }
   }
 
   &__side-title {
@@ -202,29 +169,6 @@
     &__title,
     &__side-title {
       font-size: clamp(58px, 6vw, 70px);
-    }
-
-    &__faces-rotated {
-      inset: -130px -150px -60px;
-      translate: -40px 0;
-    }
-
-    &__face-row {
-      width: 132px !important;
-
-      &--one {
-        margin-top: -548px;
-        margin-left: -138px;
-      }
-
-      &--two {
-        margin-top: -618px;
-      }
-
-      &--three {
-        margin-top: -548px;
-        margin-left: 138px;
-      }
     }
 
     &__side-title {
@@ -286,48 +230,14 @@
     &__faces {
       order: 2;
       width: 100vw;
-      min-height: calc(92px * 3 + 16px * 2);
+      min-height: 170px;
       margin: 28px calc((100vw - 100%) / -2) 44px;
       overflow: hidden;
     }
 
-    &__faces-rotated {
-      inset: 0 auto auto 50%;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      width: max-content;
-      translate: -50% 0;
-      transform: none;
-    }
-
-    &__face-row {
-      position: relative;
-      top: auto;
-      left: auto;
-      width: auto !important;
-      height: 92px;
-      margin: 0 !important;
-
-      img {
-        width: auto;
-        height: 92px;
-      }
-
-      &--one {
-        z-index: 3;
-        translate: -18px 0;
-      }
-
-      &--two {
-        z-index: 2;
-        translate: 24px 0;
-      }
-
-      &--three {
-        z-index: 1;
-        translate: -34px 0;
-      }
+    &__faces-video {
+      width: 100vw;
+      translate: -50% -50%;
     }
 
     &__side-title {
