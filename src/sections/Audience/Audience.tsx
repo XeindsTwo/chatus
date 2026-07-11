@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import plusSrc from '@/assets/decor/icons/plus-auditoria.svg';
 import { useLocale } from '@/i18n/useLocale';
 import { useSmoothHorizontalScroll } from '@/lib/useSmoothHorizontalScroll';
@@ -60,19 +60,11 @@ const idStats = [
   },
 ];
 
-const desktopAnimationQuery = '(min-width: 993px)';
-
-type AudienceGsapContext = {
-  revert: () => void;
-};
-
 export function Audience() {
   const locale = useLocale();
   const isEnglish = locale === 'en';
   const isIndonesian = locale === 'id';
   const currentStats = isEnglish ? enStats : isIndonesian ? idStats : stats;
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const panelRef = useRef<HTMLDivElement | null>(null);
   const cardsRef = useRef<HTMLDivElement | null>(null);
 
   useSmoothHorizontalScroll(cardsRef, {
@@ -80,96 +72,9 @@ export function Audience() {
     draggingClass: 'audience__cards--dragging',
   });
 
-  useEffect(() => {
-    if (!sectionRef.current || !panelRef.current) {
-      return;
-    }
-
-    const media = window.matchMedia(desktopAnimationQuery);
-    let ctx: AudienceGsapContext | undefined;
-    let setupVersion = 0;
-
-    const setupAnimation = () => {
-      setupVersion += 1;
-      const currentVersion = setupVersion;
-
-      ctx?.revert();
-      ctx = undefined;
-
-      if (!media.matches) {
-        return;
-      }
-
-      Promise.all([
-        import('gsap'),
-        import('gsap/ScrollTrigger'),
-      ]).then(([gsapModule, scrollTriggerModule]) => {
-        if (currentVersion !== setupVersion || !sectionRef.current || !panelRef.current || !media.matches) {
-          return;
-        }
-
-        const gsap = gsapModule.default;
-        const ScrollTrigger = scrollTriggerModule.ScrollTrigger;
-
-        gsap.registerPlugin(ScrollTrigger);
-
-        ctx = gsap.context(() => {
-        const cards = gsap.utils.toArray<HTMLElement>('.audience__card');
-        const content = sectionRef.current?.querySelector<HTMLElement>('.audience__content');
-        const title = sectionRef.current?.querySelector<HTMLElement>('.audience__title');
-
-        if (!content || !title) {
-          return;
-        }
-
-        gsap.set(content, { y: 0 });
-        gsap.set(cards[0], { x: -46, y: 58, rotate: -2.5 });
-        gsap.set(cards[1], { x: 0, y: 18, rotate: 1.25 });
-        gsap.set(cards[2], { x: 46, y: -18, rotate: 2.5 });
-
-        const timeline = gsap.timeline({
-          defaults: { ease: 'power2.out' },
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top top',
-            end: '+=720',
-            scrub: 0.6,
-            pin: true,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-          },
-        });
-
-        timeline
-          .to(
-            cards,
-            {
-              x: 0,
-              y: 0,
-              rotate: 0,
-              duration: 0.72,
-              stagger: 0.05,
-            },
-            0,
-          )
-          .fromTo(title, { scale: 0.96, y: 10 }, { scale: 1, y: 0, duration: 0.55 }, 0);
-        }, sectionRef);
-      });
-    };
-
-    setupAnimation();
-    media.addEventListener('change', setupAnimation);
-
-    return () => {
-      setupVersion += 1;
-      media.removeEventListener('change', setupAnimation);
-      ctx?.revert();
-    };
-  }, []);
-
   return (
-    <section className="audience" id="audience" ref={sectionRef}>
-      <div className="audience__panel audience-steps__surface" ref={panelRef}>
+    <section className="audience" id="audience">
+      <div className="audience__panel audience-steps__surface">
         <div className="audience__content">
         <h2 className="audience__title section-title">
           {isEnglish ? (
