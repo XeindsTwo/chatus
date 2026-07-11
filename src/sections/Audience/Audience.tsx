@@ -97,7 +97,6 @@ export function Audience() {
       ctx = undefined;
 
       if (!media.matches) {
-        panelRef.current?.classList.remove('audience__panel--expanded');
         return;
       }
 
@@ -123,25 +122,6 @@ export function Audience() {
           return;
         }
 
-        const getPanelSize = () => {
-          const viewportWidth = window.innerWidth;
-          const viewportHeight = window.innerHeight;
-          const topGap = 30;
-
-          const contentShift = viewportHeight >= 820
-            ? Math.min(160, Math.max(0, (viewportHeight - 760) * 0.45))
-            : 0;
-
-          return {
-            startWidth: Math.min(832, viewportWidth - 32),
-            startHeight: Math.min(Math.max(viewportHeight * 0.58, 560), viewportHeight - 96),
-            finalWidth: viewportWidth,
-            finalHeight: viewportHeight + topGap,
-            finalY: -topGap,
-            contentShift,
-          };
-        };
-
         gsap.set(content, { y: 0 });
         gsap.set(cards[0], { x: -46, y: 58, rotate: -2.5 });
         gsap.set(cards[1], { x: 0, y: 18, rotate: 1.25 });
@@ -157,40 +137,10 @@ export function Audience() {
             pin: true,
             anticipatePin: 1,
             invalidateOnRefresh: true,
-            onUpdate: (self) => {
-              panelRef.current?.classList.toggle('audience__panel--expanded', self.progress > 0.96);
-            },
-            onLeaveBack: () => {
-              panelRef.current?.classList.remove('audience__panel--expanded');
-            },
           },
         });
 
         timeline
-          .fromTo(
-            panelRef.current,
-            {
-              width: () => getPanelSize().startWidth,
-              height: () => getPanelSize().startHeight,
-              borderRadius: 36,
-              y: 0,
-            },
-            {
-              width: () => getPanelSize().finalWidth,
-              height: () => getPanelSize().finalHeight,
-              borderRadius: 0,
-              y: () => getPanelSize().finalY,
-              duration: 1,
-            },
-          )
-          .to(
-            content,
-            {
-              y: () => getPanelSize().contentShift,
-              duration: 1,
-            },
-            0,
-          )
           .to(
             cards,
             {
@@ -200,7 +150,7 @@ export function Audience() {
               duration: 0.72,
               stagger: 0.05,
             },
-            0.24,
+            0,
           )
           .fromTo(title, { scale: 0.96, y: 10 }, { scale: 1, y: 0, duration: 0.55 }, 0);
         }, sectionRef);

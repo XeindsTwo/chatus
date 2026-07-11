@@ -16,16 +16,11 @@
   position: relative;
   display: grid;
   width: min(832px, calc(100vw - 32px));
-  height: min(560px, calc(100svh - 96px));
+  height: min(max(58vh, 560px), calc(100vh - 96px));
   align-content: start;
   justify-items: center;
-  overflow: clip;
-  padding: 96px 24px 0;
-  will-change: width, height, border-radius;
-}
-
-.audience__panel--expanded {
   overflow: visible;
+  padding: 96px 24px 0;
 }
 
 .audience__content {
