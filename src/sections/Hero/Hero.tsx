@@ -6,6 +6,7 @@ import { Button } from '@/components/Button';
 import { Header } from '@/components/Header';
 import { getLocalizedHref, useLocale } from '@/i18n/useLocale';
 import { onPageTransitionReady } from '@/lib/pageTransition';
+import { isPerformanceDebugDisabled } from '@/lib/performanceDebug';
 import { getBotHref } from '@/lib/telegramLinks';
 import faceRowOneAvif from '@/assets/faces/1.avif';
 import faceRowOne from '@/assets/faces/1.webp';
@@ -38,6 +39,27 @@ export function Hero() {
 
   useEffect(() => {
     if (!ref.current) {
+      return;
+    }
+
+    if (isPerformanceDebugDisabled('no-gsap')) {
+      ref.current.querySelectorAll<HTMLElement>('[data-hero-reveal]').forEach((element) => {
+        element.style.opacity = '1';
+        element.style.visibility = 'visible';
+        element.style.transform = 'none';
+      });
+      ref.current.querySelectorAll<HTMLElement>('.hero__face-row').forEach((element) => {
+        element.style.opacity = '1';
+        element.style.visibility = 'visible';
+        element.style.transform = 'none';
+      });
+
+      const background = ref.current.querySelector<HTMLElement>('.hero__background');
+      if (background) {
+        background.style.opacity = '1';
+        background.style.visibility = 'visible';
+      }
+
       return;
     }
 
@@ -269,6 +291,8 @@ export function Hero() {
                   src={row.src}
                   alt={row.alt}
                   draggable={false}
+                  loading="lazy"
+                  decoding="async"
                 />
               </picture>
             ))}

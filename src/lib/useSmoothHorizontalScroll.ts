@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, type RefObject } from 'react';
+import { isPerformanceDebugDisabled } from '@/lib/performanceDebug';
 
 type SmoothHorizontalScrollOptions = {
   media?: string;
@@ -42,19 +43,28 @@ export function useSmoothHorizontalScroll(
     let lastTime = 0;
     let velocity = 0;
     let isAlive = true;
+    const noGsap = isPerformanceDebugDisabled('no-gsap');
+    const noAnimations = isPerformanceDebugDisabled('no-animations');
 
     const getMaxScrollLeft = () => Math.max(0, element.scrollWidth - element.clientWidth);
     const applyScroll = (scrollLeft: number) => {
       element.scrollLeft = clamp(scrollLeft, 0, getMaxScrollLeft());
     };
     const animateScroll = (scrollLeft: number, duration = 0.32, ease = 'power3.out') => {
+      const nextScrollLeft = clamp(scrollLeft, 0, getMaxScrollLeft());
+
+      if (noGsap || noAnimations) {
+        element.scrollTo({ left: nextScrollLeft, behavior: noAnimations ? 'auto' : 'smooth' });
+        return;
+      }
+
       loadGsap().then((gsap) => {
         if (!isAlive) {
           return;
         }
 
         gsap.to(element, {
-          scrollLeft: clamp(scrollLeft, 0, getMaxScrollLeft()),
+          scrollLeft: nextScrollLeft,
           duration,
           ease,
           overwrite: true,

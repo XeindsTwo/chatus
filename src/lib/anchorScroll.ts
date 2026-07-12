@@ -1,10 +1,18 @@
-import gsap from 'gsap';
+import { isPerformanceDebugDisabled } from '@/lib/performanceDebug';
 
 const mobileScrollQuery = '(max-width: 992px)';
 const compactMobileHashes = new Set(['#audience', '#steps']);
 const correctionThreshold = 14;
-let activeAnchorTween: gsap.core.Tween | null = null;
+type AnchorTween = { kill: () => void };
+
+let gsapPromise: Promise<typeof import('gsap').default> | null = null;
+let activeAnchorTween: AnchorTween | null = null;
 let activeAnchorCorrection = 0;
+
+const loadGsap = () => {
+  gsapPromise ??= import('gsap').then((module) => module.default);
+  return gsapPromise;
+};
 
 type AnchorScrollOptions = ScrollBehavior | {
   behavior?: ScrollBehavior;
@@ -50,28 +58,41 @@ const correctAnchorPosition = (target: HTMLElement, hash: string, offset?: numbe
   const targetTop = getAnchorTop(target, hash, offset);
   const distance = Math.abs(targetTop - currentTop);
 
+  if (isPerformanceDebugDisabled('no-gsap')) {
+    if (distance > correctionThreshold) {
+      window.scrollTo({ top: targetTop, behavior: 'auto' });
+    }
+
+    return;
+  }
+
   if (distance > correctionThreshold) {
-    const scrollState = { y: currentTop };
-
     activeAnchorTween?.kill();
-    activeAnchorTween = gsap.to(scrollState, {
-      y: targetTop,
-      duration: Math.min(0.48, Math.max(0.18, distance / 1100)),
-      ease: 'power2.out',
-      overwrite: true,
-      onUpdate: () => {
-        window.scrollTo(0, scrollState.y);
-      },
-      onComplete: () => {
-        activeAnchorTween = null;
+    loadGsap().then((gsap) => {
+      if (correctionId !== activeAnchorCorrection) {
+        return;
+      }
 
-        if (attempt < 4 && correctionId === activeAnchorCorrection) {
-          window.setTimeout(() => correctAnchorPosition(target, hash, offset, attempt + 1), 90);
-        }
-      },
-      onInterrupt: () => {
-        activeAnchorTween = null;
-      },
+      const scrollState = { y: currentTop };
+      activeAnchorTween = gsap.to(scrollState, {
+        y: targetTop,
+        duration: Math.min(0.48, Math.max(0.18, distance / 1100)),
+        ease: 'power2.out',
+        overwrite: true,
+        onUpdate: () => {
+          window.scrollTo(0, scrollState.y);
+        },
+        onComplete: () => {
+          activeAnchorTween = null;
+
+          if (attempt < 4 && correctionId === activeAnchorCorrection) {
+            window.setTimeout(() => correctAnchorPosition(target, hash, offset, attempt + 1), 90);
+          }
+        },
+        onInterrupt: () => {
+          activeAnchorTween = null;
+        },
+      });
     });
 
     return;
@@ -110,6 +131,11 @@ export const scrollToAnchorHref = (href: string, options: AnchorScrollOptions = 
   activeAnchorTween?.kill();
   activeAnchorCorrection += 1;
 
+  if (isPerformanceDebugDisabled('no-gsap')) {
+    window.scrollTo({ top: targetTop, behavior: behavior === 'smooth' ? 'auto' : behavior });
+    return true;
+  }
+
   if (!duration || behavior === 'auto') {
     window.scrollTo({
       top: targetTop,
@@ -122,39 +148,46 @@ export const scrollToAnchorHref = (href: string, options: AnchorScrollOptions = 
   }
 
   const startTop = window.scrollY;
-  const scrollState = { progress: 0 };
   const isMobile = isMobileAnchorViewport();
   const initialTargetTop = targetTop;
   const lockTargetTop = isMobile || url.hash === '#audience';
 
-  activeAnchorTween = gsap.to(scrollState, {
-    progress: 1,
-    duration,
-    ease: typeof options === 'string' ? 'power3.inOut' : options.ease ?? 'power3.inOut',
-    overwrite: true,
-    onUpdate: () => {
-      const liveTargetTop = lockTargetTop ? initialTargetTop : getAnchorTop(target, url.hash, offset);
-      const nextTop = startTop + ((liveTargetTop - startTop) * scrollState.progress);
+  const correctionId = activeAnchorCorrection;
+  loadGsap().then((gsap) => {
+    if (correctionId !== activeAnchorCorrection) {
+      return;
+    }
 
-      window.scrollTo(0, nextTop);
-    },
-    onComplete: () => {
-      activeAnchorTween = null;
+    const scrollState = { progress: 0 };
+    activeAnchorTween = gsap.to(scrollState, {
+      progress: 1,
+      duration,
+      ease: typeof options === 'string' ? 'power3.inOut' : options.ease ?? 'power3.inOut',
+      overwrite: true,
+      onUpdate: () => {
+        const liveTargetTop = lockTargetTop ? initialTargetTop : getAnchorTop(target, url.hash, offset);
+        const nextTop = startTop + ((liveTargetTop - startTop) * scrollState.progress);
 
-      if (lockTargetTop) {
-        return;
-      }
+        window.scrollTo(0, nextTop);
+      },
+      onComplete: () => {
+        activeAnchorTween = null;
 
-      const finalTop = getAnchorTop(target, url.hash, offset);
-      const finalDistance = Math.abs(finalTop - window.scrollY);
+        if (lockTargetTop) {
+          return;
+        }
 
-      if (finalDistance > correctionThreshold) {
-        window.scrollTo(0, finalTop);
-      }
-    },
-    onInterrupt: () => {
-      activeAnchorTween = null;
-    },
+        const finalTop = getAnchorTop(target, url.hash, offset);
+        const finalDistance = Math.abs(finalTop - window.scrollY);
+
+        if (finalDistance > correctionThreshold) {
+          window.scrollTo(0, finalTop);
+        }
+      },
+      onInterrupt: () => {
+        activeAnchorTween = null;
+      },
+    });
   });
 
   return true;

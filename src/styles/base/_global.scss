@@ -81,6 +81,50 @@ main {
   text-transform: uppercase;
 }
 
+html.debug-no-filters,
+html.debug-no-filters body {
+  --debug-filter: none;
+}
+
+html.debug-no-filters *,
+html.debug-no-filters *::before,
+html.debug-no-filters *::after {
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.debug-no-video video,
+html.debug-no-video [data-video] {
+  display: none !important;
+}
+
+html.debug-no-fixed [style*='position: fixed'],
+html.debug-no-fixed .header,
+html.debug-no-fixed .mobile-menu,
+html.debug-no-fixed .mobile-menu-toggle,
+html.debug-no-fixed .page-transition {
+  position: absolute !important;
+}
+
+html.debug-no-decor .hero__mask,
+html.debug-no-decor .hero__background,
+html.debug-no-decor .rules-page__rays,
+html.debug-no-decor .site-footer__decor,
+html.debug-no-decor .site-footer__decor-mobile,
+html.debug-no-decor .steps__decor,
+html.debug-no-decor .tariffs__decor {
+  display: none !important;
+}
+
+html.debug-no-animations *,
+html.debug-no-animations *::before,
+html.debug-no-animations *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
 .section-title--small {
   font-size: 56px;
 }

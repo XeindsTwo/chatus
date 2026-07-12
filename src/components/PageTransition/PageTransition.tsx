@@ -117,6 +117,11 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
     setProgress(0);
 
     const animateProgress = () => {
+      if (targetProgress.current >= 100) {
+        setProgress(100);
+        return;
+      }
+
       setProgress((currentProgress) => {
         const nextProgress = currentProgress + ((targetProgress.current - currentProgress) * 0.12);
 

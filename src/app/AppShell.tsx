@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { SmoothScroll } from '@/components/SmoothScroll';
 import { PageTransition } from '@/components/PageTransition';
+import { PerformanceDebug } from '@/components/PerformanceDebug';
 import faviconHref from '@/assets/favicon.svg';
 import type { Locale } from '@/i18n/config';
 import { siteOrigin } from '@/i18n/seo';
@@ -90,6 +91,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           }}
         />
         <SmoothScroll />
+        <PerformanceDebug />
         <PageTransition>{children}</PageTransition>
       </body>
     </html>

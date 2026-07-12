@@ -150,33 +150,42 @@ export function MobileMenu({ items }: MobileMenuProps) {
     }
 
     let frame = 0;
+    let lastThemeScrollY = -1;
 
-    const updateToggleTheme = () => {
+    const updateToggleTheme = (force = false) => {
       frame = 0;
+
+      if (!force && lastThemeScrollY >= 0 && Math.abs(window.scrollY - lastThemeScrollY) < 8) {
+        return;
+      }
+
+      lastThemeScrollY = window.scrollY;
       const nextTheme = resolveToggleTheme(toggleRef.current);
 
       setToggleTheme((currentTheme) => (currentTheme === nextTheme ? currentTheme : nextTheme));
     };
 
-    const requestThemeUpdate = () => {
+    const requestThemeUpdate = (force = false) => {
       if (frame) {
         return;
       }
 
-      frame = window.requestAnimationFrame(updateToggleTheme);
+      frame = window.requestAnimationFrame(() => updateToggleTheme(force));
     };
+    const handleScroll = () => requestThemeUpdate();
+    const handleResize = () => requestThemeUpdate(true);
 
     requestThemeUpdate();
-    window.addEventListener('scroll', requestThemeUpdate, { passive: true });
-    window.addEventListener('resize', requestThemeUpdate);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleResize);
 
     return () => {
       if (frame) {
         window.cancelAnimationFrame(frame);
       }
 
-      window.removeEventListener('scroll', requestThemeUpdate);
-      window.removeEventListener('resize', requestThemeUpdate);
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
     };
   }, [isOpen]);
 
