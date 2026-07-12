@@ -21,7 +21,6 @@ import mobileFaceRowThreeAvif from '@/assets/faces/mobile/3.avif';
 import mobileFaceRowThree from '@/assets/faces/mobile/3.webp';
 import heroBackgroundAvifSrc from '@/assets/new_home_screen.avif';
 import heroBackgroundSrc from '@/assets/new_home_screen.webp';
-import peepsCarouselDesktopSrc from '@/assets/peeps_carousel_desktop.webm';
 import './Hero.scss';
 
 const faceRows = [
@@ -44,7 +43,6 @@ export function Hero() {
 
     let startDelay: gsap.core.Tween | undefined;
     let timeline: gsap.core.Timeline | undefined;
-    const video = ref.current.querySelector<HTMLVideoElement>('.hero__faces-video');
 
     const ctx = gsap.context(() => {
       const media = gsap.matchMedia();
@@ -65,8 +63,6 @@ export function Hero() {
           xPercent: 0,
           scale: 1,
         });
-        gsap.set(video, { autoAlpha: 0 });
-
         timeline = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
 
         if (background) {
@@ -78,11 +74,6 @@ export function Hero() {
         }
 
         timeline
-          .to(video, {
-            autoAlpha: 1,
-            duration: 0.8,
-            ease: 'power2.out',
-          }, 0.12)
           .to(revealItems, {
             autoAlpha: 1,
             y: 0,
@@ -121,8 +112,6 @@ export function Hero() {
           yPercent: 0,
           scale: 1,
         });
-        gsap.set(video, { autoAlpha: 0 });
-
         timeline = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
 
         if (background) {
@@ -168,9 +157,6 @@ export function Hero() {
         return;
       }
 
-      if (window.matchMedia('(min-width: 1001px)').matches) {
-        video?.play().catch(() => undefined);
-      }
       timeline.play(0);
     };
 
@@ -272,13 +258,6 @@ export function Hero() {
         </div>
 
         <div className="hero__faces" aria-hidden="true">
-          <video
-            className="hero__faces-video"
-            muted
-            playsInline
-            preload="metadata"
-            src={peepsCarouselDesktopSrc}
-          />
           <div className="hero__faces-rotated">
             {faceRows.map((row) => (
               <picture className={`hero__face-row ${row.className}`} key={row.className}>

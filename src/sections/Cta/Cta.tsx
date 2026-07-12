@@ -1,10 +1,8 @@
 'use client';
 
 import { Button } from '@/components/Button';
-import peepsCarouselDesktopSrc from '@/assets/peeps_carousel_desktop.webm';
 import { useLocale } from '@/i18n/useLocale';
 import { getBotHref } from '@/lib/telegramLinks';
-import { useCallback, useEffect, useRef } from 'react';
 import './Cta.scss';
 
 export function Cta() {
@@ -12,54 +10,8 @@ export function Cta() {
   const isEnglish = locale === 'en';
   const isIndonesian = locale === 'id';
   const botHref = getBotHref(locale);
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const hasPlayedRef = useRef(false);
-
-  const playOnce = useCallback(() => {
-    const video = videoRef.current;
-
-    if (hasPlayedRef.current || !video) {
-      return;
-    }
-
-    video.currentTime = 0;
-    void video.play();
-    hasPlayedRef.current = true;
-  }, []);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-
-    if (!section) {
-      return;
-    }
-
-    const playObserver = new IntersectionObserver(
-      ([entry]) => {
-        const rect = entry.boundingClientRect;
-        const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-        const visibleHeight = Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0);
-        const ratioBase = Math.min(rect.height, viewportHeight);
-        const visibleRatio = ratioBase > 0 ? visibleHeight / ratioBase : 0;
-
-        if (visibleRatio >= 0.8) {
-          playOnce();
-          playObserver.disconnect();
-        }
-      },
-      { threshold: [0, 0.25, 0.5, 0.75, 1] },
-    );
-
-    playObserver.observe(section);
-
-    return () => {
-      playObserver.disconnect();
-    };
-  }, [playOnce]);
-
   return (
-    <section className="cta" ref={sectionRef}>
+    <section className="cta">
       <div className="cta__container">
         <h2 className="cta__title section-title">
           {isEnglish ? 'Find someone' : isIndonesian ? 'Temukan teman' : 'Найдите своего'}
@@ -68,17 +20,6 @@ export function Cta() {
           <br />
           {isEnglish ? 'right now' : isIndonesian ? 'sekarang' : 'уже сейчас'}
         </h2>
-
-        <div className="cta__animation" aria-hidden="true">
-          <video
-            className="cta__video"
-            muted
-            playsInline
-            preload="metadata"
-            ref={videoRef}
-            src={peepsCarouselDesktopSrc}
-          />
-        </div>
 
         <p className="cta__text">
           {isEnglish ? (
