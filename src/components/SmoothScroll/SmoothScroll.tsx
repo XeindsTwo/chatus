@@ -39,8 +39,15 @@ export function SmoothScroll() {
 
       const Lenis = lenisModule.default;
       const lenis = new Lenis({
-        lerp: 0.1,
+        lerp: 0.06,
         smoothWheel: true,
+        autoRaf: false,
+        autoToggle: true,
+        allowNestedScroll: true,
+        naiveDimensions: true,
+        stopInertiaOnNavigate: true,
+        // Anchor navigation is handled by anchorScroll.ts to preserve header offsets.
+        anchors: false,
       });
 
       const gsap = gsapModule?.default;
