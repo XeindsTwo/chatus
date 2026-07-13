@@ -24,74 +24,44 @@ export function SmoothScroll() {
 
     const noGsap = isPerformanceDebugDisabled('no-gsap');
     const noScrollTrigger = isPerformanceDebugDisabled('no-scrolltrigger');
-    // Load ScrollTrigger only when a section explicitly opts into it.
-    const hasScrollTriggerContent = document.querySelector('[data-scrolltrigger]') !== null;
-    const useScrollTrigger = !noScrollTrigger && hasScrollTriggerContent;
+    const useScrollTrigger = !noScrollTrigger;
 
     Promise.all([
       noGsap ? Promise.resolve(null) : import('gsap'),
       noGsap || !useScrollTrigger ? Promise.resolve(null) : import('gsap/ScrollTrigger'),
-      import('lenis'),
-    ]).then(([gsapModule, scrollTriggerModule, lenisModule]) => {
+      noGsap || !useScrollTrigger ? Promise.resolve(null) : import('gsap/ScrollSmoother'),
+    ]).then(([gsapModule, scrollTriggerModule, smootherModule]) => {
       if (isCancelled) {
         return;
       }
 
-      const Lenis = lenisModule.default;
-      const lenis = new Lenis({
-        lerp: 0.06,
-        smoothWheel: true,
-        autoRaf: false,
-        autoToggle: true,
-        allowNestedScroll: true,
-        naiveDimensions: true,
-        stopInertiaOnNavigate: true,
-        // Anchor navigation is handled by anchorScroll.ts to preserve header offsets.
-        anchors: false,
-      });
-
       const gsap = gsapModule?.default;
       const ScrollTrigger = scrollTriggerModule?.ScrollTrigger;
-      const updateScrollTrigger = ScrollTrigger ? () => ScrollTrigger.update() : undefined;
-      let nativeFrame = 0;
+      const ScrollSmoother = smootherModule?.default;
 
-      if (gsap) {
-        if (ScrollTrigger) {
-          gsap.registerPlugin(ScrollTrigger);
-        }
-
-        const updateLenis = (time: number) => {
-          lenis.raf(time * 1000);
-        };
-
-        if (updateScrollTrigger) {
-          lenis.on('scroll', updateScrollTrigger);
-        }
-
-        gsap.ticker.add(updateLenis);
-        gsap.ticker.lagSmoothing(0);
-
-        cleanup = () => {
-          if (updateScrollTrigger) {
-            lenis.off('scroll', updateScrollTrigger);
-          }
-
-          gsap.ticker.remove(updateLenis);
-          lenis.destroy();
-        };
+      if (!gsap || !ScrollTrigger || !ScrollSmoother) {
         return;
       }
 
-      const updateNative = (time: number) => {
-        lenis.raf(time);
-        nativeFrame = window.requestAnimationFrame(updateNative);
-      };
+      gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
+      const smoother = ScrollSmoother.create({
+        wrapper: '#smooth-wrapper',
+        content: '#smooth-content',
+        smooth: 1,
+        smoothTouch: 0,
+        effects: false,
+        normalizeScroll: false,
+        ignoreMobileResize: true,
+      });
 
-      nativeFrame = window.requestAnimationFrame(updateNative);
+      window.__chatusScrollSmoother = smoother;
 
       cleanup = () => {
-        window.cancelAnimationFrame(nativeFrame);
-        lenis.destroy();
+        if (window.__chatusScrollSmoother === smoother) {
+          delete window.__chatusScrollSmoother;
+        }
+
+        smoother.kill();
       };
     });
 

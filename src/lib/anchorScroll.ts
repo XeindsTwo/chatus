@@ -14,6 +14,8 @@ const loadGsap = () => {
   return gsapPromise;
 };
 
+const getScrollSmoother = () => window.__chatusScrollSmoother;
+
 type AnchorScrollOptions = ScrollBehavior | {
   behavior?: ScrollBehavior;
   duration?: number;
@@ -127,6 +129,12 @@ export const scrollToAnchorHref = (href: string, options: AnchorScrollOptions = 
   const targetTop = getAnchorTop(target, url.hash, offset);
   const behavior = typeof options === 'string' ? options : options.behavior ?? 'smooth';
   const duration = typeof options === 'string' ? undefined : options.duration;
+
+  const smoother = getScrollSmoother();
+  if (smoother) {
+    smoother.scrollTo(targetTop, behavior !== 'auto', 'top');
+    return true;
+  }
 
   activeAnchorTween?.kill();
   activeAnchorCorrection += 1;

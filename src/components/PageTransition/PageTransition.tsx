@@ -219,7 +219,9 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      {children}
+      <div id="smooth-wrapper">
+        <div id="smooth-content">{children}</div>
+      </div>
       <div
         className={`page-transition ${visible ? 'page-transition--visible' : ''}`}
         aria-hidden={!visible}
