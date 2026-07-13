@@ -193,12 +193,6 @@
   }
 }
 
-@media (min-width: 1001px) {
-  .hero__faces {
-    display: none;
-  }
-}
-
 @media (width <= 1000px) and (width > 900px) {
   .hero {
     &__container {
@@ -292,7 +286,7 @@
     &__faces {
       order: 2;
       width: 100vw;
-      min-height: 170px;
+      min-height: calc(92px * 3 + 16px * 2);
       margin: 28px calc((100vw - 100%) / -2) 44px;
       overflow: hidden;
     }

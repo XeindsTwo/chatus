@@ -6,7 +6,6 @@ import { Button } from '@/components/Button';
 import { Header } from '@/components/Header';
 import { getLocalizedHref, useLocale } from '@/i18n/useLocale';
 import { onPageTransitionReady } from '@/lib/pageTransition';
-import { isPerformanceDebugDisabled } from '@/lib/performanceDebug';
 import { getBotHref } from '@/lib/telegramLinks';
 import faceRowOneAvif from '@/assets/faces/1.avif';
 import faceRowOne from '@/assets/faces/1.webp';
@@ -42,27 +41,6 @@ export function Hero() {
       return;
     }
 
-    if (isPerformanceDebugDisabled('no-gsap')) {
-      ref.current.querySelectorAll<HTMLElement>('[data-hero-reveal]').forEach((element) => {
-        element.style.opacity = '1';
-        element.style.visibility = 'visible';
-        element.style.transform = 'none';
-      });
-      ref.current.querySelectorAll<HTMLElement>('.hero__face-row').forEach((element) => {
-        element.style.opacity = '1';
-        element.style.visibility = 'visible';
-        element.style.transform = 'none';
-      });
-
-      const background = ref.current.querySelector<HTMLElement>('.hero__background');
-      if (background) {
-        background.style.opacity = '1';
-        background.style.visibility = 'visible';
-      }
-
-      return;
-    }
-
     let startDelay: gsap.core.Tween | undefined;
     let timeline: gsap.core.Timeline | undefined;
 
@@ -85,6 +63,7 @@ export function Hero() {
           xPercent: 0,
           scale: 1,
         });
+
         timeline = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
 
         if (background) {
@@ -134,6 +113,7 @@ export function Hero() {
           yPercent: 0,
           scale: 1,
         });
+
         timeline = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
 
         if (background) {
@@ -291,8 +271,6 @@ export function Hero() {
                   src={row.src}
                   alt={row.alt}
                   draggable={false}
-                  loading="lazy"
-                  decoding="async"
                 />
               </picture>
             ))}
