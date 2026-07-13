@@ -14,7 +14,7 @@ const loadGsap = () => {
   return gsapPromise;
 };
 
-const getScrollSmoother = () => window.__chatusScrollSmoother;
+const getLocomotiveScroll = () => window.__chatusLocomotiveScroll;
 
 type AnchorScrollOptions = ScrollBehavior | {
   behavior?: ScrollBehavior;
@@ -130,9 +130,13 @@ export const scrollToAnchorHref = (href: string, options: AnchorScrollOptions = 
   const behavior = typeof options === 'string' ? options : options.behavior ?? 'smooth';
   const duration = typeof options === 'string' ? undefined : options.duration;
 
-  const smoother = getScrollSmoother();
-  if (smoother) {
-    smoother.scrollTo(targetTop, behavior !== 'auto', 'top');
+  const locomotiveScroll = getLocomotiveScroll();
+  if (locomotiveScroll) {
+    locomotiveScroll.scrollTo(targetTop, {
+      immediate: behavior === 'auto',
+      duration: typeof duration === 'number' ? duration : 0.9,
+      offset: 0,
+    });
     return true;
   }
 

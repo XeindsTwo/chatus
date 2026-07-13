@@ -24,44 +24,38 @@ export function SmoothScroll() {
 
     const noGsap = isPerformanceDebugDisabled('no-gsap');
     const noScrollTrigger = isPerformanceDebugDisabled('no-scrolltrigger');
-    const useScrollTrigger = !noScrollTrigger;
+    const useLocomotive = !noScrollTrigger;
 
     Promise.all([
-      noGsap ? Promise.resolve(null) : import('gsap'),
-      noGsap || !useScrollTrigger ? Promise.resolve(null) : import('gsap/ScrollTrigger'),
-      noGsap || !useScrollTrigger ? Promise.resolve(null) : import('gsap/ScrollSmoother'),
-    ]).then(([gsapModule, scrollTriggerModule, smootherModule]) => {
+      noGsap || !useLocomotive ? Promise.resolve(null) : import('locomotive-scroll'),
+    ]).then(([locomotiveModule]) => {
       if (isCancelled) {
         return;
       }
 
-      const gsap = gsapModule?.default;
-      const ScrollTrigger = scrollTriggerModule?.ScrollTrigger;
-      const ScrollSmoother = smootherModule?.default;
-
-      if (!gsap || !ScrollTrigger || !ScrollSmoother) {
+      const LocomotiveScroll = locomotiveModule?.default;
+      if (!LocomotiveScroll) {
         return;
       }
 
-      gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
-      const smoother = ScrollSmoother.create({
-        wrapper: '#smooth-wrapper',
-        content: '#smooth-content',
-        smooth: 1,
-        smoothTouch: 0,
-        effects: false,
-        normalizeScroll: false,
-        ignoreMobileResize: true,
+      const scroll = new LocomotiveScroll({
+        autoStart: true,
+        lenisOptions: {
+          smoothWheel: true,
+          syncTouch: false,
+          anchors: false,
+          lerp: 0.08,
+        },
       });
 
-      window.__chatusScrollSmoother = smoother;
+      window.__chatusLocomotiveScroll = scroll;
 
       cleanup = () => {
-        if (window.__chatusScrollSmoother === smoother) {
-          delete window.__chatusScrollSmoother;
+        if (window.__chatusLocomotiveScroll === scroll) {
+          delete window.__chatusLocomotiveScroll;
         }
 
-        smoother.kill();
+        scroll.destroy();
       };
     });
 

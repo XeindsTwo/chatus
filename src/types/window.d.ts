@@ -1,8 +1,8 @@
-import type { ScrollSmoother } from 'gsap/ScrollSmoother';
+import type LocomotiveScroll from 'locomotive-scroll';
 
 declare global {
   interface Window {
-    __chatusScrollSmoother?: ScrollSmoother;
+    __chatusLocomotiveScroll?: LocomotiveScroll;
   }
 }
 
