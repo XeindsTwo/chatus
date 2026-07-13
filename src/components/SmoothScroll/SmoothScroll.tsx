@@ -5,6 +5,9 @@ import { isPerformanceDebugDisabled } from '@/lib/performanceDebug';
 
 const desktopScrollQuery = '(min-width: 993px)';
 
+const isMacOS = () => /Macintosh|Mac OS X/i.test(window.navigator.userAgent)
+  || /Mac/i.test(window.navigator.platform);
+
 const isDesktopSafari = () => {
   const userAgent = window.navigator.userAgent;
   const isSafari = /^((?!chrome|android|crios|fxios|edg|opr).)*safari/i.test(userAgent);
@@ -18,7 +21,7 @@ export function SmoothScroll() {
     let isCancelled = false;
     const isDesktop = window.matchMedia(desktopScrollQuery).matches;
 
-    if (!isDesktop || isDesktopSafari()) {
+    if (!isDesktop || isMacOS() || isDesktopSafari()) {
       return undefined;
     }
 
