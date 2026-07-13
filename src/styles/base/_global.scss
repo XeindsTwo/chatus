@@ -17,7 +17,7 @@ body {
   font-weight: 600;
   letter-spacing: var(--body-letter-spacing);
   line-height: 1.35;
-  text-rendering: geometricPrecision;
+  text-rendering: optimizeLegibility;
   isolation: isolate;
 }
 
