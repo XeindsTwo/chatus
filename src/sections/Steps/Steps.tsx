@@ -100,7 +100,7 @@ export function Steps() {
             <article className="steps__item" key={step.title}>
               <span className="steps__number">{String(index + 1).padStart(2, '0')}</span>
               <h3 className="card-title">{step.title}</h3>
-              <img className={`steps__decor steps__decor--${index + 1}`} src={step.decor} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+              <img className={`steps__decor steps__decor--${index + 1}`} src={step.decor} alt="" aria-hidden="true" loading="eager" decoding="async" />
               <p>{step.text}</p>
             </article>
           ))}

@@ -35,6 +35,22 @@ export function Cta() {
       return;
     }
 
+    const warmVideo = () => {
+      const video = videoRef.current;
+
+      if (!video) {
+        return;
+      }
+
+      video.preload = 'auto';
+      video.load();
+    };
+
+    const canIdle = 'requestIdleCallback' in window;
+    const idleWindow = canIdle
+      ? window.requestIdleCallback(warmVideo, { timeout: 1800 })
+      : window.setTimeout(warmVideo, 1200);
+
     const playObserver = new IntersectionObserver(
       ([entry]) => {
         const rect = entry.boundingClientRect;
@@ -43,7 +59,7 @@ export function Cta() {
         const ratioBase = Math.min(rect.height, viewportHeight);
         const visibleRatio = ratioBase > 0 ? visibleHeight / ratioBase : 0;
 
-        if (visibleRatio >= 0.8) {
+        if (visibleRatio >= 0.65) {
           playOnce();
           playObserver.disconnect();
         }
@@ -55,6 +71,11 @@ export function Cta() {
 
     return () => {
       playObserver.disconnect();
+      if (canIdle) {
+        window.cancelIdleCallback(idleWindow);
+      } else {
+        window.clearTimeout(idleWindow);
+      }
     };
   }, [playOnce]);
 
@@ -74,7 +95,7 @@ export function Cta() {
             className="cta__video"
             muted
             playsInline
-            preload="metadata"
+            preload="auto"
             ref={videoRef}
             src={peepsCarouselDesktopSrc}
           />
