@@ -22,8 +22,8 @@ const productLinks = [
 ];
 
 const legalLinks = [
-  { label: 'Пользовательское соглашение', href: '/privacy' },
-  { label: 'Политика конфиденциальности', href: '/privacy' },
+  { label: 'Пользовательское соглашение', href: '/agreement' },
+  { label: 'Website Privacy Policy', href: '/privacy' },
   { label: 'Правила общения', href: '/rules' },
 ];
 
@@ -41,8 +41,8 @@ const enProductLinks = [
 ];
 
 const enLegalLinks = [
-  { label: 'User Agreement', href: '/privacy' },
-  { label: 'Privacy Policy', href: '/privacy' },
+  { label: 'User Agreement', href: '/agreement' },
+  { label: 'Website Privacy Policy', href: '/privacy' },
   { label: 'Chat Rules', href: '/rules' },
 ];
 
@@ -60,8 +60,8 @@ const idProductLinks = [
 ];
 
 const idLegalLinks = [
-  { label: 'Perjanjian Pengguna', href: '/privacy' },
-  { label: 'Kebijakan Privasi', href: '/privacy' },
+  { label: 'Perjanjian Pengguna', href: '/agreement' },
+  { label: 'Website Privacy Policy', href: '/privacy' },
   { label: 'Aturan Chat', href: '/rules' },
 ];
 

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { defaultLocale, type Locale } from './config';
 
-type SeoPage = 'home' | 'rules' | 'privacy';
+type SeoPage = 'home' | 'rules' | 'privacy' | 'agreement';
 
 const rawSiteOrigin = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://chatus.net';
 
@@ -25,7 +25,7 @@ const localeConfig: Record<Locale, { ogLocale: string; ogImage: string; pathPref
   },
 };
 
-const seoContent: Record<Locale, Record<SeoPage, { title: string; description: string }>> = {
+const seoContent: Record<Locale, Partial<Record<SeoPage, { title: string; description: string }>>> = {
   id: {
     home: {
       title: 'Chatus — chat anonim untuk mengobrol dan berkenalan',
@@ -52,9 +52,10 @@ const seoContent: Record<Locale, Record<SeoPage, { title: string; description: s
       description: 'Rules for chatting and behavior in Chatus to keep conversations safe, pleasant, and anonymous.',
     },
     privacy: {
-      title: 'Cookie and legal policy | Chatus',
+      title: 'Website Privacy Policy | Chatus',
       description: 'Cookie usage policy and legal documents for Chatus.',
     },
+    agreement: { title: 'User Agreement | Chatus', description: 'Terms governing use of the Chatus bot and service.' },
   },
   ru: {
     home: {
@@ -73,10 +74,14 @@ const seoContent: Record<Locale, Record<SeoPage, { title: string; description: s
   },
 };
 
+Object.assign(seoContent.id, { agreement: { title: 'User Agreement | Chatus', description: 'Terms governing use of the Chatus bot and service.' } });
+Object.assign(seoContent.ru, { agreement: { title: 'Пользовательское соглашение | Chatus', description: 'Условия использования Chatus.' } });
+
 const alternatePaths: Record<SeoPage, string> = {
   home: '/',
   rules: '/rules',
   privacy: '/privacy',
+  agreement: '/agreement',
 };
 
 function getCanonicalPath(locale: Locale, page: SeoPage) {
@@ -101,7 +106,7 @@ function getLanguages(page: SeoPage) {
 }
 
 export function buildSeoMetadata(locale: Locale, page: SeoPage): Metadata {
-  const content = seoContent[locale][page];
+  const content = (seoContent[locale][page] ?? seoContent.en[page])!;
   const config = localeConfig[locale];
   const canonical = getCanonicalPath(locale, page);
   const absoluteCanonical = `${siteOrigin}${canonical}`;

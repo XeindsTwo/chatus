@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { siteOrigin } from '@/i18n/seo';
 
-const routes = ['/', '/rules', '/privacy', '/ru', '/ru/rules', '/ru/privacy', '/id', '/id/rules', '/id/privacy'] as const;
+const routes = ['/', '/rules', '/privacy', '/agreement', '/ru', '/ru/rules', '/ru/privacy', '/ru/agreement', '/id', '/id/rules', '/id/privacy', '/id/agreement'] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
@@ -9,7 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return routes.map((route) => {
     const isHome = route === '/';
     const isLocaleHome = route === '/ru' || route === '/id';
-    const isLegal = route.includes('rules') || route.includes('privacy');
+    const isLegal = route.includes('rules') || route.includes('privacy') || route.includes('agreement');
 
     return {
       url: `${siteOrigin}${isHome ? '' : route}`,

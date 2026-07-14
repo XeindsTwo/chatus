@@ -1,20 +1,22 @@
 import './LegalDocument.scss';
 import { type Locale } from '@/i18n/config';
 import { enPrivacyBlocks, ruPrivacyBlocks } from './privacyPolicyData';
+import { enAgreementBlocks, ruAgreementBlocks } from './agreementData';
 
 export type LegalBlock =
   | { type: 'paragraph'; text: string }
   | { type: 'table'; rows: string[][] };
 
-type LegalDocumentProps = { locale?: Locale };
+type LegalDocumentProps = { locale?: Locale; document?: 'privacy' | 'agreement' };
 
 const headingPattern = /^(?:\d+\.\s|Who we are|Who are we|Definitions|What is|For what|From where|To whom|Do we|What rights|Contact|Is my|Changes to|Кто мы|Определения|Для каких|С какой|Кому мы|Собираем|Передаем|Используем|Какие|Как реализовать|Контакт|Продаем|Изменения|РљР°РєРёРµ|РљС‚Рѕ РјС‹|Р”Р»СЏ РєР°РєРёС…|РР·РјРµРЅРµРЅРёСЏ)/i;
+const agreementHeadingPattern = /^(?:Introduction|Definitions|Telegram Terms|Right to use the Service|Description of the Service|Paid Service|VIP Subscription|Payment Rules|Information about Payment|User Responsibilities|Content Responsibility|Specific Rules|User ban|Privacy and Data Protection|Security|Third-party links and information|Indemnity and Liability Limitation|Changes to the Terms of Use|Governing Law|Assignment|Contact Information|Indonesian Law Compliance|Indian Law Compliance|EU Digital Services Act Compliance|What is not allowed|How we moderate content|What action can we take|How to report illegal content|How to get in touch with us as a user|Points of contact|Legal Representative|Введение|Определения|Условия Telegram|Право на использование Сервиса|Описание Сервиса|Платные услуги|VIP-подписка|Правила оплаты|Информация об оплате|Обязанности пользователя|Ответственность за контент|Особые правила для пользователей из Индии и Индонезии|Особые правила|Блокировка Пользователя|Конфиденциальность и защита данных|Безопасность|Ссылки и информация третьих лиц|Возмещение убытков и ограничение ответственности|Изменения Условий использования|Изменения в Условиях использования|Применимое право|Уступка прав|Передача прав|Контактная информация|Соответствие юридическим требованиям в Индонезии|Соответствие юридическим требованиям в Индии|Соответствие Регламенту ЕС о цифровых услугах|Ограничения при использовании Сервиса|Что запрещено|Как осуществляется модерация контента|Как мы модерируем контент|Какие меры могут быть приняты|Какие меры мы можем принять|Как сообщить о незаконном контенте|Как Пользователь может связаться с Компанией|Как связаться с нами как пользователь|Контактные данные для органов государств-членов ЕС|Контактные данные|Юридический представитель в соответствии со статьёй 13 Регламента ЕС о цифровых услугах|Уполномоченный представитель)/i;
 const subheadingPattern = /^(?:\d+\.\d+\.?(?:\s|$)|Для резидентов [^:;]{1,70}[;:]?$|For residents [^:;]{1,70}[;:]?$|Р”Р»СЏ СЂРµР·РёРґРµРЅС‚РѕРІ [^:;]{1,70}[;:]?$)/i;
 const closingPattern = /^(With warm regards,?|MALJOY Team|С уважением|Команда MALJOY)/i;
 const urlPattern = /(https?:\/\/[^\s)]+|[\w.+-]+@[\w.-]+\.[A-Za-z]{2,})/g;
 
 function isHeading(text: string) {
-  return headingPattern.test(text) && text.length < 140;
+  return (headingPattern.test(text) || agreementHeadingPattern.test(text)) && text.length < 140;
 }
 
 function renderText(text: string) {
@@ -166,8 +168,11 @@ function renderBlocks(blocks: LegalBlock[]) {
   return result;
 }
 
-export function LegalDocument({ locale = 'ru' }: LegalDocumentProps) {
-  const blocks = (locale === 'ru' ? ruPrivacyBlocks : enPrivacyBlocks).filter(
+export function LegalDocument({ locale = 'ru', document = 'privacy' }: LegalDocumentProps) {
+  const sourceBlocks = document === 'agreement'
+    ? locale === 'ru' ? ruAgreementBlocks : enAgreementBlocks
+    : locale === 'ru' ? ruPrivacyBlocks : enPrivacyBlocks;
+  const blocks = sourceBlocks.filter(
     (block) => block.type !== 'paragraph' || !closingPattern.test(block.text),
   );
   const isRussian = locale === 'ru';
@@ -177,15 +182,15 @@ export function LegalDocument({ locale = 'ru' }: LegalDocumentProps) {
       <div className="legal-document__container">
         <header className="legal-document__hero">
           <p>{isRussian ? 'Актуальная редакция: 1 июня 2026 г.' : 'Last updated: June 1, 2026.'}</p>
-          <h1>{isRussian ? 'ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ' : 'PRIVACY POLICY'}</h1>
+          <h1>{document === 'agreement' ? (isRussian ? 'ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ' : 'TERMS OF USE') : 'WEBSITE PRIVACY POLICY'}</h1>
           <div className="legal-document__lead">
-            {blocks.slice(2, 4).map((block, index) => block.type === 'paragraph' && <p key={index}>{renderText(block.text)}</p>)}
+            {document === 'privacy' && blocks.slice(2, 4).map((block, index) => block.type === 'paragraph' && <p key={index}>{renderText(block.text)}</p>)}
           </div>
         </header>
 
         <div className="legal-document__sections">
           <article className="legal-document__section">
-            <div className="legal-document__content">{renderBlocks(blocks.slice(4))}</div>
+            <div className="legal-document__content">{renderBlocks(document === 'privacy' ? blocks.slice(4) : blocks)}</div>
           </article>
         </div>
 
