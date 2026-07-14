@@ -78,8 +78,8 @@ const correctAnchorPosition = (target: HTMLElement, hash: string, offset?: numbe
       const scrollState = { y: currentTop };
       activeAnchorTween = gsap.to(scrollState, {
         y: targetTop,
-        duration: Math.min(0.48, Math.max(0.18, distance / 1100)),
-        ease: 'power2.out',
+        duration: Math.min(0.78, Math.max(0.3, distance / 820)),
+        ease: 'power2.inOut',
         overwrite: true,
         onUpdate: () => {
           window.scrollTo(0, scrollState.y);
@@ -134,7 +134,7 @@ export const scrollToAnchorHref = (href: string, options: AnchorScrollOptions = 
   if (locomotiveScroll) {
     locomotiveScroll.scrollTo(targetTop, {
       immediate: behavior === 'auto',
-      duration: typeof duration === 'number' ? duration : 0.9,
+      duration: typeof duration === 'number' ? duration : 1.3,
       offset: 0,
     });
     return true;
@@ -174,7 +174,7 @@ export const scrollToAnchorHref = (href: string, options: AnchorScrollOptions = 
     activeAnchorTween = gsap.to(scrollState, {
       progress: 1,
       duration,
-      ease: typeof options === 'string' ? 'power3.inOut' : options.ease ?? 'power3.inOut',
+      ease: typeof options === 'string' ? 'power2.inOut' : options.ease ?? 'power2.inOut',
       overwrite: true,
       onUpdate: () => {
         const liveTargetTop = lockTargetTop ? initialTargetTop : getAnchorTop(target, url.hash, offset);

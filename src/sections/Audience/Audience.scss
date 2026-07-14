@@ -15,20 +15,24 @@
 .audience__panel {
   position: relative;
   display: grid;
-  width: 100%;
-  height: calc(100vh + 30px);
+  width: min(832px, calc(100vw - 32px));
+  height: min(560px, calc(100svh - 96px));
   align-content: start;
   justify-items: center;
-  overflow: visible;
+  overflow: clip;
   padding: 96px 24px 0;
-  border-radius: 0;
-  transform: translateY(-30px);
+  will-change: width, height, border-radius;
+}
+
+.audience__panel--expanded {
+  overflow: visible;
 }
 
 .audience__content {
   display: grid;
   width: 100%;
   justify-items: center;
+  will-change: transform;
 }
 
 .audience__title {
@@ -38,6 +42,7 @@
   z-index: 1;
   max-width: 720px;
   text-align: center;
+  will-change: transform;
 }
 
 .audience__cards {
@@ -62,6 +67,7 @@
   padding: 24px;
   background: $color-white;
   box-shadow: -8px 12px 32px 0 rgba(191, 196, 202, 0.06);
+  will-change: transform;
 
   p {
     white-space: pre-line;
@@ -156,7 +162,6 @@
     min-height: 0;
     overflow: visible;
     padding: 0 24px;
-    transform: none;
     background: transparent;
     box-shadow: none;
   }

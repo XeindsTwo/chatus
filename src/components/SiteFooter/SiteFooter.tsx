@@ -106,8 +106,8 @@ export function SiteFooter() {
     }
 
     scrollToAnchorHref(href, {
-      duration: 1.12,
-      ease: 'power3.inOut',
+      duration: 2,
+      ease: 'power2.inOut',
       offset: desktopFooterAnchorOffset,
       targetSelector: sectionTitleSelector,
     });

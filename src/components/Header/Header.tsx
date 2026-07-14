@@ -72,8 +72,8 @@ export function Header() {
                 event.preventDefault();
                 event.stopPropagation();
                 scrollToAnchorHref(item.href, {
-                  duration: 1.12,
-                  ease: 'power3.inOut',
+                  duration: 2,
+                  ease: 'power2.inOut',
                   offset: desktopHeaderAnchorOffset,
                   targetSelector: sectionTitleSelector,
                 });
