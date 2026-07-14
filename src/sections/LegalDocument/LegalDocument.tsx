@@ -9,7 +9,7 @@ export type LegalBlock =
 type LegalDocumentProps = { locale?: Locale };
 
 const headingPattern = /^(?:\d+\.\s|Who we are|Who are we|Definitions|What is|For what|From where|To whom|Do we|What rights|Contact|Is my|Changes to|Кто мы|Определения|Для каких|С какой|Кому мы|Собираем|Передаем|Используем|Какие|Как реализовать|Контакт|Продаем|Изменения|РљР°РєРёРµ|РљС‚Рѕ РјС‹|Р”Р»СЏ РєР°РєРёС…|РР·РјРµРЅРµРЅРёСЏ)/i;
-const subheadingPattern = /^(?:\d+\.\d+\.?\s|Для резидентов [^:;]{1,70}[;:]?$|For residents [^:;]{1,70}[;:]?$|Р”Р»СЏ СЂРµР·РёРґРµРЅС‚РѕРІ [^:;]{1,70}[;:]?$)/i;
+const subheadingPattern = /^(?:\d+\.\d+\.?(?:\s|$)|Для резидентов [^:;]{1,70}[;:]?$|For residents [^:;]{1,70}[;:]?$|Р”Р»СЏ СЂРµР·РёРґРµРЅС‚РѕРІ [^:;]{1,70}[;:]?$)/i;
 const closingPattern = /^(With warm regards,?|MALJOY Team|С уважением|Команда MALJOY)/i;
 const urlPattern = /(https?:\/\/[^\s)]+|[\w.+-]+@[\w.-]+\.[A-Za-z]{2,})/g;
 
@@ -82,11 +82,15 @@ function renderBlocks(blocks: LegalBlock[]) {
   let list: string[] = [];
   let collectingList = false;
   let lastSectionNumber = 0;
+  let tableSectionNumber: number | null = null;
+  let hasExplicitTableSubheadings = false;
+  let lastTableSubheadingNumber = 0;
+  let listKey = 0;
 
   const flushList = () => {
     if (!list.length) return;
     group.push(
-      <ul key={`list-${result.length}`}>
+      <ul key={`list-${listKey++}`}>
         {list.map((item, index) => <li key={`${item}-${index}`}>{renderText(item)}</li>)}
       </ul>,
     );
@@ -110,12 +114,50 @@ function renderBlocks(blocks: LegalBlock[]) {
     if (block.type === 'paragraph' && isHeading(block.text)) {
       flushGroup();
       const numberMatch = block.text.match(/^(\d+)\.\s/);
-      if (numberMatch) lastSectionNumber = Number(numberMatch[1]);
+      if (numberMatch) {
+        const sourceNumber = Number(numberMatch[1]);
+        lastSectionNumber = sourceNumber > lastSectionNumber + 1
+          ? lastSectionNumber + 1
+          : sourceNumber;
+        const normalizedNumber = `${lastSectionNumber}. `;
+        group.push(
+          <h2 key={`numbered-${index}`}>
+            {renderText(block.text.replace(/^\d+\.\s/, normalizedNumber))}
+          </h2>,
+        );
+        if (lastSectionNumber === 4 || /^For what purposes\b/i.test(block.text.trim())) {
+          tableSectionNumber = 4;
+          hasExplicitTableSubheadings = false;
+          lastTableSubheadingNumber = 0;
+        } else {
+          tableSectionNumber = null;
+        }
+        return;
+      }
       else if (!isSubheading(block.text)) lastSectionNumber += 1;
       if (!numberMatch && !isSubheading(block.text)) {
+        if (/^For what purposes\b/i.test(block.text.trim())) {
+          tableSectionNumber = 4;
+          hasExplicitTableSubheadings = false;
+          lastTableSubheadingNumber = 0;
+        }
         group.push(<h2 key={`numbered-${index}`}>{addMissingSectionNumber(block.text, lastSectionNumber)}</h2>);
         return;
       }
+    }
+    if (block.type === 'paragraph' && isSubheading(block.text) && /^4\.\d+/.test(block.text.trim())) {
+      hasExplicitTableSubheadings = true;
+    }
+    if (block.type === 'paragraph' && (/^4\.\s/.test(block.text.trim()) || /^For what purposes\b/i.test(block.text.trim()))) {
+      tableSectionNumber = 4;
+      hasExplicitTableSubheadings = false;
+      lastTableSubheadingNumber = 0;
+    } else if (block.type === 'paragraph' && isHeading(block.text) && !/^4\.\s/.test(block.text.trim())) {
+      tableSectionNumber = null;
+    }
+    if (block.type === 'table' && tableSectionNumber === 4 && !hasExplicitTableSubheadings) {
+      const subNumber = ++lastTableSubheadingNumber;
+      group.push(<h3 className="legal-document__subheading" key={`table-subheading-${index}`}>{`4.${subNumber}`}</h3>);
     }
     group.push(renderBlock(block, index));
   });
