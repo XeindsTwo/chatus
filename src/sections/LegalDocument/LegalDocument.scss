@@ -75,6 +75,12 @@
     gap: 64px;
     min-width: 0;
 
+    > .legal-document__block {
+      display: grid;
+      gap: 24px;
+      min-width: 0;
+    }
+
     p,
     li,
     td,
@@ -94,6 +100,7 @@
     h2 {
       @include section-title-small;
       max-width: 880px;
+      margin-bottom: 16px;
       overflow-wrap: break-word;
       hyphens: auto;
     }
@@ -101,7 +108,8 @@
     h3 {
       @include section-title-small;
       max-width: 880px;
-      font-size: 44px;
+      margin: 0 0 6px;
+      font-size: clamp(24px, 3vw, 38px);
       line-height: .95;
       overflow-wrap: break-word;
       hyphens: auto;
@@ -122,7 +130,7 @@
 
     ul {
       display: grid;
-      gap: 18px;
+      gap: 14px;
       padding: 0;
       list-style: none;
     }
@@ -235,9 +243,7 @@
         font-size: 18px;
       }
 
-      h3 {
-        font-size: 42px;
-      }
+      h3 { font-size: clamp(24px, 3vw, 34px); }
     }
 
     th,
@@ -263,9 +269,7 @@
         font-size: 14px;
       }
 
-      h3 {
-        font-size: 38px;
-      }
+      h3 { font-size: 24px; }
     }
 
     table {
