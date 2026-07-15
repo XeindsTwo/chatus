@@ -23,6 +23,8 @@
   left: 50%;
   top: 50%;
   width: min(100% - 34px, 1390px);
+  max-height: 650px;
+  height: auto;
   margin-inline: auto;
   display: block;
   pointer-events: none;

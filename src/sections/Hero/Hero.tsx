@@ -7,12 +7,12 @@ import { Header } from '@/components/Header';
 import { getLocalizedHref, useLocale } from '@/i18n/useLocale';
 import { onPageTransitionReady } from '@/lib/pageTransition';
 import { getBotHref } from '@/lib/telegramLinks';
-import faceRowOneAvif from '@/assets/faces/1.avif';
-import faceRowOne from '@/assets/faces/1.webp';
-import faceRowTwoAvif from '@/assets/faces/2.avif';
-import faceRowTwo from '@/assets/faces/2.webp';
-import faceRowThreeAvif from '@/assets/faces/3.avif';
-import faceRowThree from '@/assets/faces/3.webp';
+import faceRowOneAvif from '@/assets/faces/1-new.avif';
+import faceRowOne from '@/assets/faces/1-new.webp';
+import faceRowTwoAvif from '@/assets/faces/2-new.avif';
+import faceRowTwo from '@/assets/faces/2-new.webp';
+import faceRowThreeAvif from '@/assets/faces/3-new.avif';
+import faceRowThree from '@/assets/faces/3-new.webp';
 import mobileFaceRowOneAvif from '@/assets/faces/mobile/1.avif';
 import mobileFaceRowOne from '@/assets/faces/mobile/1.webp';
 import mobileFaceRowTwoAvif from '@/assets/faces/mobile/2.avif';
@@ -24,9 +24,9 @@ import heroBackgroundSrc from '@/assets/new_home_screen.webp';
 import './Hero.scss';
 
 const faceRows = [
-  { avifSrc: faceRowOneAvif.src, src: faceRowOne.src, mobileAvifSrc: mobileFaceRowOneAvif.src, mobileSrc: mobileFaceRowOne.src, className: 'hero__face-row--one', alt: '' },
-  { avifSrc: faceRowTwoAvif.src, src: faceRowTwo.src, mobileAvifSrc: mobileFaceRowTwoAvif.src, mobileSrc: mobileFaceRowTwo.src, className: 'hero__face-row--two', alt: '' },
-  { avifSrc: faceRowThreeAvif.src, src: faceRowThree.src, mobileAvifSrc: mobileFaceRowThreeAvif.src, mobileSrc: mobileFaceRowThree.src, className: 'hero__face-row--three', alt: '' },
+  { avifSrc: faceRowOneAvif.src, src: faceRowOne.src, mobileAvifSrc: mobileFaceRowOneAvif.src, mobileSrc: mobileFaceRowOne.src, className: 'hero__face-row--one', alt: '', width: 173, height: 1376 },
+  { avifSrc: faceRowTwoAvif.src, src: faceRowTwo.src, mobileAvifSrc: mobileFaceRowTwoAvif.src, mobileSrc: mobileFaceRowTwo.src, className: 'hero__face-row--two', alt: '', width: 175, height: 1550 },
+  { avifSrc: faceRowThreeAvif.src, src: faceRowThree.src, mobileAvifSrc: mobileFaceRowThreeAvif.src, mobileSrc: mobileFaceRowThree.src, className: 'hero__face-row--three', alt: '', width: 174, height: 1376 },
 ];
 
 export function Hero() {
@@ -270,6 +270,8 @@ export function Hero() {
                 <img
                   src={row.src}
                   alt={row.alt}
+                  width={row.width}
+                  height={row.height}
                   draggable={false}
                 />
               </picture>
