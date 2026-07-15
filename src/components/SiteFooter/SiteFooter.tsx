@@ -23,7 +23,8 @@ const productLinks = [
 
 const legalLinks = [
   { label: 'Пользовательское соглашение', href: '/agreement' },
-  { label: 'Website Privacy Policy', href: '/privacy' },
+  { label: '\u041f\u043e\u043b\u0438\u0442\u0438\u043a\u0430 \u043a\u043e\u043d\u0444\u0438\u0434\u0435\u043d\u0446\u0438\u0430\u043b\u044c\u043d\u043e\u0441\u0442\u0438', href: '/privacy' },
+  { label: '\u041f\u043e\u043b\u0438\u0442\u0438\u043a\u0430 \u043a\u043e\u043d\u0444\u0438\u0434\u0435\u043d\u0446\u0438\u0430\u043b\u044c\u043d\u043e\u0441\u0442\u0438 \u0441\u0430\u0439\u0442\u0430', href: '/privacy-website' },
   { label: 'Правила общения', href: '/rules' },
 ];
 
@@ -42,7 +43,8 @@ const enProductLinks = [
 
 const enLegalLinks = [
   { label: 'User Agreement', href: '/agreement' },
-  { label: 'Website Privacy Policy', href: '/privacy' },
+  { label: 'Privacy Policy', href: '/privacy' },
+  { label: 'Privacy Policy Website', href: '/privacy-website' },
   { label: 'Chat Rules', href: '/rules' },
 ];
 
@@ -61,7 +63,8 @@ const idProductLinks = [
 
 const idLegalLinks = [
   { label: 'Perjanjian Pengguna', href: '/agreement' },
-  { label: 'Website Privacy Policy', href: '/privacy' },
+  { label: 'Privacy Policy', href: '/privacy' },
+  { label: 'Privacy Policy Website', href: '/privacy-website' },
   { label: 'Aturan Chat', href: '/rules' },
 ];
 

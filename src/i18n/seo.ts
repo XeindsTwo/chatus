@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { defaultLocale, type Locale } from './config';
 
-type SeoPage = 'home' | 'rules' | 'privacy' | 'agreement';
+type SeoPage = 'home' | 'rules' | 'privacy' | 'privacy-website' | 'agreement';
 
 const rawSiteOrigin = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://chatus.net';
 
@@ -37,8 +37,12 @@ const seoContent: Record<Locale, Partial<Record<SeoPage, { title: string; descri
       description: 'Aturan komunikasi dan perilaku di Chatus agar chat tetap aman, nyaman, dan anonim.',
     },
     privacy: {
-      title: 'Kebijakan dan cookie | Chatus',
-      description: 'Kebijakan penggunaan cookie dan dokumen legal Chatus.',
+      title: 'Privacy Policy | Chatus',
+      description: 'Privacy policy for the Chatus bot and service.',
+    },
+    'privacy-website': {
+      title: 'Website Privacy Policy | Chatus',
+      description: 'Website privacy policy for Chatus.',
     },
   },
   en: {
@@ -52,8 +56,12 @@ const seoContent: Record<Locale, Partial<Record<SeoPage, { title: string; descri
       description: 'Rules for chatting and behavior in Chatus to keep conversations safe, pleasant, and anonymous.',
     },
     privacy: {
+      title: 'Privacy Policy | Chatus',
+      description: 'Privacy policy for the Chatus bot and service.',
+    },
+    'privacy-website': {
       title: 'Website Privacy Policy | Chatus',
-      description: 'Cookie usage policy and legal documents for Chatus.',
+      description: 'Website privacy policy for Chatus.',
     },
     agreement: { title: 'User Agreement | Chatus', description: 'Terms governing use of the Chatus bot and service.' },
   },
@@ -76,11 +84,14 @@ const seoContent: Record<Locale, Partial<Record<SeoPage, { title: string; descri
 
 Object.assign(seoContent.id, { agreement: { title: 'User Agreement | Chatus', description: 'Terms governing use of the Chatus bot and service.' } });
 Object.assign(seoContent.ru, { agreement: { title: 'Пользовательское соглашение | Chatus', description: 'Условия использования Chatus.' } });
+Object.assign(seoContent.ru, { 'privacy-website': { title: '\u041f\u043e\u043b\u0438\u0442\u0438\u043a\u0430 \u043a\u043e\u043d\u0444\u0438\u0434\u0435\u043d\u0446\u0438\u0430\u043b\u044c\u043d\u043e\u0441\u0442\u0438 \u0441\u0430\u0439\u0442\u0430 | Chatus', description: '\u041f\u043e\u043b\u0438\u0442\u0438\u043a\u0430 \u043a\u043e\u043d\u0444\u0438\u0434\u0435\u043d\u0446\u0438\u0430\u043b\u044c\u043d\u043e\u0441\u0442\u0438 \u0441\u0430\u0439\u0442\u0430 Chatus.' } });
+Object.assign(seoContent.ru, { privacy: { title: '\u041f\u043e\u043b\u0438\u0442\u0438\u043a\u0430 \u043a\u043e\u043d\u0444\u0438\u0434\u0435\u043d\u0446\u0438\u0430\u043b\u044c\u043d\u043e\u0441\u0442\u0438 | Chatus', description: '\u041f\u043e\u043b\u0438\u0442\u0438\u043a\u0430 \u043a\u043e\u043d\u0444\u0438\u0434\u0435\u043d\u0446\u0438\u0430\u043b\u044c\u043d\u043e\u0441\u0442\u0438 \u0431\u043e\u0442\u0430 \u0438 \u0441\u0435\u0440\u0432\u0438\u0441\u0430 Chatus.' } });
 
 const alternatePaths: Record<SeoPage, string> = {
   home: '/',
   rules: '/rules',
   privacy: '/privacy',
+  'privacy-website': '/privacy-website',
   agreement: '/agreement',
 };
 

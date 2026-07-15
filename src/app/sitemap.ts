@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { siteOrigin } from '@/i18n/seo';
 
-const routes = ['/', '/rules', '/privacy', '/agreement', '/ru', '/ru/rules', '/ru/privacy', '/ru/agreement', '/id', '/id/rules', '/id/privacy', '/id/agreement'] as const;
+const routes = ['/', '/rules', '/privacy', '/privacy-website', '/agreement', '/ru', '/ru/rules', '/ru/privacy', '/ru/privacy-website', '/ru/agreement', '/id', '/id/rules', '/id/privacy', '/id/privacy-website', '/id/agreement'] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
