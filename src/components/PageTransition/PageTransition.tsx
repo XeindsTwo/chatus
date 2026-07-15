@@ -1,16 +1,16 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { getAnchorOffset, isMobileAnchorViewport } from '@/lib/anchorScroll';
 import { getCriticalImages } from '@/lib/criticalImages';
 import { markPageTransitionPending, markPageTransitionReady } from '@/lib/pageTransition';
 import './PageTransition.scss';
 
-const loaderMinDuration = 180;
-const completedHoldDelay = 80;
-const revealDelay = 220;
-const imagePreloadTimeout = 2500;
+const loaderMinDuration = 80;
+const completedHoldDelay = 0;
+const revealDelay = 80;
+const imagePreloadTimeout = 1200;
 const loadedCriticalImages = new Set<string>();
 
 function preloadCriticalImages(onProgress: (progress: number) => void, isMobile: boolean) {
@@ -89,7 +89,6 @@ function scrollToCurrentHash() {
 
 export function PageTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const didMountRef = useRef(false);
   const [visible, setVisible] = useState(true);
   const [progress, setProgress] = useState(0);
 
@@ -158,7 +157,7 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
           markPageTransitionReady();
           scrollToCurrentHash();
         }, revealDelay);
-      }, 220);
+      }, 0);
     };
 
     progressFrame = window.requestAnimationFrame(animateProgress);
@@ -171,12 +170,10 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
       targetProgress.current = Math.min(99, nextProgress);
     }, isMobile).then(() => {
       const elapsed = performance.now() - startedAt;
-      const duration = didMountRef.current ? loaderMinDuration : loaderMinDuration + 120;
+      const duration = loaderMinDuration;
 
       readyTimer = window.setTimeout(completeTransition, Math.max(0, duration + completedHoldDelay - elapsed));
     });
-
-    didMountRef.current = true;
 
     return () => {
       isCancelled = true;

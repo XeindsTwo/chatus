@@ -180,7 +180,7 @@ export function Hero() {
       <picture>
         <source srcSet={heroBackgroundAvifSrc.src} type="image/avif" />
         <source srcSet={heroBackgroundSrc.src} type="image/webp" />
-        <img className="hero__background" src={heroBackgroundSrc.src} alt="" aria-hidden="true" decoding="async" />
+        <img className="hero__background" src={heroBackgroundSrc.src} alt="" aria-hidden="true" decoding="async" fetchPriority="high" />
       </picture>
 
       <div className="hero__mask hero__mask--top" aria-hidden="true" />

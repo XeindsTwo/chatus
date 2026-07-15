@@ -3,6 +3,7 @@ import { SmoothScroll } from '@/components/SmoothScroll';
 import { PageTransition } from '@/components/PageTransition';
 import { PerformanceDebug } from '@/components/PerformanceDebug';
 import faviconHref from '@/assets/favicon.svg';
+import heroBackgroundAvifSrc from '@/assets/new_home_screen.avif';
 import type { Locale } from '@/i18n/config';
 import { siteOrigin } from '@/i18n/seo';
 
@@ -63,6 +64,13 @@ export function AppShell({ children, lang }: AppShellProps) {
   return (
     <html lang={lang}>
       <head>
+        <link
+          rel="preload"
+          as="image"
+          href={heroBackgroundAvifSrc.src}
+          type="image/avif"
+          fetchPriority="high"
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `
