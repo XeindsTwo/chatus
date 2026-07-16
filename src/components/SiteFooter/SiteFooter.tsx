@@ -109,7 +109,7 @@ export function SiteFooter() {
     }
 
     scrollToAnchorHref(href, {
-      duration: 2,
+      duration: 1.6,
       ease: 'power2.inOut',
       offset: desktopFooterAnchorOffset,
       targetSelector: sectionTitleSelector,

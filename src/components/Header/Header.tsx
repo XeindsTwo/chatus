@@ -72,7 +72,7 @@ export function Header() {
                 event.preventDefault();
                 event.stopPropagation();
                 scrollToAnchorHref(item.href, {
-                  duration: 2,
+                  duration: 1.6,
                   ease: 'power2.inOut',
                   offset: desktopHeaderAnchorOffset,
                   targetSelector: sectionTitleSelector,

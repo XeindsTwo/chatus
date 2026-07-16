@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import localFont from 'next/font/local';
 import { SmoothScroll } from '@/components/SmoothScroll';
 import { PageTransition } from '@/components/PageTransition';
 import { PerformanceDebug } from '@/components/PerformanceDebug';
@@ -6,6 +7,24 @@ import faviconHref from '@/assets/favicon.svg';
 import heroBackgroundAvifSrc from '@/assets/new_home_screen.avif';
 import type { Locale } from '@/i18n/config';
 import { siteOrigin } from '@/i18n/seo';
+
+const hagrid = localFont({
+  src: '../assets/fonts/Hagrid-ExtraboldItalic.woff2',
+  variable: '--font-display',
+  display: 'swap',
+  preload: true,
+  weight: '800',
+  style: 'italic',
+});
+
+const mont = localFont({
+  src: '../assets/fonts/Mont-SemiBold.woff2',
+  variable: '--font-body',
+  display: 'swap',
+  preload: true,
+  weight: '600',
+  style: 'normal',
+});
 
 export const rootMetadata: Metadata = {
   metadataBase: new URL(siteOrigin),
@@ -91,7 +110,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           dangerouslySetInnerHTML={{ __html: stringifyJsonLd(websiteJsonLd) }}
         />
       </head>
-      <body>
+      <body className={`${hagrid.variable} ${mont.variable}`}>
         <noscript
           dangerouslySetInnerHTML={{
             __html:

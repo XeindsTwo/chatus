@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { getAnchorOffset, isMobileAnchorViewport } from '@/lib/anchorScroll';
 import { getCriticalImages } from '@/lib/criticalImages';
@@ -12,6 +12,12 @@ const completedHoldDelay = 0;
 const revealDelay = 80;
 const imagePreloadTimeout = 1200;
 const loadedCriticalImages = new Set<string>();
+
+const isBackForwardNavigation = () => {
+  const navigationEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
+
+  return navigationEntry?.type === 'back_forward';
+};
 
 function preloadCriticalImages(onProgress: (progress: number) => void, isMobile: boolean) {
   const sources = [...new Set(getCriticalImages(isMobile))].filter(Boolean);
@@ -91,6 +97,7 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [visible, setVisible] = useState(true);
   const [progress, setProgress] = useState(0);
+  const skipNextTransitionRef = useRef(false);
 
   useEffect(() => {
     document.documentElement.classList.toggle('is-page-transitioning', visible);
@@ -103,6 +110,49 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
   }, [visible]);
 
   useEffect(() => {
+    const handleHistoryNavigation = () => {
+      skipNextTransitionRef.current = true;
+      setVisible(false);
+      markPageTransitionReady();
+      document.documentElement.classList.remove('is-page-transitioning');
+      document.body.classList.remove('is-page-transitioning');
+    };
+
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (!event.persisted) {
+        return;
+      }
+
+      handleHistoryNavigation();
+    };
+
+    window.addEventListener('popstate', handleHistoryNavigation);
+    window.addEventListener('pageshow', handlePageShow);
+
+    return () => {
+      window.removeEventListener('popstate', handleHistoryNavigation);
+      window.removeEventListener('pageshow', handlePageShow);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (skipNextTransitionRef.current) {
+      skipNextTransitionRef.current = false;
+      setVisible(false);
+      setProgress(100);
+      markPageTransitionReady();
+      return undefined;
+    }
+
+    if (isBackForwardNavigation()) {
+      setVisible(false);
+      setProgress(100);
+      markPageTransitionReady();
+      document.documentElement.classList.remove('is-page-transitioning');
+      document.body.classList.remove('is-page-transitioning');
+      return undefined;
+    }
+
     let isCancelled = false;
     let progressFrame = 0;
     let hideTimer = 0;
