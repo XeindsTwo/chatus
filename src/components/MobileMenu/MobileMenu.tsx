@@ -104,7 +104,7 @@ const resolveToggleTheme = (toggle: HTMLButtonElement | null): MobileMenuToggleT
 
 const scrollToHref = (href: string) => {
   scrollToAnchorHref(href, {
-    duration: 1.25,
+    duration: 1.35,
     ease: 'power2.inOut',
   });
 };

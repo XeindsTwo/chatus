@@ -16,6 +16,12 @@ const loadGsap = () => {
 
 const getLocomotiveScroll = () => window.__chatusLocomotiveScroll;
 
+const isMacDesktopAnchorViewport = () => (
+  window.matchMedia('(min-width: 993px)').matches
+  && (/Macintosh|Mac OS X/i.test(window.navigator.userAgent)
+    || /Mac/i.test(window.navigator.platform))
+);
+
 type AnchorScrollOptions = ScrollBehavior | {
   behavior?: ScrollBehavior;
   duration?: number;
@@ -136,6 +142,16 @@ export const scrollToAnchorHref = (href: string, options: AnchorScrollOptions = 
       immediate: behavior === 'auto',
       duration: typeof duration === 'number' ? duration : 1.3,
       offset: 0,
+    });
+    return true;
+  }
+
+  // Safari and Chromium on macOS already provide a compositor-driven native
+  // smooth scroll. Avoid a second JS tween that writes scrollTop every frame.
+  if (isMacDesktopAnchorViewport()) {
+    window.scrollTo({
+      top: targetTop,
+      behavior: behavior === 'smooth' ? 'smooth' : behavior,
     });
     return true;
   }

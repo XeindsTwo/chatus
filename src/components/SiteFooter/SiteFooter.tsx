@@ -104,7 +104,10 @@ export function SiteFooter() {
     event.preventDefault();
 
     if (isMobileAnchorViewport()) {
-      scrollToAnchorHref(href);
+      scrollToAnchorHref(href, {
+        duration: 1.35,
+        ease: 'power2.inOut',
+      });
       return;
     }
 

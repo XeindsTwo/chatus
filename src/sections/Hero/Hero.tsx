@@ -272,6 +272,8 @@ export function Hero() {
                   alt={row.alt}
                   width={row.width}
                   height={row.height}
+                  loading={row.className === 'hero__face-row--two' ? 'eager' : 'lazy'}
+                  fetchPriority={row.className === 'hero__face-row--two' ? 'high' : undefined}
                   draggable={false}
                 />
               </picture>
