@@ -14,13 +14,14 @@ const loadGsap = () => {
   return gsapPromise;
 };
 
-const getLocomotiveScroll = () => window.__chatusLocomotiveScroll;
+let scrollToPluginPromise: Promise<typeof import('gsap/ScrollToPlugin').ScrollToPlugin> | null = null;
 
-const isMacDesktopAnchorViewport = () => (
-  window.matchMedia('(min-width: 993px)').matches
-  && (/Macintosh|Mac OS X/i.test(window.navigator.userAgent)
-    || /Mac/i.test(window.navigator.platform))
-);
+const loadScrollToPlugin = () => {
+  scrollToPluginPromise ??= import('gsap/ScrollToPlugin').then((module) => module.ScrollToPlugin);
+  return scrollToPluginPromise;
+};
+
+const getLocomotiveScroll = () => window.__chatusLocomotiveScroll;
 
 type AnchorScrollOptions = ScrollBehavior | {
   behavior?: ScrollBehavior;
@@ -76,20 +77,20 @@ const correctAnchorPosition = (target: HTMLElement, hash: string, offset?: numbe
 
   if (distance > correctionThreshold) {
     activeAnchorTween?.kill();
-    loadGsap().then((gsap) => {
+    Promise.all([loadGsap(), loadScrollToPlugin()]).then(([gsap, ScrollToPlugin]) => {
       if (correctionId !== activeAnchorCorrection) {
         return;
       }
 
-      const scrollState = { y: currentTop };
-      activeAnchorTween = gsap.to(scrollState, {
-        y: targetTop,
+      gsap.registerPlugin(ScrollToPlugin);
+      activeAnchorTween = gsap.to(window, {
+        scrollTo: {
+          y: targetTop,
+          autoKill: true,
+        },
         duration: Math.min(0.78, Math.max(0.3, distance / 820)),
         ease: 'power2.inOut',
         overwrite: true,
-        onUpdate: () => {
-          window.scrollTo(0, scrollState.y);
-        },
         onComplete: () => {
           activeAnchorTween = null;
 
@@ -146,16 +147,6 @@ export const scrollToAnchorHref = (href: string, options: AnchorScrollOptions = 
     return true;
   }
 
-  // Safari and Chromium on macOS already provide a compositor-driven native
-  // smooth scroll. Avoid a second JS tween that writes scrollTop every frame.
-  if (isMacDesktopAnchorViewport()) {
-    window.scrollTo({
-      top: targetTop,
-      behavior: behavior === 'smooth' ? 'smooth' : behavior,
-    });
-    return true;
-  }
-
   activeAnchorTween?.kill();
   activeAnchorCorrection += 1;
 
@@ -175,29 +166,25 @@ export const scrollToAnchorHref = (href: string, options: AnchorScrollOptions = 
     return true;
   }
 
-  const startTop = window.scrollY;
   const isMobile = isMobileAnchorViewport();
   const initialTargetTop = targetTop;
   const lockTargetTop = isMobile || url.hash === '#audience';
 
   const correctionId = activeAnchorCorrection;
-  loadGsap().then((gsap) => {
+  Promise.all([loadGsap(), loadScrollToPlugin()]).then(([gsap, ScrollToPlugin]) => {
     if (correctionId !== activeAnchorCorrection) {
       return;
     }
 
-    const scrollState = { progress: 0 };
-    activeAnchorTween = gsap.to(scrollState, {
-      progress: 1,
+    gsap.registerPlugin(ScrollToPlugin);
+    activeAnchorTween = gsap.to(window, {
+      scrollTo: {
+        y: lockTargetTop ? initialTargetTop : targetTop,
+        autoKill: true,
+      },
       duration,
       ease: typeof options === 'string' ? 'power2.inOut' : options.ease ?? 'power2.inOut',
       overwrite: true,
-      onUpdate: () => {
-        const liveTargetTop = lockTargetTop ? initialTargetTop : getAnchorTop(target, url.hash, offset);
-        const nextTop = startTop + ((liveTargetTop - startTop) * scrollState.progress);
-
-        window.scrollTo(0, nextTop);
-      },
       onComplete: () => {
         activeAnchorTween = null;
 
