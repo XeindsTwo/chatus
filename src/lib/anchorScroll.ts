@@ -21,6 +21,10 @@ const loadScrollToPlugin = () => {
   return scrollToPluginPromise;
 };
 
+const isMacNativeScrollViewport = () => window.matchMedia('(min-width: 993px)').matches
+  && (/Macintosh|Mac OS X/i.test(window.navigator.userAgent)
+    || /Mac/i.test(window.navigator.platform));
+
 const getLocomotiveScroll = () => window.__chatusLocomotiveScroll;
 
 type AnchorScrollOptions = ScrollBehavior | {
@@ -136,6 +140,16 @@ export const scrollToAnchorHref = (href: string, options: AnchorScrollOptions = 
   const targetTop = getAnchorTop(target, url.hash, offset);
   const behavior = typeof options === 'string' ? options : options.behavior ?? 'smooth';
   const duration = typeof options === 'string' ? undefined : options.duration;
+
+  if (isMacNativeScrollViewport()) {
+    activeAnchorTween?.kill();
+    activeAnchorCorrection += 1;
+    window.scrollTo({
+      top: targetTop,
+      behavior: behavior === 'auto' ? 'auto' : 'smooth',
+    });
+    return true;
+  }
 
   const locomotiveScroll = getLocomotiveScroll();
   if (locomotiveScroll) {

@@ -125,6 +125,10 @@ html.debug-no-animations *::after {
   scroll-behavior: auto !important;
 }
 
+html.native-mac-scroll {
+  scroll-behavior: smooth !important;
+}
+
 .section-title--small {
   font-size: 56px;
 }

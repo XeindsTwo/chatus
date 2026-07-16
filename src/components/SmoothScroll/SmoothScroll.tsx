@@ -22,7 +22,17 @@ export function SmoothScroll() {
     const isDesktop = window.matchMedia(desktopScrollQuery).matches;
 
     if (!isDesktop || isMacOS() || isDesktopSafari()) {
-      return undefined;
+      const useNativeMacScroll = isDesktop && (isMacOS() || isDesktopSafari());
+
+      if (useNativeMacScroll) {
+        document.documentElement.classList.add('native-mac-scroll');
+      }
+
+      return () => {
+        if (useNativeMacScroll) {
+          document.documentElement.classList.remove('native-mac-scroll');
+        }
+      };
     }
 
     const noGsap = isPerformanceDebugDisabled('no-gsap');
